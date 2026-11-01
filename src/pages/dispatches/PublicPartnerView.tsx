@@ -150,20 +150,20 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
     }
   };
 
-  if (loading) return <LoadingSpinner label="Retrieving secure delivery manifest..." />;
+  if (loading) return <LoadingSpinner label={t('dispatch.loading_manifest')} />;
 
   if (error || !dispatch) {
     return (
       <div className="max-w-xl mx-auto my-12 p-8 bg-slate-900 border border-slate-800 rounded-2xl text-center space-y-4">
         <AlertTriangle className="w-12 h-12 text-rose-400 mx-auto" />
-        <h2 className="text-lg font-bold text-white">Invalid or Expired Link</h2>
-        <p className="text-xs text-slate-400">{error || 'This delivery link could not be verified.'}</p>
+        <h2 className="text-lg font-bold text-white">{t('public.invalid_link_title')}</h2>
+        <p className="text-xs text-slate-400">{error || t('msg.error')}</p>
         {onExit && (
           <button
             onClick={onExit}
             className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-semibold cursor-pointer"
           >
-            Return to App
+            {t('public.return_to_app')}
           </button>
         )}
       </div>
@@ -301,7 +301,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                 <div>
                   <span className="text-[11px] text-slate-500 block">{t('table.sent_col', 'Sent')}</span>
                   <span className="font-mono font-bold text-slate-200">
-                    {line.quantitySent} {line.unit}
+                    {line.quantitySent} {t('unit.' + line.unit.toLowerCase(), line.unit)}
                   </span>
                 </div>
 
@@ -309,7 +309,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                   <div>
                     <span className="text-[11px] text-slate-500 block">{t('table.received_col', 'Received')}</span>
                     <span className="font-mono font-bold text-emerald-400">
-                      {line.quantityReceived} {line.unit}
+                      {line.quantityReceived} {t('unit.' + line.unit.toLowerCase(), line.unit)}
                     </span>
                   </div>
                 )}
@@ -318,7 +318,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                   <div>
                     <span className="text-[11px] text-rose-400 block font-semibold">{t('table.short_col', 'Short')}</span>
                     <span className="font-mono font-bold text-rose-400">
-                      -{line.lossQty} {line.unit}
+                      -{line.lossQty} {t('unit.' + line.unit.toLowerCase(), line.unit)}
                     </span>
                   </div>
                 ) : null}
@@ -453,12 +453,12 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                 <div key={line.id} className="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs space-y-2">
                   <div className="flex justify-between font-semibold">
                     <span className="text-white">{line.itemName}</span>
-                    <span className="text-slate-400 font-mono">Dispatched: {line.quantitySent} {line.unit}</span>
+                    <span className="text-slate-400 font-mono">{t('table.dispatched')}: {line.quantitySent} {t('unit.' + line.unit.toLowerCase(), line.unit)}</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                     <div>
-                      <label className="block text-[11px] text-slate-400 mb-1">Received ({line.unit})</label>
+                      <label className="block text-[11px] text-slate-400 mb-1">{t('table.received')} ({t('unit.' + line.unit.toLowerCase(), line.unit)})</label>
                       <input
                         type="number"
                         min={0}
@@ -470,7 +470,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                     </div>
 
                     <div>
-                      <label className="block text-[11px] text-slate-400 mb-1">Condition</label>
+                      <label className="block text-[11px] text-slate-400 mb-1">{t('table.condition')}</label>
                       <select
                         value={lineReceipts[idx]?.condition || 'GOOD'}
                         onChange={(e) => {

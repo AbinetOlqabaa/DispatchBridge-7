@@ -161,7 +161,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         updatedAt: cachedRecord.currentCoordinates.updatedAt || cachedRecord.cachedAt,
         speedKmh: cachedRecord.currentCoordinates.speedKmh ?? 80,
         heading: cachedRecord.currentCoordinates.heading ?? 310,
-        checkpointName: cachedRecord.currentCoordinates.checkpointName || 'Offline Waypoint Cache',
+        checkpointName: cachedRecord.currentCoordinates.checkpointName || t('map.offline_waypoint_cache'),
         source: 'CHECKPOINT' as const,
       };
     }
@@ -172,7 +172,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         updatedAt: dispatch.currentCoordinates.updatedAt || dispatch.updatedAt,
         speedKmh: dispatch.currentCoordinates.speedKmh ?? (dispatch.status === 'IN_TRANSIT' ? 84 : 0),
         heading: dispatch.currentCoordinates.heading ?? 315,
-        checkpointName: dispatch.currentCoordinates.checkpointName || 'Active Transit Corridor',
+        checkpointName: dispatch.currentCoordinates.checkpointName || t('map.active_transit_corridor'),
         source: dispatch.currentCoordinates.source || 'GPS',
       };
     }
@@ -183,7 +183,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         updatedAt: dispatch.receivedAt || dispatch.updatedAt,
         speedKmh: 0,
         heading: 0,
-        checkpointName: `${dispatch.partnerName} Receiving Dock`,
+        checkpointName: `${dispatch.partnerName} (${t('map.dest_terminal_pin')})`,
         source: 'CHECKPOINT' as const,
       };
     }
@@ -193,10 +193,10 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
       updatedAt: dispatch.dispatchedAt,
       speedKmh: 0,
       heading: 0,
-      checkpointName: dispatch.originLocationSnapshot?.label || 'Dispatch Dock',
+      checkpointName: dispatch.originLocationSnapshot?.label || t('map.origin_dock_pin'),
       source: 'CHECKPOINT' as const,
     };
-  }, [dispatch, originCoords, destCoords, isEffectivelyOffline, cachedRecord]);
+  }, [dispatch, originCoords, destCoords, isEffectivelyOffline, cachedRecord, t]);
 
   // 4. Resolve Planned Waypoints
   const plannedWaypoints: RouteWaypoint[] = useMemo(() => {
@@ -358,7 +358,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
   const handlePrecacheRoute = () => {
     const saved = saveMapCache(dispatch);
     setCachedRecord(saved);
-    setCacheNotification(`Route & tile grid cached offline (${(saved.sizeBytes / 1024).toFixed(1)} KB). Available without signal.`);
+    setCacheNotification(t('map.cache_saved_toast', { size: (saved.sizeBytes / 1024).toFixed(1) }));
     setTimeout(() => setCacheNotification(null), 4000);
   };
 
@@ -371,7 +371,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
       const nextLat = currentCoords.lat + (destCoords.lat - currentCoords.lat) * advanceFraction;
       const nextLng = currentCoords.lng + (destCoords.lng - currentCoords.lng) * advanceFraction;
       const newSpeed = Math.floor(75 + Math.random() * 20);
-      const nextWaypointName = `En Route Waypoint Mile ${(coveredDistanceKm + 45).toFixed(0)}`;
+      const nextWaypointName = `${t('map.waypoints')} ${(coveredDistanceKm + 45).toFixed(0)} km`;
 
       if (isEffectivelyOffline) {
         // Queue locally when offline
@@ -400,7 +400,12 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         };
         const saved = saveMapCache(updatedOffline);
         setCachedRecord(saved);
-        setPingSuccessMsg(`Offline waypoint queued locally: ${nextLat.toFixed(4)}° N, ${Math.abs(nextLng).toFixed(4)}° W (will sync upon reconnection).`);
+        setPingSuccessMsg(
+          t('map.ping_offline_queued', {
+            lat: nextLat.toFixed(4),
+            lng: Math.abs(nextLng).toFixed(4),
+          })
+        );
       } else {
         const updated = await api.updateDispatchTelemetry(dispatch.id, {
           latitude: parseFloat(nextLat.toFixed(5)),
@@ -417,7 +422,12 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         if (onTelemetryUpdate) {
           onTelemetryUpdate(updated);
         }
-        setPingSuccessMsg(`Telemetry GPS ping recorded: ${nextLat.toFixed(4)}° N, ${Math.abs(nextLng).toFixed(4)}° W`);
+        setPingSuccessMsg(
+          t('map.ping_recorded_toast', {
+            lat: nextLat.toFixed(4),
+            lng: Math.abs(nextLng).toFixed(4),
+          })
+        );
       }
       setTimeout(() => setPingSuccessMsg(null), 4000);
     } catch (err: any) {

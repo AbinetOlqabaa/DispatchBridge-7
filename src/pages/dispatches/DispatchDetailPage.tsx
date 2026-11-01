@@ -248,7 +248,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
     }
   };
 
-  if (loading) return <LoadingSpinner label="Loading dispatch manifest & audit trail..." />;
+  if (loading) return <LoadingSpinner label={t('dispatch.loading_manifest')} />;
   if (error || !dispatch) {
     return (
       <div className="p-8 text-center bg-slate-900 border border-slate-800 rounded-2xl">
@@ -307,7 +307,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
             title="Export official manifest to PDF for offline records"
           >
             <Download className="w-4 h-4" />
-            <span>{isExportingPdf ? 'Exporting...' : t('action.export_pdf', 'Export PDF Manifest')}</span>
+            <span>{isExportingPdf ? t('export.exporting') : t('action.export_pdf', 'Export PDF Manifest')}</span>
           </button>
 
           <button
@@ -326,7 +326,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
             <span className="text-slate-300">
-              Viewing shipment manifest in read-only guest mode. To reconcile quantities or acknowledge discrepancies, switch to a role:
+              {t('banner.guest_manifest_desc')}
             </span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -355,7 +355,11 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               <StatusBadge status={dispatch.status} />
             </div>
             <p className="text-xs text-slate-400">
-              Dispatched on {new Date(dispatch.dispatchedAt).toLocaleString()} by {dispatch.senderName} ({dispatch.senderBusinessName})
+              {t('dispatch.dispatched_on_by', {
+                date: new Date(dispatch.dispatchedAt).toLocaleString(),
+                sender: dispatch.senderName,
+                business: dispatch.senderBusinessName,
+              })}
             </p>
           </div>
 
@@ -386,7 +390,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
             <div className="font-semibold text-white text-sm">{dispatch.destinationSnapshot.partnerName}</div>
             <div className="text-slate-400 text-[11px] mt-0.5">{dispatch.destinationSnapshot.address}</div>
             <div className="text-slate-500 text-[10px] mt-0.5">
-              Contact: {dispatch.destinationSnapshot.contactPerson} • {dispatch.destinationSnapshot.phone}
+              {t('table.contact')}: {dispatch.destinationSnapshot.contactPerson} • {dispatch.destinationSnapshot.phone}
             </div>
           </div>
 
@@ -397,7 +401,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
             </div>
             <div className="font-semibold text-white text-sm">{dispatch.driverName || t('dispatch.standard_freight', 'Standard Freight')}</div>
             <div className="text-slate-400 text-[11px] mt-0.5">
-              {dispatch.vehicleReg ? `Plate: ${dispatch.vehicleReg}` : ''} {dispatch.driverPhone ? `• ${dispatch.driverPhone}` : ''}
+              {dispatch.vehicleReg ? `${t('dispatch.truck_plate')}: ${dispatch.vehicleReg}` : ''} {dispatch.driverPhone ? `• ${dispatch.driverPhone}` : ''}
             </div>
           </div>
         </div>
@@ -425,7 +429,6 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
                 <span className="font-mono text-white">{new Date(dispatch.firstViewedAt).toLocaleString()}</span>
               </div>
               <div>
-                <span className="text-slate-500">{t('dispatch.first_opened', 'Total Views:')}</span>{' '}
                 <span className="font-mono text-white">{t('recon.view_count', 'Total Views: {count} times', { count: dispatch.viewReceipt?.viewCount || 1 })}</span>
               </div>
               <div>
@@ -714,14 +717,14 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
                   <td className="px-3.5 py-3 text-slate-400 whitespace-nowrap">{line.sku}</td>
                   <td className="px-3.5 py-3 font-sans font-medium text-slate-200">{line.itemName}</td>
                   <td className="px-3.5 py-3 text-right text-slate-200 font-bold whitespace-nowrap">
-                    {line.quantitySent} {line.unit}
+                    {line.quantitySent} {t('unit.' + line.unit.toLowerCase(), line.unit)}
                   </td>
                   <td className="px-3.5 py-3 text-right font-bold text-emerald-400 whitespace-nowrap">
-                    {line.quantityReceived !== undefined ? `${line.quantityReceived} ${line.unit}` : '—'}
+                    {line.quantityReceived !== undefined ? `${line.quantityReceived} ${t('unit.' + line.unit.toLowerCase(), line.unit)}` : '—'}
                   </td>
                   <td className="px-3.5 py-3 text-right font-bold whitespace-nowrap">
                     {line.lossQty && line.lossQty > 0 ? (
-                      <span className="text-rose-400">-{line.lossQty} {line.unit}</span>
+                      <span className="text-rose-400">-{line.lossQty} {t('unit.' + line.unit.toLowerCase(), line.unit)}</span>
                     ) : (
                       <span className="text-slate-500">0</span>
                     )}

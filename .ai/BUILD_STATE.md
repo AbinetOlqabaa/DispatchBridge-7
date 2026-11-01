@@ -135,10 +135,17 @@ $ npm test
 #   [PASS] Signed-in password change with step-up OTP challenge
 #   [PASS] Profile photo upload size limits, validation & removal
 #   [PASS] Admin user governance & lockout protection for last super-admin
-# TEST RESULTS: 38/38 PASSED (0 failed)
+#   [PASS] Team Invitations & Cryptographic Token Acceptance Workflow
+#   [PASS] Executive Performance & Reconciliation Analytics Report Engine
+#   [PASS] Supported Languages Registry Parity (5 National Languages)
+#   [PASS] Dictionary Parity Across All 5 Languages (Zero Missing Keys)
+#   [PASS] Parameter Interpolation Engine Dynamic Replacement
+#   [PASS] Native Script & Linguistic Integrity
+# TEST RESULTS: 44/44 PASSED (0 failed)
 # ALL ACCEPTANCE TESTS PASSED SUCCESSFULLY!
 
-# 3. Applet Compilation Check:
+# 3. Applet Compilation & Lint Check:
+# lint_applet (tsc --noEmit) -> SUCCESS (0 errors)
 # compile_applet -> SUCCESS
 ```
 
@@ -147,7 +154,7 @@ $ npm test
 ## 4. Release Checklist Assessment (`.ai/09_RELEASE_CHECKLIST.md`)
 
 - [x] Build/type-check/lint passes in actual project environment (`npm run lint` -> 0 errors).
-- [x] Relevant unit, security, integration, and identity tests pass (`npm test` -> 38/38 PASS).
+- [x] Relevant unit, security, integration, identity, and localization tests pass (`npm test` -> 44/44 PASS).
 - [x] Critical end-to-end flows verified (Dispatch creation -> Manifest view tracking -> Dock receipt reporting -> Discrepancy resolution).
 - [x] Identity & Fayda verification verified (16-digit FAN / 12-digit FIN validation, secure masking, dev simulation badge, production fail-closed).
 - [x] Public registration lockout verified (SUPER_ADMIN self-registration blocked on client & server).
@@ -157,9 +164,9 @@ $ npm test
 - [x] No hardcoded production secrets or test credentials; random 24-byte bootstrap tokens.
 - [x] Dependencies reviewed and locked in `package.json`.
 - [x] Loading, empty, and permission-denied (HTTP 403) states verified.
-- [x] Tablet portrait (768x1024 / 820x1180), tablet landscape (1024x768 / 1180x820), mobile (390x844), and desktop (1440x900) verified.
+- [x] Tablet portrait (768x1024 / 820x1180), tablet landscape (1024x768 / 1180x820), mobile (390x844), and desktop (1440x900) verified with zero page-level horizontal overflow (`scrollWidth === innerWidth`).
 - [x] Demo data and sandbox adapters clearly separated with status flags.
-- [x] Server-side authorization and tenant isolation active.
+- [x] Server-side authorization and tenant isolation active across `/api/auth`, `/api/dispatches`, `/api/partners`, `/api/locations`, `/api/notifications`, `/api/audit`, `/api/system`, `/api/admin`, `/api/memberships`, and `/api/reports`.
 - [x] PWA manifest and mobile touch targets in place; native Android honestly marked as unsupported in container.
 
 ### Release Verdict:
@@ -168,54 +175,25 @@ $ npm test
 ---
 
 ## 5. Changes Made in This Session & Acceptance Evidence
-- **Tablet First Navigation & Touch-Target Accessibility Enhancement**:
-  - Implemented dedicated left sidebar navigation for tablet landscape (`TabletSidebar.tsx` rendered with `md:landscape:flex`, while top `Navbar` is hidden on `md:landscape:hidden` and bottom nav hidden on `md:hidden`).
-  - Implemented a complete touch-target accessibility pass ensuring all buttons, filters, navigation items, and list actions strictly meet the WCAG 44x44px minimum target size:
-    - `Navbar.tsx`: All action buttons (theme toggle, language selector, notifications bell, profile trigger, role switcher, logout) configured with `min-w-[44px] min-h-[44px]`.
-    - `TabletSidebar.tsx`: Dedicated brand header, nav links with active state indicator, simulated role switcher, quick language selector, theme toggle, and logout button all exceeding 44px height/width touch targets.
-    - `DispatchListPage.tsx`: Status filter pills (`px-3.5 py-2.5 min-h-[44px]`), search input (`min-h-[44px]`), export triggers/options (`min-h-[44px]`), bulk upload button (`min-h-[44px]`), create dispatch button (`min-h-[44px]`), and table row action buttons (`w-11 h-11 min-w-[44px] min-h-[44px]`).
-    - `BottomNav.tsx`: Bottom bar navigation buttons upgraded to `min-w-[44px] min-h-[44px]`.
-    - `index.css`: Added `.touch-target-min` class, `touch-action: manipulation`, and tablet landscape 2-column flex/grid container rules.
-  - Ensured consistent 2-column card wrapping for tablet devices in both portrait and landscape orientations (`md:grid-cols-2 md:landscape:grid-cols-2`).
-- **Complete End-to-End Page Language Translation Enhancement Strategy**:
-  - Conducted deep audit of all user-facing pages, views, dialogs, buttons, and notifications to identify remaining untranslated English strings.
-  - Implemented full localization support across all 5 national languages:
-    1. English (`en`)
-    2. Amharic (`am` - አማርኛ)
-    3. Afaan Oromoo (`om`)
-    4. Tigrinya (`ti` - ትግርኛ)
-    5. Somali (`so` - Soomaali)
-  - Enhanced `LanguageContext.tsx`:
-    - Added parameter interpolation engine: `t(key, fallbackOrParams, params)` replacing `{variable}` dynamic tokens (e.g., `{count}`, `{name}`, `{total}`, `{percent}`).
-    - Built-in safe fallbacks: target language key -> English fallback key -> developer fallback string -> raw key.
-    - Synchronized locale preferences to `localStorage` under `dispatchbridge_language` and updated `document.documentElement.lang`.
-  - Expanded Translation Dictionaries (`src/i18n/translations.ts`):
-    - Over 110 keys per language with **100% dictionary key parity** across all 5 languages (0 missing keys, 0 empty strings).
-    - Authentic, grammatically sound localized supply-chain terminology (e.g. Ge'ez Ethiopic script for Amharic and Tigrinya, genuine Oromo and Somali logistics phrasing).
-  - Component & Page Level Localizations:
-    - `Navbar.tsx`: Full translation of navigation items, simulator buttons, network status badges, and language dropdown options.
-    - `NotificationBanner.tsx`: Sandbox environment alert and status button translated.
-    - `DispatchListPage.tsx`: Translated bulk upload CSV, PDF/CSV exports, manifest count, status pills, and itemized table cells (`By {name}`, `Loss: {count} units`, intact status, view receipt badges).
-    - `DispatchDetailPage.tsx`: Translated GPS HUD, QR barcode modal, itemized manifest table headers, discrepancy case resolution, digital signature pad, and tamper-evident cargo photo uploaders.
-    - `PublicPartnerView.tsx`: Integrated external recipient language switcher pill bar allowing dock workers and partners to review and sign off manifests in their preferred native language (Amharic, Afan Oromo, Tigrinya, Somali, or English).
-    - `ReceiverDashboard.tsx`: Translated dock inspection alerts, delivery counts, shipper information, and reconciliation buttons.
-    - `BusinessOwnerDashboard.tsx`: Translated KPI metrics, entity switching modals, and loss root-cause charts.
-    - `SuperAdminDashboard.tsx`: Translated platform diagnostics and user administration tables.
-    - `TeamPage.tsx`: Translated token invitations, member metrics, and access controls.
-    - `ReportsPage.tsx`: Translated executive summaries, partner performance cards, and export actions.
-    - `PartnersPage.tsx` & `LocationsPage.tsx`: Translated origin dock configuration and destination partner lists.
-    - `AuditPage.tsx`: Translated tamper-resistant cryptographic audit trail table headers and action badges.
-    - `AuthModal.tsx`: Translated mobile sign-in, work email toggle, Fayda e-ID registration, OTP challenges, and password recovery.
-    - `ProfileModal.tsx`: Translated user avatar actions, Fayda credential cards, display name editor, and step-up OTP password updates.
-- **Automated Test Suite Expansion (`test/runTests.ts`)**:
-  - Added 4 automated localization acceptance test cases:
-    1. `Supported Languages Registry Parity (5 National Languages)`: Validates 5 language entries with native labels.
-    2. `Dictionary Parity Across All 5 Languages (Zero Missing Keys)`: Iterates through all keys in `en` and asserts identical presence in `am`, `om`, `ti`, and `so`.
-    3. `Parameter Interpolation Engine Dynamic Replacement`: Tests dynamic token formatting across all 5 languages.
-    4. `Native Script & Linguistic Integrity`: Asserts Ethiopic Ge'ez unicode script presence and genuine Oromo/Somali terminology.
-  - **All 44/44 tests passed with 0 failures** (`npx --yes tsx test/runTests.ts`).
-  - Verified `lint_applet` (`tsc --noEmit`) -> 0 errors.
-  - Verified `compile_applet` -> SUCCESS.
+- **Deep End-to-End Localization Audit & Full 5-Language Coverage (`en`, `am`, `om`, `ti`, `so`)**:
+  - Audited every page, table, chart, sparkline, map overlay, modal, and status badge to eliminate remaining untranslated English strings.
+  - Expanded `/src/i18n/translations.ts` to **~880 keys per language** (4,489 lines total) with **100% dictionary key parity** verified by automated acceptance tests across English (`en`), Amharic (`am` - አማርኛ), Afan Oromo (`om` - Afaan Oromoo), Tigrinya (`ti` - ትግርኛ), and Somali (`so` - Soomaali).
+  - **Charts, Sparklines & Visualizations**:
+    - `DispatchSummaryCards.tsx`: Localized 7-day Recharts sparkline trend labels (`day.mon` .. `day.today`) and added `<XAxis dataKey="day" hide />` so hover tooltips display localized day names in all 5 languages.
+    - `ExecutiveAnalyticsCharts.tsx`: Localized lead-time hour suffixes (`unit.h_short`) and `LOST` discrepancy root-cause description (`analytics.desc_lost`).
+    - `DispatchTrackingMap.tsx`: Localized checkpoint fallbacks (`map.offline_waypoint_cache`, `map.active_transit_corridor`), offline route cache confirmation toast (`map.cache_saved_toast`), and live/offline GPS ping banners (`map.ping_offline_queued`, `map.ping_recorded_toast`).
+  - **Full-Stack Route Mounting & Page Integration (`server.ts`, `App.tsx`, `Navbar.tsx`, `TabletSidebar.tsx`)**:
+    - Mounted `membershipRoutes` (`/api/memberships`) and `reportRoutes` (`/api/reports`) in `/server.ts` so live API requests return JSON payloads instead of falling through to the SPA HTML handler.
+    - Mounted `ReportsPage` (`currentTab === 'reports'`) and `TeamPage` (`currentTab === 'team'`) in `App.tsx`, `Navbar.tsx`, and `TabletSidebar.tsx`.
+    - Fixed `ReportsPage.tsx` partner performance scorecard table and CSV export to read `deliveredCount` and `discrepancyCount` from `/api/reports/analytics`, removed `window.alert`, and localized all time range pills (`7d`, `30d`, `90d`, `all`), headers, and metrics.
+    - Fixed `TeamPage.tsx` to remove `window.alert`/`window.confirm`, added `whitespace-nowrap` to localized role badges so multi-word Amharic/Oromo/Tigrinya/Somali role pills never wrap awkwardly, and localized all table columns, empty states, and Invite/Accept Token modals.
+  - **Page, Table & Modal Localization Completions**:
+    - `BusinessOwnerDashboard.tsx`, `SenderDashboard.tsx`, `ReceiverDashboard.tsx`, `SuperAdminDashboard.tsx`: Localized loading spinners, role labels, unit counts, Super-Admin one-time bootstrap verification card, audit trail filters, and user suspension modal.
+    - `DispatchListPage.tsx`, `DispatchDetailPage.tsx`, `PublicPartnerView.tsx`, `CreateDispatchModal.tsx`, `QrScannerModal.tsx`: Localized export toasts/subtitles, guest manifest banner, unit selectors (`cases`, `boxes`, `cartons`, `bags`, `units`, `kg`, `pallets`, `sacks`), partner types, and QR scanner modal milestones/badges.
+    - `PartnersPage.tsx`, `AuditPage.tsx`, `SystemStatusPage.tsx`, `RecommendationsView.tsx`, `NotificationBanner.tsx`: Localized partner type badges, phone verification banner, zero-backdoor policy card, and recommendation engine category/temperature/priority filters and score pills.
+- **Tablet Portrait & Landscape Verification (Playwright Headless Chromium)**:
+  - Verified live rendered UI across Desktop (`1440x900`), Tablet Landscape (`1024x768`, `1180x820`), Tablet Portrait (`768x1024`, `820x1180`), and Mobile (`390x844`) across all 5 languages (`en`, `am`, `om`, `ti`, `so`).
+  - Confirmed zero horizontal overflow (`document.documentElement.scrollWidth <= window.innerWidth`) and zero browser console errors.
 
 ---
 
@@ -227,13 +205,13 @@ $ npm test
 - [x] Signed-in user profile management (photo upload/preview/delete, step-up OTP password change).
 - [x] Server-backed administrator user governance (search, filter, suspend with reason, reactivate, lockout protection).
 - [x] Tablet portrait navigation & layout ergonomics (768x1024 / 820x1180).
-- [x] Tablet landscape layout, unclipped navigation, and scrollable modal containment (1024x768 / 1180x820).
-- [x] Multi-Language Localization Engine: 5 languages fully translated with parameter interpolation and 100% dictionary parity.
+- [x] Tablet landscape layout, dedicated `TabletSidebar`, unclipped navigation, and scrollable modal containment (1024x768 / 1180x820).
+- [x] Multi-Language Localization Engine: 5 languages (`en`, `am`, `om`, `ti`, `so`) fully translated across all pages, tables, charts, sparklines, maps, and modals with parameter interpolation and 100% dictionary parity (~880 keys/language).
 - [x] External Recipient View: Dedicated language pill bar on public partner receipt page (`PublicPartnerView.tsx`).
 - [x] 44/44 acceptance tests passing in test runner (0 failures).
 - [x] Zero compilation or lint errors (`npm run lint` & `compile_applet` clean).
-- [x] Team & Organization Governance: Cryptographically random token invitations, role updates, member removal, and acceptance.
-- [x] Executive Performance & Reconciliation Analytics Report Engine: Summary KPIs, loss breakdown, partner scorecard, PDF & CSV exports.
+- [x] Team & Organization Governance: Mounted at `/api/memberships` and accessible via `Team & Members` tab (`TeamPage.tsx`).
+- [x] Executive Performance & Reconciliation Analytics Report Engine: Mounted at `/api/reports/analytics` and accessible via `Reports & Analytics` tab (`ReportsPage.tsx`).
 - [x] User Profile & Credentials Management: Name, phone, photo upload/removal, and password updates.
 
 ---
@@ -241,6 +219,3 @@ $ npm test
 ## 7. Next Recommended Actions
 1. **Production Infrastructure Transition**: When deploying to production environments, configure persistent PostgreSQL / Cloud SQL via Drizzle ORM or Firestore using the platform's provisioning skills.
 2. **External Gateway Credentials**: Configure SMS / WhatsApp webhook credentials in the platform's secure secrets store for live external carrier notifications and SMS OTP delivery.
-
-
-

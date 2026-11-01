@@ -85,7 +85,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ onCreateDispatchWith
     }
   };
 
-  if (loading) return <LoadingSpinner label="Loading partner directory..." />;
+  if (loading) return <LoadingSpinner label={t('msg.loading')} />;
 
   const canAddPartner = user && ['BUSINESS_OWNER', 'SUPER_ADMIN'].includes(user.role);
 
@@ -128,14 +128,24 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ onCreateDispatchWith
               <div className="flex items-start justify-between gap-2 mb-2">
                 <h3 className="font-bold text-white text-base">{partner.name}</h3>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-sky-300 border border-slate-700 uppercase">
-                  {partner.type}
+                  {partner.type === 'RETAILER'
+                    ? t('partner.type_retailer')
+                    : partner.type === 'WHOLESALER'
+                    ? t('partner.type_wholesaler')
+                    : partner.type === 'DISTRIBUTOR'
+                    ? t('partner.type_distributor')
+                    : partner.type === 'FRANCHISE'
+                    ? t('partner.type_franchise')
+                    : partner.type === 'CONSTRUCTION_SITE'
+                    ? t('partner.type_construction')
+                    : partner.type}
                 </span>
               </div>
 
               <div className="space-y-2 text-xs text-slate-300 pt-2 border-t border-slate-800/80">
                 <div className="flex items-center gap-2 text-slate-400">
                   <Building className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                  <span>Contact: {partner.contactPerson}</span>
+                  <span>{t('table.contact')}: {partner.contactPerson}</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-400">
                   <Phone className="w-3.5 h-3.5 text-slate-500 shrink-0" />

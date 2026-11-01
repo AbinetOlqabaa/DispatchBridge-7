@@ -106,7 +106,7 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
     }
   };
 
-  if (loading) return <LoadingSpinner label="Compiling executive dispatch metrics..." />;
+  if (loading) return <LoadingSpinner label={t('dashboard.loading_exec_metrics')} />;
   if (error) {
     return (
       <div className="p-8 text-center">
@@ -149,15 +149,15 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
             <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-800">
               {t('role.business_owner')}
             </span>
-            <span className="text-xs text-slate-400">Company ID: {user?.businessId}</span>
+            <span className="text-xs text-slate-400">{t('biz.company_id', { id: user?.businessId || '' })}</span>
           </div>
 
           <div className="flex items-center gap-2.5 mt-1">
             <button
               onClick={() => setShowBusinessDropdown(!showBusinessDropdown)}
               className="flex items-center gap-2 text-left group cursor-pointer focus:outline-none"
-              title="Switch Business Entity"
-              aria-label="Switch Business Entity"
+              title={t('action.switch_entity')}
+              aria-label={t('action.switch_entity')}
             >
               <Building2 className="w-5 h-5 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
               <h1 className="text-2xl font-bold text-white tracking-tight group-hover:text-indigo-200 transition-colors">
@@ -168,7 +168,7 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
 
             {user?.memberships && user.memberships.length > 1 && (
               <span className="text-[11px] font-semibold text-indigo-300 bg-indigo-950/80 border border-indigo-800/60 px-2 py-0.5 rounded-full">
-                {user.memberships.length} Entities
+                {t('biz.entities_count', { count: user.memberships.length })}
               </span>
             )}
           </div>
@@ -215,7 +215,9 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
                       >
                         <div className="truncate mr-2">
                           <div className="font-semibold truncate">{m.businessName}</div>
-                          <div className="text-[10px] text-slate-400">ID: {m.businessId} • {m.role}</div>
+                          <div className="text-[10px] text-slate-400">
+                            ID: {m.businessId} • {t('role.' + m.role.toLowerCase(), m.role)}
+                          </div>
                         </div>
                         {isActive ? (
                           <Check className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -422,7 +424,8 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
                     <StatusBadge status={d.status} size="sm" />
                   </td>
                   <td className="px-3 py-3 text-slate-300 whitespace-nowrap">
-                    {d.totalQuantityDispatched} {d.lines[0]?.unit || t('unit.units', 'units')}
+                    {d.totalQuantityDispatched}{' '}
+                    {d.lines[0]?.unit ? t('unit.' + d.lines[0].unit.toLowerCase(), d.lines[0].unit) : t('unit.units', 'units')}
                   </td>
                   <td className="px-3 py-3 whitespace-nowrap">
                     {d.totalQuantityLost !== undefined ? (

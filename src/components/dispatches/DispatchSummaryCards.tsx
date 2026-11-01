@@ -12,6 +12,7 @@ import {
   Area,
   BarChart,
   Bar,
+  XAxis,
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
@@ -47,33 +48,33 @@ export const DispatchSummaryCards: React.FC<DispatchSummaryCardsProps> = ({ disp
 
   // Trend Data for Recharts Visualizations
   const pendingTrendData = [
-    { day: 'Mon', count: Math.max(1, Math.round(pendingCount * 0.5)) },
-    { day: 'Tue', count: Math.max(2, Math.round(pendingCount * 0.7)) },
-    { day: 'Wed', count: Math.max(2, Math.round(pendingCount * 0.6)) },
-    { day: 'Thu', count: Math.max(3, Math.round(pendingCount * 0.85)) },
-    { day: 'Fri', count: Math.max(3, Math.round(pendingCount * 0.9)) },
-    { day: 'Sat', count: Math.max(2, Math.round(pendingCount * 0.95)) },
-    { day: 'Today', count: pendingCount },
+    { day: t('day.mon'), count: Math.max(1, Math.round(pendingCount * 0.5)) },
+    { day: t('day.tue'), count: Math.max(2, Math.round(pendingCount * 0.7)) },
+    { day: t('day.wed'), count: Math.max(2, Math.round(pendingCount * 0.6)) },
+    { day: t('day.thu'), count: Math.max(3, Math.round(pendingCount * 0.85)) },
+    { day: t('day.fri'), count: Math.max(3, Math.round(pendingCount * 0.9)) },
+    { day: t('day.sat'), count: Math.max(2, Math.round(pendingCount * 0.95)) },
+    { day: t('day.today'), count: pendingCount },
   ];
 
   const valueTrendData = [
-    { day: 'Mon', value: Math.round(totalValueInTransit * 0.45) },
-    { day: 'Tue', value: Math.round(totalValueInTransit * 0.6) },
-    { day: 'Wed', value: Math.round(totalValueInTransit * 0.55) },
-    { day: 'Thu', value: Math.round(totalValueInTransit * 0.75) },
-    { day: 'Fri', value: Math.round(totalValueInTransit * 0.88) },
-    { day: 'Sat', value: Math.round(totalValueInTransit * 0.92) },
-    { day: 'Today', value: totalValueInTransit },
+    { day: t('day.mon'), value: Math.round(totalValueInTransit * 0.45) },
+    { day: t('day.tue'), value: Math.round(totalValueInTransit * 0.6) },
+    { day: t('day.wed'), value: Math.round(totalValueInTransit * 0.55) },
+    { day: t('day.thu'), value: Math.round(totalValueInTransit * 0.75) },
+    { day: t('day.fri'), value: Math.round(totalValueInTransit * 0.88) },
+    { day: t('day.sat'), value: Math.round(totalValueInTransit * 0.92) },
+    { day: t('day.today'), value: totalValueInTransit },
   ];
 
   const completedTrendData = [
-    { day: 'Mon', completed: Math.max(1, Math.round(completedCount * 0.3)) },
-    { day: 'Tue', completed: Math.max(1, Math.round(completedCount * 0.5)) },
-    { day: 'Wed', completed: Math.max(2, Math.round(completedCount * 0.6)) },
-    { day: 'Thu', completed: Math.max(2, Math.round(completedCount * 0.75)) },
-    { day: 'Fri', completed: Math.max(3, Math.round(completedCount * 0.85)) },
-    { day: 'Sat', completed: Math.max(3, Math.round(completedCount * 0.9)) },
-    { day: 'Today', completed: completedCount },
+    { day: t('day.mon'), completed: Math.max(1, Math.round(completedCount * 0.3)) },
+    { day: t('day.tue'), completed: Math.max(1, Math.round(completedCount * 0.5)) },
+    { day: t('day.wed'), completed: Math.max(2, Math.round(completedCount * 0.6)) },
+    { day: t('day.thu'), completed: Math.max(2, Math.round(completedCount * 0.75)) },
+    { day: t('day.fri'), completed: Math.max(3, Math.round(completedCount * 0.85)) },
+    { day: t('day.sat'), completed: Math.max(3, Math.round(completedCount * 0.9)) },
+    { day: t('day.today'), completed: completedCount },
   ];
 
   return (
@@ -117,6 +118,7 @@ export const DispatchSummaryCards: React.FC<DispatchSummaryCardsProps> = ({ disp
                   <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
+              <XAxis dataKey="day" hide />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#0f172a',
@@ -170,6 +172,7 @@ export const DispatchSummaryCards: React.FC<DispatchSummaryCardsProps> = ({ disp
         <div className="h-14 w-full mt-1">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={valueTrendData}>
+              <XAxis dataKey="day" hide />
               <Tooltip
                 formatter={(val: any) => [`$${Number(val).toLocaleString()}`, t('metric.total_value_transit')]}
                 contentStyle={{
@@ -225,6 +228,7 @@ export const DispatchSummaryCards: React.FC<DispatchSummaryCardsProps> = ({ disp
                   <stop offset="95%" stopColor="#c084fc" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
+              <XAxis dataKey="day" hide />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#0f172a',

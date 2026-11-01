@@ -115,7 +115,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
     }
   };
 
-  if (loading) return <LoadingSpinner label="Running collaborative filtering recommendation engine..." />;
+  if (loading) return <LoadingSpinner label={t('msg.loading')} />;
 
   return (
     <div className="space-y-6">
@@ -127,7 +127,6 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
               <Sparkles className="w-3.5 h-3.5" />
               {t('rec.engine_badge', 'Collaborative Filtering & Affinity Engine')}
             </span>
-            <span className="text-xs text-slate-400">Requirement 10</span>
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">{t('rec.personalized_title', 'Personalized Products & Services')}</h1>
           <p className="text-xs text-slate-400 mt-0.5">
@@ -171,7 +170,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                 <Sliders className="w-4 h-4 text-indigo-400" />
                 <h3 className="font-semibold text-white text-xs">{t('rec.preferences_title', 'Stated Preferences & Context Signals')}</h3>
                 <span className="text-[11px] text-slate-400">
-                  (Adjust below to dynamically steer recommendation scoring)
+                  {t('rec.adjust_hint')}
                 </span>
               </div>
               <button
@@ -190,11 +189,11 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                   <label className="block text-slate-300 font-semibold mb-2">{t('rec.preferred_categories', 'Preferred Categories')}</label>
                   <div className="flex flex-wrap gap-1.5">
                     {[
-                      { id: 'FOOD_BEVERAGE', label: 'Food & Beverage' },
-                      { id: 'COLD_CHAIN', label: 'Cold-Chain Logistics' },
-                      { id: 'PACKAGING', label: 'Packaging & Film' },
-                      { id: 'SAFETY_SECURITY', label: 'Loss Prevention & Seals' },
-                      { id: 'LOGISTICS_SERVICE', label: 'Express Freight & QC' },
+                      { id: 'FOOD_BEVERAGE', label: t('rec.cat_food') },
+                      { id: 'COLD_CHAIN', label: t('rec.cat_cold_chain') },
+                      { id: 'PACKAGING', label: t('rec.cat_packaging') },
+                      { id: 'SAFETY_SECURITY', label: t('rec.cat_safety') },
+                      { id: 'LOGISTICS_SERVICE', label: t('rec.cat_logistics') },
                     ].map((cat) => (
                       <button
                         key={cat.id}
@@ -216,9 +215,9 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                   <label className="block text-slate-300 font-semibold mb-2">{t('rec.temp_handling', 'Temperature Handling')}</label>
                   <div className="flex gap-2">
                     {[
-                      { id: 'ANY', label: 'Any Temp' },
-                      { id: 'AMBIENT', label: 'Ambient Only' },
-                      { id: 'REFRIGERATED', label: 'Cold-Chain (34-38°F)' },
+                      { id: 'ANY', label: t('rec.temp_any') },
+                      { id: 'AMBIENT', label: t('rec.temp_ambient') },
+                      { id: 'REFRIGERATED', label: t('rec.temp_refrigerated') },
                     ].map((mode) => (
                       <button
                         key={mode.id}
@@ -242,9 +241,9 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                   <label className="block text-slate-300 font-semibold mb-2">{t('rec.speed_priority', 'Lead Time Priority')}</label>
                   <div className="flex gap-2">
                     {[
-                      { id: 'STANDARD', label: 'Standard (12-24h)' },
-                      { id: 'EXPEDITED', label: 'Expedited (6-12h)' },
-                      { id: 'SAME_DAY', label: 'Hot-Shot (<6h)' },
+                      { id: 'STANDARD', label: t('rec.pri_standard') },
+                      { id: 'EXPEDITED', label: t('rec.pri_expedited') },
+                      { id: 'SAME_DAY', label: t('rec.pri_same_day') },
                     ].map((pri) => (
                       <button
                         key={pri.id}
@@ -270,7 +269,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
           {addedItemSku && (
             <div className="bg-emerald-950/80 border border-emerald-800 text-emerald-300 text-xs p-3 rounded-xl flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
-              <span>SKU {addedItemSku} added to draft shipment staging queue!</span>
+              <span>{t('rec.added_toast', { sku: addedItemSku })}</span>
             </div>
           )}
 
@@ -279,6 +278,18 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
             {recommendations.map((rec) => {
               const { item, confidencePercent, primaryReason, collaborativeExplanation } = rec;
               const isService = item.type === 'SERVICE';
+              const categoryLabel =
+                item.category === 'FOOD_BEVERAGE'
+                  ? t('rec.cat_food_bev')
+                  : item.category === 'COLD_CHAIN'
+                  ? t('rec.cat_cold_chain')
+                  : item.category === 'PACKAGING'
+                  ? t('rec.cat_packaging')
+                  : item.category === 'SAFETY_SECURITY'
+                  ? t('rec.cat_safety')
+                  : item.category === 'LOGISTICS_SERVICE'
+                  ? t('rec.cat_logistics')
+                  : String(item.category).replace('_', ' ');
 
               return (
                 <div
@@ -289,11 +300,11 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                     {/* Top Confidence Pill & Category */}
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                        {item.category.replace('_', ' ')}
+                        {categoryLabel}
                       </span>
                       <div className="flex items-center gap-1.5 bg-indigo-950/80 border border-indigo-800 px-2.5 py-0.5 rounded-full text-indigo-300 text-xs font-bold">
                         <Sparkles className="w-3 h-3 text-indigo-400" />
-                        <span>{confidencePercent}% Match</span>
+                        <span>{confidencePercent}% {t('rec.confidence')}</span>
                       </div>
                     </div>
 
@@ -301,7 +312,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                     <div>
                       <h4 className="font-bold text-white text-sm leading-snug">{item.name}</h4>
                       <div className="text-[11px] font-mono text-slate-400 mt-0.5">
-                        {item.sku} • {item.unit}
+                        {item.sku} • {t('unit.' + item.unit.toLowerCase(), item.unit)}
                       </div>
                     </div>
 
@@ -320,9 +331,9 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
 
                       {/* Score Breakdown Bars */}
                       <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
-                        <span>CF Affinity: {Math.round(rec.collaborativeScore * 100)}%</span>
-                        <span>Pref Match: {Math.round(rec.preferenceScore * 100)}%</span>
-                        <span>Browse: {Math.round(rec.browsingScore * 100)}%</span>
+                        <span>{t('rec.cf_affinity')}: {Math.round(rec.collaborativeScore * 100)}%</span>
+                        <span>{t('rec.pref_match')}: {Math.round(rec.preferenceScore * 100)}%</span>
+                        <span>{t('rec.browse_score')}: {Math.round(rec.browsingScore * 100)}%</span>
                       </div>
                     </div>
                   </div>
@@ -332,11 +343,11 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                     <div>
                       <div className="text-base font-bold text-white">
                         ${item.unitPrice.toFixed(2)}
-                        <span className="text-xs font-normal text-slate-400"> / {item.unit}</span>
+                        <span className="text-xs font-normal text-slate-400"> / {t('unit.' + item.unit.toLowerCase(), item.unit)}</span>
                       </div>
                       <div className="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        <span>{item.leadTimeHours}h Delivery Ready</span>
+                        <span>{t('rec.delivery_ready', { hours: item.leadTimeHours })}</span>
                       </div>
                     </div>
 
@@ -345,7 +356,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                       className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow-md transition-all cursor-pointer"
                     >
                       <PlusCircle className="w-3.5 h-3.5" />
-                      <span>{isService ? 'Request Service' : 'Add to Dispatch'}</span>
+                      <span>{isService ? t('rec.request_service') : t('rec.add_to_dispatch')}</span>
                     </button>
                   </div>
                 </div>
@@ -359,12 +370,10 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
           <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-2">
             <h3 className="text-base font-bold text-white flex items-center gap-2">
               <Cpu className="w-5 h-5 text-indigo-400" />
-              <span>Recommendation Engine Evolution & Scalability Architecture</span>
+              <span>{t('rec.roadmap_arch_title')}</span>
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Requirement 10 instructs starting with a collaborative filtering foundation and outlining
-              comprehensive technical improvements for future scale. Below is the multi-phase engineering
-              roadmap taking DispatchBridge from item-to-item co-occurrence to deep neural retrieval and real-time graph modeling.
+              {t('rec.roadmap_arch_desc')}
             </p>
           </div>
 
@@ -378,7 +387,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                   <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800">
                     {plan.tier}
                   </span>
-                  <span className="text-xs font-mono text-slate-500">Step {index + 1} of 4</span>
+                  <span className="text-xs font-mono text-slate-500">{t('rec.step_of', { step: index + 1, total: 4 })}</span>
                 </div>
 
                 <h4 className="text-sm font-bold text-white">{plan.title}</h4>

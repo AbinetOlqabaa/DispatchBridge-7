@@ -42,7 +42,7 @@ export const AuditPage: React.FC = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner label="Compiling tamper-resistant audit logs..." />;
+  if (loading) return <LoadingSpinner label={t('msg.loading')} />;
 
   // Unique list of actors across all logs
   const uniqueActors = Array.from(new Set(logs.map((l) => l.actorName))).filter(Boolean).sort();
@@ -100,7 +100,7 @@ export const AuditPage: React.FC = () => {
             <span className="text-xs font-semibold uppercase tracking-wider text-purple-400 bg-purple-950 px-2.5 py-0.5 rounded-full border border-purple-800">
               {t('system.audit_title', 'Audit & Compliance')}
             </span>
-            <span className="text-xs text-slate-400">Append-Only Immutable Ledger</span>
+            <span className="text-xs text-slate-400">{t('admin.immutable_ledger')}</span>
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">{t('nav.audit', 'Tamper-Resistant Audit Trail')}</h1>
           <p className="text-xs text-slate-400 mt-0.5">
@@ -128,7 +128,7 @@ export const AuditPage: React.FC = () => {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search audit descriptions, entity IDs, or actors..."
+                placeholder={t('audit.search_placeholder')}
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
               />
             </div>
@@ -232,7 +232,7 @@ export const AuditPage: React.FC = () => {
                   </td>
                   <td className="px-3 sm:px-3.5 py-3 whitespace-nowrap">
                     <span className="font-semibold text-slate-200">{log.actorName}</span>
-                    <span className="text-[10px] text-slate-500 block font-sans">Role: {log.actorRole}</span>
+                    <span className="text-[10px] text-slate-500 block font-sans">{t('table.role')}: {log.actorRole}</span>
                   </td>
                   <td className="px-3 sm:px-3.5 py-3 whitespace-nowrap">
                     <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">

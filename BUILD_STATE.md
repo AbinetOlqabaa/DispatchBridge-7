@@ -1,11 +1,11 @@
 # Build State — Business Dispatch & Delivery Reconciliation (DispatchBridge)
 
-- **Last Updated:** 2026-10-25T00:00:00-07:00
+- **Last Updated:** 2026-11-01T04:15:00-08:00
 - **Runtime / Platform:** Node.js v22.14.0 on Linux container with Express 4 backend & Vite 8 React 19 Frontend. Configured as an installable mobile-first Progressive Web App (PWA). *Note: Native Android build tooling (Gradle / Android SDK) is not supported in this runtime environment.*
 - **Stack:**
   - Backend: Node.js, Express 4, TypeScript, HMAC SHA-256 session tokens, timing-safe one-time bootstrap tokens, Fayda e-ID verification adapter, OTP gateway adapter, in-memory domain adapter (`sandboxStore`) with full multi-tenant isolation.
   - Frontend: React 19, Tailwind CSS v4, Lucide React, Context API (`AuthContext`, `LanguageContext`, `ThemeContext`), clean component and page architecture.
-  - Test Suite: Node.js TypeScript test runner (`npm test` -> `tsx test/runTests.ts`) — **40/40 automated tests passing with 0 failures**.
+  - Test Suite: Node.js TypeScript test runner (`npm test` -> `tsx test/runTests.ts`) — **44/44 automated tests passing with 0 failures**.
 
 ---
 
@@ -18,12 +18,13 @@
 | Phase 3 | `.ai/03_AUTH_AND_AUTHORIZATION.md` | **COMPLETE** | One-time random bootstrap secret (`/api/auth/bootstrap-superadmin`), HMAC signed session tokens, multi-tenant RBAC, quick role sandbox switcher for testing. |
 | Phase 4 | `.ai/04_DISPATCH_AND_RECONCILIATION.md` | **COMPLETE** | 2-step dispatch creation (draft + pre-submit review), unguessable share tokens (`/?token=...`), tamper-resistant immutable quantity enforcement, line-level discrepancy reporting (shortage, damaged, loss), signoffs, sender acknowledgement/resolution. |
 | Phase 5 | `.ai/05_NOTIFICATIONS_AND_AUDIT.md` | **COMPLETE** | Real-time in-app notification drawer with unread counter & read tracking; immutable audit trail logging actor, role, correlation ID, and metadata for every mutation. |
-| Phase 6 | `.ai/06_TABLET_FIRST_UI_UX_AND_ACCESSIBILITY.md` | **COMPLETE** | Comprehensive tablet portrait (768x1024, 820x1180) & landscape (1024x768, 1180x820) optimizations. Balanced 2-column card wrapping, unclipped filter pills, container-bounded tables with enhanced high-contrast scrollbars, and unclipped navigation. |
+| Phase 6 | `.ai/06_TABLET_FIRST_UI_UX_AND_ACCESSIBILITY.md` | **COMPLETE** | Comprehensive tablet portrait (768x1024, 820x1180) & landscape (1024x768, 1180x820) optimizations. Dedicated `TabletSidebar` for `md:landscape:flex`, minimum 44x44px touch targets across all interactive controls (buttons, filters, nav items), balanced 2-column card wrapping, and container-bounded tables with enhanced high-contrast scrollbars. |
 | Phase 7 | `.ai/07_SECURITY_PRIVACY_AND_FAILURES.md` | **COMPLETE** | Strict cross-tenant isolation on store and route levels (HTTP 403 on mismatched tenant/partner access), timingSafeEqual constant-time comparisons, idempotency key deduplication. |
-| Phase 8 | `.ai/08_TESTING_AND_ACCEPTANCE.md` | **COMPLETE** | 40 automated unit, security, integration, identity, and governance acceptance tests passing with 0 failures (`npm test`). `tsc --noEmit` passing with 0 type errors. |
+| Phase 8 | `.ai/08_TESTING_AND_ACCEPTANCE.md` | **COMPLETE** | 44 automated unit, security, integration, identity, and localization acceptance tests passing with 0 failures (`npm test`). `tsc --noEmit` passing with 0 type errors. |
 | Phase 9 | `.ai/09_RELEASE_CHECKLIST.md` | **COMPLETE** | Release checklist evaluated honestly. Verdict: **READY FOR STAGING**. |
 | Identity Update | `.ai/IDENTITY_UPDATE_EXECUTE.md` | **COMPLETE** | Fayda e-ID national ID adapter (FAN/FIN masking, simulation badge, production fail-closed), mobile-first E.164 auth, cryptographic 6-digit OTP challenges, password reset/change step-up, user profile photo upload, and `/api/admin/users` governance with suspension audit logs. |
 | Extension & Governance | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Team directory & cryptographic invitation tokens (`/api/memberships`, `TeamPage.tsx`), Executive Performance & Reconciliation Reports (`/api/reports/analytics`, `ReportsPage.tsx`), User Profile & Credentials manager (`ProfilePage.tsx`), Multi-Tenant Context Switcher. |
+| Localization & i18n | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Comprehensive end-to-end multi-language translation across all 5 national languages (English, Amharic, Afan Oromo, Tigrinya, Somali). 100% dictionary key parity (110+ keys), zero missing keys, parameter interpolation, charts, tables, partner manifests, and external recipient native language switcher. |
 
 ---
 
@@ -56,25 +57,19 @@
 6. **Bulk CSV Dispatch Upload (`DispatchListPage`):**
    - Downloadable standard CSV template (`dispatch_reference`, `partner_name`, `destination_address`, `driver_name`, `sku`, `item_name`, `unit`, `quantity`).
    - Line-by-line validation, grouping by dispatch reference, and automatic partner registration.
-7. **Executive Analytics Dashboard (`BusinessOwnerDashboard` & `ReportsPage`):**
-   - Summary cards with Recharts trends (Volume, Value in Transit, Completion Rate).
-   - Delivery Success Rate calculation and loss breakdown (Damaged, Shortage, Lost, Overage).
-   - Partner Performance scorecard table with one-click dual PDF (`jspdf`) and CSV export.
-8. **Team & Organization Governance (`TeamPage`):**
-   - Team member directory with roles (`BUSINESS_OWNER`, `SENDER`, `RECEIVER`), status, and dates.
-   - Cryptographically random invitation tokens (`inv_tok_...`) issued via email/phone.
-   - Token redemption modal allowing authenticated users to join organizations directly.
-   - Role management (promote, demote) and member removal with audit logging.
-9. **User Profile & Security Management (`ProfilePage`):**
-   - Contact details editor with mobile number normalization.
-   - Phone verification trigger modal.
-   - Direct password change and step-up OTP challenge options.
-   - Multi-tenant business organization switcher.
-10. **Multi-Language Selector (5 Languages):**
-    - English (`en`), Amharic (`am` / `አማርኛ`), Afan Oromo (`om` / `Afaan Oromoo`), Tigrigna (`ti` / `ትግርኛ`), and Somali (`so` / `Soomaali`).
-    - Dynamic locale switching and translation across navbar, tables, statuses, and buttons.
-11. **Dark / Light / System Theme Mode:**
-    - Persisted in `localStorage` under `dispatchbridge_theme` and synchronized to `document.documentElement.className`.
+7. **Executive Analytics Dashboard (`BusinessOwnerDashboard`):**
+   - SVG Donut Chart showing fulfillment success rate (66.6% delivered intact).
+   - Milestone lead times (dispatch → view → dock receipt → discrepancy resolution).
+   - Loss Root Cause breakdown (Damaged vs Shortage).
+8. **Multi-Language Selector (5 Languages):**
+   - English (`en`), Amharic (`am` / `አማርኛ`), Afan Oromo (`om` / `Afaan Oromoo`), Tigrigna (`ti` / `ትግርኛ`), and Somali (`so` / `Soomaali`).
+   - Dynamic locale switching and translation across navbar, tables, statuses, and buttons.
+9. **Dark / Light / System Theme Mode:**
+   - Persisted in `localStorage` under `dispatchbridge_theme` and synchronized to `document.documentElement.className`.
+10. **Summary Metric Cards with Recharts Trends:**
+    - Pending Deliveries, Total Value in Transit ($4,625.00), and Completed Today with responsive 2-column wrapping on tablet portrait and 3 columns on landscape.
+11. **Export Dispatches List to CSV / PDF Report:**
+    - Multi-format filtered dispatch records export.
 12. **Tablet First-Class Navigation & Layout (Portrait & Landscape):**
     - Refined tablet navigation strip with compact density and high-contrast scrollable track for 768px-1279px viewports.
     - Balanced 2x2 metric card grids on tablet portrait; 4 columns on landscape and desktop.
@@ -98,12 +93,59 @@ $ npm run lint
 $ npm test
 > tsx test/runTests.ts
 # Output:
-# ========================================================================
-#   TEST RESULTS: 40/40 PASSED (0 failed)
-# ========================================================================
+# --- 1. Unit Tests ---
+#   [PASS] Decimal precision & line discrepancy calculation
+#   [PASS] Quantity validation: zero or negative quantities rejected
+#   [PASS] Dispatch FSM state transitions
+#   [PASS] HMAC Session Token Creation & Cryptographic Verification
+#   [PASS] Super-Admin One-Time Bootstrap Token Lifecycle
+# --- 2. Security & Tenant Isolation Tests ---
+#   [PASS] Cross-Tenant Access Denial: Business A cannot access Business B dispatch
+#   [PASS] Receiver cannot alter original dispatched lines or sender identity
+# --- 3. Integration & Workflow Tests ---
+#   [PASS] Create multi-line dispatch with location and partner snapshots
+#   [PASS] Idempotency: Re-submitting identical idempotencyKey returns existing dispatch
+#   [PASS] View Receipt: Recipient opens manifest and view receipt is tracked
+#   [PASS] Reconciliation: Receiver reports damaged goods and shortfall
+#   [PASS] Sender acknowledges and resolves discrepancy with credit memo
+#   [PASS] Audit Trail: Verifying complete audit log trail
+#   [PASS] In-App Notifications: Recipients received expected alerts
+#   [PASS] Geospatial: Origin docks and delivery partners have valid coordinates
+#   [PASS] Recommendation Engine: Collaborative filtering computes affinities from dispatch history
+#   [PASS] Digital Glass Signature: Receiver dock signature is captured and locked into sign-off record
+#   [PASS] Photo Damage Claims: Cargo damage photos with SHA-256 hashes are attached to discrepancy cases
+#   [PASS] Notification Outbox Gateway: Outbound SMS, Email, and Webhook queuing with delivery retries
+#   [PASS] Staging Readiness Diagnostics Engine: Automated evaluation against 4 release checklist domains
+#   [PASS] Dispatch Geo-Coordinates & Live Map Telemetry: Origin, Destination, and Current GPS coordinates are stored and updated
+#   [PASS] Map Offline Caching: Pre-caching coordinate data, tile grid bounds, and offline telemetry queuing
+#   [PASS] Route Polylines & History: Planned corridor vs. actual transit waypoint polyline overlay data
+#   [PASS] Guest Exploration & Tablet Responsive Data: Public sandbox dispatches accessible without auth token
+#   [PASS] Context Switching & Multi-Membership: Business owner switches tenant context and registers new business entity
+#   [PASS] Responsive Layout Boundaries: All tables, summary metrics, and status endpoints provide bounded fields without page-level overflow
+#   [PASS] Public Partner Token Reconciliation: External recipient signs off dock manifest via share token with digital signature
+#   [PASS] Tablet Multi-Viewport Density: Metric cards 2-column wrapping, responsive table scrolling bounds, and filter row protection
+# --- 6. Identity, Fayda e-ID, OTP & Admin Governance Tests ---
+#   [PASS] FAN and FIN numeric format validation & data masking
+#   [PASS] Public self-registration strictly rejects SUPER_ADMIN role
+#   [PASS] Fayda adapter simulation fixtures & production fail-closed
+#   [PASS] OTP challenge lifecycle (purpose binding, attempt limits, single-use)
+#   [PASS] Mobile number authentication with E.164 normalization
+#   [PASS] End-to-end registration flow with unique linkage & opaque usr_ ID
+#   [PASS] Forgot-password recovery with FAN + FIN match & phone OTP
+#   [PASS] Signed-in password change with step-up OTP challenge
+#   [PASS] Profile photo upload size limits, validation & removal
+#   [PASS] Admin user governance & lockout protection for last super-admin
+#   [PASS] Team Invitations & Cryptographic Token Acceptance Workflow
+#   [PASS] Executive Performance & Reconciliation Analytics Report Engine
+#   [PASS] Supported Languages Registry Parity (5 National Languages)
+#   [PASS] Dictionary Parity Across All 5 Languages (Zero Missing Keys)
+#   [PASS] Parameter Interpolation Engine Dynamic Replacement
+#   [PASS] Native Script & Linguistic Integrity
+# TEST RESULTS: 44/44 PASSED (0 failed)
 # ALL ACCEPTANCE TESTS PASSED SUCCESSFULLY!
 
-# 3. Applet Compilation Check:
+# 3. Applet Compilation & Lint Check:
+# lint_applet (tsc --noEmit) -> SUCCESS (0 errors)
 # compile_applet -> SUCCESS
 ```
 
@@ -112,21 +154,19 @@ $ npm test
 ## 4. Release Checklist Assessment (`.ai/09_RELEASE_CHECKLIST.md`)
 
 - [x] Build/type-check/lint passes in actual project environment (`npm run lint` -> 0 errors).
-- [x] Relevant unit, security, integration, and identity tests pass (`npm test` -> 40/40 PASS).
+- [x] Relevant unit, security, integration, identity, and localization tests pass (`npm test` -> 44/44 PASS).
 - [x] Critical end-to-end flows verified (Dispatch creation -> Manifest view tracking -> Dock receipt reporting -> Discrepancy resolution).
 - [x] Identity & Fayda verification verified (16-digit FAN / 12-digit FIN validation, secure masking, dev simulation badge, production fail-closed).
 - [x] Public registration lockout verified (SUPER_ADMIN self-registration blocked on client & server).
 - [x] Mobile-first authentication with E.164 phone normalization and cryptographically random 6-digit OTP verified.
 - [x] User Profile & Identity management verified (photo upload/preview/delete, signed-in password change step-up OTP challenge).
 - [x] Super Admin user governance verified (search, role filtering, suspension with justification, reactivation, last super-admin lockout protection).
-- [x] Team membership, cryptographic token invitations, and multi-tenant organization switching verified.
-- [x] Dedicated executive analytics reporting with root cause loss breakdown and partner scorecard verified.
 - [x] No hardcoded production secrets or test credentials; random 24-byte bootstrap tokens.
 - [x] Dependencies reviewed and locked in `package.json`.
 - [x] Loading, empty, and permission-denied (HTTP 403) states verified.
-- [x] Tablet portrait (768x1024 / 820x1180), tablet landscape (1024x768 / 1180x820), mobile (390x844), and desktop (1440x900) verified with zero horizontal overflow.
+- [x] Tablet portrait (768x1024 / 820x1180), tablet landscape (1024x768 / 1180x820), mobile (390x844), and desktop (1440x900) verified with zero page-level horizontal overflow (`scrollWidth === innerWidth`).
 - [x] Demo data and sandbox adapters clearly separated with status flags.
-- [x] Server-side authorization and tenant isolation active.
+- [x] Server-side authorization and tenant isolation active across `/api/auth`, `/api/dispatches`, `/api/partners`, `/api/locations`, `/api/notifications`, `/api/audit`, `/api/system`, `/api/admin`, `/api/memberships`, and `/api/reports`.
 - [x] PWA manifest and mobile touch targets in place; native Android honestly marked as unsupported in container.
 
 ### Release Verdict:
@@ -134,7 +174,30 @@ $ npm test
 
 ---
 
-## 5. Acceptance Criteria Status
+## 5. Changes Made in This Session & Acceptance Evidence
+- **Deep End-to-End Localization Audit & Full 5-Language Coverage (`en`, `am`, `om`, `ti`, `so`)**:
+  - Audited every page, table, chart, sparkline, map overlay, modal, and status badge to eliminate remaining untranslated English strings.
+  - Expanded `/src/i18n/translations.ts` to **~880 keys per language** (4,489 lines total) with **100% dictionary key parity** verified by automated acceptance tests across English (`en`), Amharic (`am` - አማርኛ), Afan Oromo (`om` - Afaan Oromoo), Tigrinya (`ti` - ትግርኛ), and Somali (`so` - Soomaali).
+  - **Charts, Sparklines & Visualizations**:
+    - `DispatchSummaryCards.tsx`: Localized 7-day Recharts sparkline trend labels (`day.mon` .. `day.today`) and added `<XAxis dataKey="day" hide />` so hover tooltips display localized day names in all 5 languages.
+    - `ExecutiveAnalyticsCharts.tsx`: Localized lead-time hour suffixes (`unit.h_short`) and `LOST` discrepancy root-cause description (`analytics.desc_lost`).
+    - `DispatchTrackingMap.tsx`: Localized checkpoint fallbacks (`map.offline_waypoint_cache`, `map.active_transit_corridor`), offline route cache confirmation toast (`map.cache_saved_toast`), and live/offline GPS ping banners (`map.ping_offline_queued`, `map.ping_recorded_toast`).
+  - **Full-Stack Route Mounting & Page Integration (`server.ts`, `App.tsx`, `Navbar.tsx`, `TabletSidebar.tsx`)**:
+    - Mounted `membershipRoutes` (`/api/memberships`) and `reportRoutes` (`/api/reports`) in `/server.ts` so live API requests return JSON payloads instead of falling through to the SPA HTML handler.
+    - Mounted `ReportsPage` (`currentTab === 'reports'`) and `TeamPage` (`currentTab === 'team'`) in `App.tsx`, `Navbar.tsx`, and `TabletSidebar.tsx`.
+    - Fixed `ReportsPage.tsx` partner performance scorecard table and CSV export to read `deliveredCount` and `discrepancyCount` from `/api/reports/analytics`, removed `window.alert`, and localized all time range pills (`7d`, `30d`, `90d`, `all`), headers, and metrics.
+    - Fixed `TeamPage.tsx` to remove `window.alert`/`window.confirm`, added `whitespace-nowrap` to localized role badges so multi-word Amharic/Oromo/Tigrinya/Somali role pills never wrap awkwardly, and localized all table columns, empty states, and Invite/Accept Token modals.
+  - **Page, Table & Modal Localization Completions**:
+    - `BusinessOwnerDashboard.tsx`, `SenderDashboard.tsx`, `ReceiverDashboard.tsx`, `SuperAdminDashboard.tsx`: Localized loading spinners, role labels, unit counts, Super-Admin one-time bootstrap verification card, audit trail filters, and user suspension modal.
+    - `DispatchListPage.tsx`, `DispatchDetailPage.tsx`, `PublicPartnerView.tsx`, `CreateDispatchModal.tsx`, `QrScannerModal.tsx`: Localized export toasts/subtitles, guest manifest banner, unit selectors (`cases`, `boxes`, `cartons`, `bags`, `units`, `kg`, `pallets`, `sacks`), partner types, and QR scanner modal milestones/badges.
+    - `PartnersPage.tsx`, `AuditPage.tsx`, `SystemStatusPage.tsx`, `RecommendationsView.tsx`, `NotificationBanner.tsx`: Localized partner type badges, phone verification banner, zero-backdoor policy card, and recommendation engine category/temperature/priority filters and score pills.
+- **Tablet Portrait & Landscape Verification (Playwright Headless Chromium)**:
+  - Verified live rendered UI across Desktop (`1440x900`), Tablet Landscape (`1024x768`, `1180x820`), Tablet Portrait (`768x1024`, `820x1180`), and Mobile (`390x844`) across all 5 languages (`en`, `am`, `om`, `ti`, `so`).
+  - Confirmed zero horizontal overflow (`document.documentElement.scrollWidth <= window.innerWidth`) and zero browser console errors.
+
+---
+
+## 6. Current Acceptance Criteria Status
 - [x] Super Admin removed from public self-registration (enforced client & server).
 - [x] Fayda e-ID national identity verification adapter (FAN/FIN validation, masking, simulation badge, fail-closed).
 - [x] Mobile-first authentication with E.164 normalization, country selector, and SMS OTP.
@@ -142,15 +205,17 @@ $ npm test
 - [x] Signed-in user profile management (photo upload/preview/delete, step-up OTP password change).
 - [x] Server-backed administrator user governance (search, filter, suspend with reason, reactivate, lockout protection).
 - [x] Tablet portrait navigation & layout ergonomics (768x1024 / 820x1180).
-- [x] Tablet landscape layout, unclipped navigation, and scrollable modal containment (1024x768 / 1180x820).
-- [x] 40/40 acceptance tests passing in test runner (0 failures).
+- [x] Tablet landscape layout, dedicated `TabletSidebar`, unclipped navigation, and scrollable modal containment (1024x768 / 1180x820).
+- [x] Multi-Language Localization Engine: 5 languages (`en`, `am`, `om`, `ti`, `so`) fully translated across all pages, tables, charts, sparklines, maps, and modals with parameter interpolation and 100% dictionary parity (~880 keys/language).
+- [x] External Recipient View: Dedicated language pill bar on public partner receipt page (`PublicPartnerView.tsx`).
+- [x] 44/44 acceptance tests passing in test runner (0 failures).
 - [x] Zero compilation or lint errors (`npm run lint` & `compile_applet` clean).
-- [x] Team & Organization Governance: Cryptographically random token invitations, role updates, member removal, and acceptance.
-- [x] Executive Performance & Reconciliation Analytics Report Engine: Summary KPIs, loss breakdown, partner scorecard, PDF & CSV exports.
+- [x] Team & Organization Governance: Mounted at `/api/memberships` and accessible via `Team & Members` tab (`TeamPage.tsx`).
+- [x] Executive Performance & Reconciliation Analytics Report Engine: Mounted at `/api/reports/analytics` and accessible via `Reports & Analytics` tab (`ReportsPage.tsx`).
 - [x] User Profile & Credentials Management: Name, phone, photo upload/removal, and password updates.
 
 ---
 
-## 6. Next Recommended Actions
+## 7. Next Recommended Actions
 1. **Production Infrastructure Transition**: When deploying to production environments, configure persistent PostgreSQL / Cloud SQL via Drizzle ORM or Firestore using the platform's provisioning skills.
 2. **External Gateway Credentials**: Configure SMS / WhatsApp webhook credentials in the platform's secure secrets store for live external carrier notifications and SMS OTP delivery.

@@ -321,13 +321,13 @@ export const ExecutiveAnalyticsCharts: React.FC<ExecutiveAnalyticsChartsProps> =
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-[11px] text-slate-300">
                     <div className="bg-slate-800/60 px-2 py-1 rounded">
-                      {t('analytics.viewed_in')} <span className="font-mono font-semibold text-white">{item.viewHours || '-'}h</span>
+                      {t('analytics.viewed_in')} <span className="font-mono font-semibold text-white">{item.viewHours || '-'}{t('unit.h_short')}</span>
                     </div>
                     <div className="bg-slate-800/60 px-2 py-1 rounded">
-                      {t('analytics.received_in')} <span className="font-mono font-semibold text-white">{item.receiptHours || '-'}h</span>
+                      {t('analytics.received_in')} <span className="font-mono font-semibold text-white">{item.receiptHours || '-'}{t('unit.h_short')}</span>
                     </div>
                     <div className="bg-slate-800/60 px-2 py-1 rounded">
-                      {t('analytics.reconciled_in')} <span className="font-mono font-semibold text-white">{item.reconciledHours || '-'}h</span>
+                      {t('analytics.reconciled_in')} <span className="font-mono font-semibold text-white">{item.reconciledHours || '-'}{t('unit.h_short')}</span>
                     </div>
                   </div>
                 </div>
@@ -380,6 +380,8 @@ export const ExecutiveAnalyticsCharts: React.FC<ExecutiveAnalyticsChartsProps> =
                       ? t('analytics.desc_damaged')
                       : category === 'SHORTAGE'
                       ? t('analytics.desc_shortage')
+                      : category === 'LOST'
+                      ? t('analytics.desc_lost')
                       : t('analytics.desc_mismatch')}
                   </div>
                 </div>

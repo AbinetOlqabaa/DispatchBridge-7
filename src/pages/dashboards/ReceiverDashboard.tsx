@@ -45,7 +45,7 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
     }
   };
 
-  if (loading) return <LoadingSpinner label="Loading partner receiving portal..." />;
+  if (loading) return <LoadingSpinner label={t('dashboard.loading_receiver_portal')} />;
 
   const pendingVerification = inboundDispatches.filter((d) => ['DISPATCHED', 'VIEWED', 'IN_TRANSIT'].includes(d.status));
   const completedReceipts = inboundDispatches.filter((d) => ['PARTIALLY_RECEIVED', 'RECEIVED', 'RECONCILED'].includes(d.status));
@@ -61,7 +61,7 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
           <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-950 px-2.5 py-0.5 rounded-full border border-amber-800">
             {t('role.receiver')}
           </span>
-          <span className="text-xs text-slate-400">Station Lead: {user?.name}</span>
+          <span className="text-xs text-slate-400">{t('dashboard.station_lead_label', { name: user?.name || '' })}</span>
         </div>
         <h1 className="text-2xl font-bold text-white tracking-tight">{user?.businessName}</h1>
         <p className="text-xs text-slate-400 mt-0.5">
@@ -110,11 +110,16 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{t('table.items')}:</span>
-                    <span>{d.lines.length} lines ({d.totalQuantityDispatched} {t('unit.units')})</span>
+                    <span>
+                      {t('dispatch.lines_units_summary', {
+                        lines: d.lines.length,
+                        units: d.totalQuantityDispatched,
+                      })}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{t('system.timestamp', 'Sent Date')}:</span>
-                    <span>{d.dispatchedAt ? new Date(d.dispatchedAt).toLocaleDateString() : 'Today'}</span>
+                    <span>{d.dispatchedAt ? new Date(d.dispatchedAt).toLocaleDateString() : t('day.today')}</span>
                   </div>
                 </div>
 

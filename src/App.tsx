@@ -23,6 +23,8 @@ import { PartnersPage } from './pages/partners/PartnersPage.js';
 import { LocationsPage } from './pages/locations/LocationsPage.js';
 import { AuditPage } from './pages/audit/AuditPage.js';
 import { SystemStatusPage } from './pages/system/SystemStatusPage.js';
+import { ReportsPage } from './pages/reports/ReportsPage.js';
+import { TeamPage } from './pages/team/TeamPage.js';
 import { RecommendationsView } from './components/recommendations/RecommendationsView.js';
 import { NotificationDrawer } from './components/notifications/NotificationDrawer.js';
 import { ProfileModal } from './components/auth/ProfileModal.js';
@@ -65,7 +67,7 @@ function MainApp() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <LoadingSpinner text="Initializing DispatchBridge..." />
+        <LoadingSpinner text={t('msg.loading')} />
       </div>
     );
   }
@@ -232,6 +234,8 @@ function MainApp() {
                   }}
                 />
               )}
+              {currentTab === 'reports' && <ReportsPage />}
+              {currentTab === 'team' && <TeamPage />}
               {currentTab === 'audit' && <AuditPage />}
               {currentTab === 'status' && <SystemStatusPage />}
             </>

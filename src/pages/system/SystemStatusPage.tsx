@@ -64,7 +64,7 @@ export const SystemStatusPage: React.FC = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner label="Running platform diagnostic audit..." />;
+  if (loading) return <LoadingSpinner label={t('msg.loading')} />;
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
@@ -287,25 +287,20 @@ export const SystemStatusPage: React.FC = () => {
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
         <h2 className="text-sm font-bold text-white flex items-center gap-2">
           <KeyRound className="w-4 h-4 text-purple-400" />
-          Zero-Backdoor Super-Admin Policy
+          {t('system.zero_backdoor_title')}
         </h2>
 
         <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-800 text-xs space-y-2 leading-relaxed">
           <p className="text-slate-300">
-            In compliance with strict security requirements:
+            {t('system.zero_backdoor_desc')}
           </p>
-          <ul className="list-disc list-inside space-y-1 text-slate-400 text-[11px]">
-            <li>No super-administrator accounts have default, publicly known, or hardcoded passwords.</li>
-            <li>A cryptographically random 24-byte one-time token is generated on server startup, printed to the server terminal, or read from <code className="text-slate-300">SUPERADMIN_BOOTSTRAP_SECRET</code>.</li>
-            <li>Once redeemed via <code className="text-slate-300">POST /api/auth/bootstrap-superadmin</code>, the bootstrap mechanism is permanently consumed and closed.</li>
-          </ul>
 
           <div className="flex items-center gap-2 pt-2 text-[11px]">
-            <span className="text-slate-400 font-semibold">Current Bootstrap Status:</span>
+            <span className="text-slate-400 font-semibold">{t('system.bootstrap_status_label')}</span>
             {status?.superAdminBootstrapAvailable ? (
-              <span className="text-amber-400 font-medium">One-Time Token Available on Server</span>
+              <span className="text-amber-400 font-medium">{t('admin.token_active_badge')}</span>
             ) : (
-              <span className="text-emerald-400 font-medium">Bootstrap Consumed / Closed</span>
+              <span className="text-emerald-400 font-medium">{t('admin.token_consumed_badge')}</span>
             )}
           </div>
         </div>
@@ -315,7 +310,7 @@ export const SystemStatusPage: React.FC = () => {
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
         <h2 className="text-sm font-bold text-white flex items-center gap-2">
           <FileCode className="w-4 h-4 text-teal-400" />
-          Extension Roadmap (Master Plan Staging)
+          {t('system.roadmap_title')}
         </h2>
 
         <div className="divide-y divide-slate-800 text-xs">
@@ -327,7 +322,7 @@ export const SystemStatusPage: React.FC = () => {
               </p>
             </div>
             <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-              COMPLETE & VERIFIED
+              {t('system.complete_verified')}
             </span>
           </div>
 
@@ -339,7 +334,7 @@ export const SystemStatusPage: React.FC = () => {
               </p>
             </div>
             <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-              COMPLETE & VERIFIED
+              {t('system.complete_verified')}
             </span>
           </div>
 
@@ -351,7 +346,7 @@ export const SystemStatusPage: React.FC = () => {
               </p>
             </div>
             <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-              ACTIVE & OPERATIONAL
+              {t('system.active_operational')}
             </span>
           </div>
 
@@ -363,7 +358,7 @@ export const SystemStatusPage: React.FC = () => {
               </p>
             </div>
             <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-              ACTIVE & VERIFIED
+              {t('system.complete_verified')}
             </span>
           </div>
 
@@ -375,7 +370,7 @@ export const SystemStatusPage: React.FC = () => {
               </p>
             </div>
             <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-              ACTIVE & OPERATIONAL
+              {t('system.active_operational')}
             </span>
           </div>
         </div>

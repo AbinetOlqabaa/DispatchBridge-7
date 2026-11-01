@@ -158,7 +158,7 @@ export function ReportsPage() {
 
       doc.save(`DispatchBridge_Report_${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (err: any) {
-      alert('Failed to generate PDF: ' + err.message);
+      setError(err.message || t('msg.error'));
     } finally {
       setExporting(false);
     }
@@ -171,8 +171,8 @@ export function ReportsPage() {
       const rows = (reportData.partnerPerformance || []).map((p: any) => [
         `"${p.partnerName}"`,
         p.totalDispatches,
-        p.successful,
-        p.discrepancies,
+        p.deliveredCount ?? p.successful ?? 0,
+        p.discrepancyCount ?? p.discrepancies ?? 0,
         `${p.successRate}%`,
         p.totalVolume,
       ]);
@@ -189,7 +189,7 @@ export function ReportsPage() {
       link.click();
       document.body.removeChild(link);
     } catch (err: any) {
-      alert('Failed to export CSV: ' + err.message);
+      setError(err.message || t('msg.error'));
     }
   };
 
@@ -207,7 +207,7 @@ export function ReportsPage() {
                 {t('nav.reports', 'Executive Reports & Analytics')}
               </h1>
               <p className="text-xs text-slate-400">
-                {user?.businessName} • Cross-partner fulfillment trends, dock loss analytics, and audit records
+                {user?.businessName} • {t('reports.page_subtitle')}
               </p>
             </div>
           </div>
@@ -226,7 +226,13 @@ export function ReportsPage() {
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                {r.toUpperCase()}
+                {r === '7d'
+                  ? t('reports.period_7d')
+                  : r === '30d'
+                  ? t('reports.period_30d')
+                  : r === 'ytd'
+                  ? t('reports.period_90d')
+                  : t('reports.period_all')}
               </button>
             ))}
           </div>
@@ -251,7 +257,7 @@ export function ReportsPage() {
 
           <button
             onClick={loadReport}
-            title="Refresh analytics"
+            title={t('action.refresh')}
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition cursor-pointer"
           >
             <RefreshCw className="w-4 h-4" />
@@ -261,7 +267,7 @@ export function ReportsPage() {
 
       {loading ? (
         <div className="py-20 flex justify-center">
-          <LoadingSpinner text="Computing reconciliation metrics..." />
+          <LoadingSpinner text={t('msg.loading')} />
         </div>
       ) : error ? (
         <div className="p-4 bg-red-900/20 border border-red-800/40 text-red-300 rounded-xl text-xs flex items-center gap-2">
@@ -414,12 +420,12 @@ export function ReportsPage() {
                         {partner.totalDispatches}
                       </td>
                       <td className="py-3.5 px-4 text-emerald-400 font-medium">
-                        {partner.successful}
+                        {partner.deliveredCount ?? partner.successful ?? 0}
                       </td>
                       <td className="py-3.5 px-4">
-                        {partner.discrepancies > 0 ? (
+                        {(partner.discrepancyCount ?? partner.discrepancies ?? 0) > 0 ? (
                           <span className="text-amber-400 font-medium">
-                            {partner.discrepancies}
+                            {partner.discrepancyCount ?? partner.discrepancies}
                           </span>
                         ) : (
                           <span className="text-slate-500">0</span>

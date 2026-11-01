@@ -102,12 +102,12 @@ export function TeamPage() {
   };
 
   const handleRevokeInvitation = async (id: string) => {
-    if (!confirm('Are you sure you want to revoke this invitation?')) return;
     try {
+      setError(null);
       await api.revokeInvitation(id);
       await loadData();
     } catch (err: any) {
-      alert(err.message || 'Failed to revoke invitation.');
+      setError(err.message || t('msg.error'));
     }
   };
 
@@ -118,7 +118,7 @@ export function TeamPage() {
       setAcceptSubmitting(true);
       setAcceptMessage(null);
       const res = await api.acceptInvitation(acceptToken.trim());
-      setAcceptMessage(`Successfully joined ${res.user.businessName} as ${res.user.role}!`);
+      setAcceptMessage(`${t('msg.saved_successfully')} — ${res.user.businessName}`);
       setAcceptToken('');
       setTimeout(() => {
         setIsAcceptModalOpen(false);
@@ -126,7 +126,7 @@ export function TeamPage() {
         window.location.reload();
       }, 1500);
     } catch (err: any) {
-      setAcceptMessage(`Error: ${err.message}`);
+      setAcceptMessage(`${t('msg.error')}: ${err.message}`);
     } finally {
       setAcceptSubmitting(false);
     }
@@ -134,20 +134,21 @@ export function TeamPage() {
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     try {
+      setError(null);
       await api.updateMemberRole(userId, newRole);
       await loadData();
     } catch (err: any) {
-      alert(err.message || 'Failed to update member role.');
+      setError(err.message || t('msg.error'));
     }
   };
 
-  const handleRemoveMember = async (userId: string, memberName: string) => {
-    if (!confirm(`Are you sure you want to remove "${memberName}" from ${user?.businessName}?`)) return;
+  const handleRemoveMember = async (userId: string) => {
     try {
+      setError(null);
       await api.removeMember(userId);
       await loadData();
     } catch (err: any) {
-      alert(err.message || 'Failed to remove member.');
+      setError(err.message || t('msg.error'));
     }
   };
 
@@ -186,6 +187,21 @@ export function TeamPage() {
     }
   };
 
+  const getLocalizedRole = (role: UserRole) => {
+    switch (role) {
+      case 'SUPER_ADMIN':
+        return t('role.super_admin');
+      case 'BUSINESS_OWNER':
+        return t('role.business_owner');
+      case 'SENDER':
+        return t('role.sender');
+      case 'RECEIVER':
+        return t('role.receiver');
+      default:
+        return role;
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -200,7 +216,7 @@ export function TeamPage() {
                 {t('nav.team', 'Team & Members')}
               </h1>
               <p className="text-xs text-slate-400">
-                {user?.businessName} • Multi-role access control, members directory, and onboarding invitations
+                {user?.businessName} • {t('team.subtitle')}
               </p>
             </div>
           </div>
@@ -225,7 +241,7 @@ export function TeamPage() {
           )}
           <button
             onClick={loadData}
-            title="Refresh list"
+            title={t('action.refresh')}
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition cursor-pointer"
           >
             <RefreshCw className="w-4 h-4" />
@@ -270,7 +286,7 @@ export function TeamPage() {
                 : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
             }`}
           >
-            {t('metric.active_members', 'Active Members')} ({members.length})
+            {t('team.active_members_tab', { count: members.length })}
           </button>
           <button
             onClick={() => setActiveTab('invitations')}
@@ -280,11 +296,10 @@ export function TeamPage() {
                 : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
             }`}
           >
-            {t('metric.pending_invitations', 'Invitations')}
+            {t('team.pending_invites_tab', { count: invitations.length })}
             {invitations.filter((i) => i.status === 'PENDING').length > 0 && (
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
             )}
-            ({invitations.length})
           </button>
         </div>
 
@@ -292,7 +307,7 @@ export function TeamPage() {
           <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
           <input
             type="text"
-            placeholder={`${t('action.search')}...`}
+            placeholder={t('team.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition"
@@ -303,7 +318,7 @@ export function TeamPage() {
       {/* Content Section */}
       {loading ? (
         <div className="py-16 flex justify-center">
-          <LoadingSpinner text="Loading team directory..." />
+          <LoadingSpinner text={t('msg.loading')} />
         </div>
       ) : error ? (
         <div className="p-4 bg-red-900/20 border border-red-800/40 text-red-300 rounded-xl text-xs flex items-center gap-2">
@@ -315,9 +330,9 @@ export function TeamPage() {
         filteredMembers.length === 0 ? (
           <div className="py-12 text-center bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
             <Users className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <h3 className="text-sm font-semibold text-slate-300">No team members found</h3>
+            <h3 className="text-sm font-semibold text-slate-300">{t('empty.no_dispatches_match')}</h3>
             <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-              {searchTerm ? 'No members match your search criteria.' : 'Invite your dispatchers and warehouse leads to collaborate.'}
+              {t('empty.no_dispatches_desc')}
             </p>
           </div>
         ) : (
@@ -345,15 +360,15 @@ export function TeamPage() {
                             <span>{member.name}</span>
                             {member.id === user?.id && (
                               <span className="ml-2 px-1.5 py-0.5 bg-slate-800 text-indigo-300 text-[10px] rounded border border-slate-700">
-                                You
+                                {t('team.you_badge')}
                               </span>
                             )}
                           </div>
                         </div>
                       </td>
-                      <td className="py-3.5 px-4">
-                        <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium border ${getRoleBadge(member.membershipRole)}`}>
-                          {member.membershipRole.replace('_', ' ')}
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium border ${getRoleBadge(member.membershipRole)}`}>
+                          {getLocalizedRole(member.membershipRole)}
                         </span>
                       </td>
                       <td className="py-3.5 px-4 text-slate-400">
@@ -373,7 +388,7 @@ export function TeamPage() {
                       <td className="py-3.5 px-4">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-emerald-900/30 text-emerald-300 border border-emerald-800/40">
                           <CheckCircle className="w-3 h-3 text-emerald-400" />
-                          Active
+                          {t('status.active')}
                         </span>
                       </td>
                       <td className="py-3.5 px-4 text-right">
@@ -384,13 +399,13 @@ export function TeamPage() {
                               onChange={(e) => handleRoleChange(member.id, e.target.value as UserRole)}
                               className="bg-slate-800 border border-slate-700 text-slate-300 text-xs rounded-lg px-2 py-1 focus:outline-none focus:border-indigo-500 cursor-pointer"
                             >
-                              <option value="BUSINESS_OWNER">Owner</option>
-                              <option value="SENDER">Sender</option>
-                              <option value="RECEIVER">Receiver</option>
+                              <option value="BUSINESS_OWNER">{t('role.business_owner')}</option>
+                              <option value="SENDER">{t('role.sender')}</option>
+                              <option value="RECEIVER">{t('role.receiver')}</option>
                             </select>
                             <button
-                              onClick={() => handleRemoveMember(member.id, member.name)}
-                              title="Remove member"
+                              onClick={() => handleRemoveMember(member.id)}
+                              title={t('team.confirm_remove')}
                               className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -412,9 +427,9 @@ export function TeamPage() {
         filteredInvitations.length === 0 ? (
           <div className="py-12 text-center bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
             <Mail className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <h3 className="text-sm font-semibold text-slate-300">No invitations found</h3>
+            <h3 className="text-sm font-semibold text-slate-300">{t('metric.pending_invitations')}</h3>
             <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-              Issued team invitations will appear here until accepted or expired.
+              {t('empty.no_logs')}
             </p>
           </div>
         ) : (
@@ -423,12 +438,12 @@ export function TeamPage() {
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="bg-slate-950/70 border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
-                    <th className="py-3 px-4 font-semibold">Invitee Email</th>
-                    <th className="py-3 px-4 font-semibold">Proposed Role</th>
-                    <th className="py-3 px-4 font-semibold">Invited By</th>
-                    <th className="py-3 px-4 font-semibold">Status / Expires</th>
-                    <th className="py-3 px-4 font-semibold">Invitation Link</th>
-                    <th className="py-3 px-4 font-semibold text-right">Actions</th>
+                    <th className="py-3 px-4 font-semibold">{t('team.invite_col_email')}</th>
+                    <th className="py-3 px-4 font-semibold">{t('team.invite_col_role')}</th>
+                    <th className="py-3 px-4 font-semibold">{t('team.invite_col_by')}</th>
+                    <th className="py-3 px-4 font-semibold">{t('team.invite_col_expires')}</th>
+                    <th className="py-3 px-4 font-semibold">{t('team.invite_col_link')}</th>
+                    <th className="py-3 px-4 font-semibold text-right">{t('table.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
@@ -445,9 +460,9 @@ export function TeamPage() {
                           </div>
                         )}
                       </td>
-                      <td className="py-3.5 px-4">
-                        <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium border ${getRoleBadge(inv.proposedRole)}`}>
-                          {inv.proposedRole.replace('_', ' ')}
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium border ${getRoleBadge(inv.proposedRole)}`}>
+                          {getLocalizedRole(inv.proposedRole)}
                         </span>
                       </td>
                       <td className="py-3.5 px-4 text-slate-400">
@@ -464,11 +479,11 @@ export function TeamPage() {
                                 : 'bg-slate-800 text-slate-400 border-slate-700'
                             }`}
                           >
-                            {inv.status}
+                            {inv.status === 'PENDING' ? t('status.pending') : inv.status}
                           </span>
                           <div className="text-[10px] text-slate-500 flex items-center gap-1">
                             <Clock className="w-2.5 h-2.5" />
-                            Exp: {new Date(inv.expiresAt).toLocaleDateString()}
+                            {t('team.expires_prefix')} {new Date(inv.expiresAt).toLocaleDateString()}
                           </div>
                         </div>
                       </td>
@@ -481,7 +496,7 @@ export function TeamPage() {
                             {copiedId === inv.id ? (
                               <>
                                 <Check className="w-3 h-3 text-emerald-400" />
-                                <span className="text-emerald-400">Copied!</span>
+                                <span className="text-emerald-400">{t('action.copied')}</span>
                               </>
                             ) : (
                               <>
@@ -498,10 +513,10 @@ export function TeamPage() {
                         {canManage && inv.status === 'PENDING' ? (
                           <button
                             onClick={() => handleRevokeInvitation(inv.id)}
-                            title="Revoke invitation"
+                            title={t('team.revoke_btn')}
                             className="px-2.5 py-1 text-red-400 hover:bg-red-500/10 border border-red-500/20 rounded-lg text-xs transition cursor-pointer"
                           >
-                            Revoke
+                            {t('team.revoke_btn')}
                           </button>
                         ) : (
                           <span className="text-slate-500 text-[11px]">—</span>
@@ -523,7 +538,10 @@ export function TeamPage() {
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-indigo-400" />
-                <h3 className="text-base font-bold text-white">Invite Team Member</h3>
+                <div>
+                  <h3 className="text-base font-bold text-white">{t('team.invite_modal_title')}</h3>
+                  <p className="text-[11px] text-slate-400">{t('team.invite_modal_desc')}</p>
+                </div>
               </div>
               <button
                 onClick={() => setIsInviteModalOpen(false)}
@@ -542,7 +560,7 @@ export function TeamPage() {
 
             <form onSubmit={handleInviteSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Invitee Email *</label>
+                <label className="block text-slate-300 font-medium mb-1">{t('team.work_email_label')}</label>
                 <input
                   type="email"
                   required
@@ -554,7 +572,7 @@ export function TeamPage() {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Phone Number (optional, E.164)</label>
+                <label className="block text-slate-300 font-medium mb-1">{t('auth.mobile_phone')}</label>
                 <input
                   type="tel"
                   placeholder="+1-555-019-0000"
@@ -565,15 +583,15 @@ export function TeamPage() {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Assigned Role</label>
+                <label className="block text-slate-300 font-medium mb-1">{t('team.assign_role_label')}</label>
                 <select
                   value={inviteRole}
                   onChange={(e) => setInviteRole(e.target.value as UserRole)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-indigo-500 cursor-pointer"
                 >
-                  <option value="SENDER">Sender / Dispatcher (Creates & submits dispatches)</option>
-                  <option value="RECEIVER">Receiver / Partner (Verifies dock counts & reports receipts)</option>
-                  <option value="BUSINESS_OWNER">Business Owner (Full management & member admin)</option>
+                  <option value="SENDER">{t('role.sender')} — {t('auth.sender_role_desc')}</option>
+                  <option value="RECEIVER">{t('role.receiver')} — {t('auth.receiver_role_desc')}</option>
+                  <option value="BUSINESS_OWNER">{t('role.business_owner')} — {t('auth.owner_role_desc')}</option>
                 </select>
               </div>
 
@@ -583,7 +601,7 @@ export function TeamPage() {
                   onClick={() => setIsInviteModalOpen(false)}
                   className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-medium cursor-pointer"
                 >
-                  Cancel
+                  {t('action.cancel')}
                 </button>
                 <button
                   type="submit"
@@ -591,7 +609,7 @@ export function TeamPage() {
                   className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold disabled:opacity-50 flex items-center gap-2 cursor-pointer"
                 >
                   {inviteSubmitting ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
-                  Send Invitation
+                  {inviteSubmitting ? t('team.sending_btn') : t('team.send_invite_btn')}
                 </button>
               </div>
             </form>
@@ -606,7 +624,7 @@ export function TeamPage() {
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2">
                 <KeyRound className="w-5 h-5 text-indigo-400" />
-                <h3 className="text-base font-bold text-white">Redeem Invitation Token</h3>
+                <h3 className="text-base font-bold text-white">{t('team.accept_modal_title')}</h3>
               </div>
               <button
                 onClick={() => setIsAcceptModalOpen(false)}
@@ -624,7 +642,7 @@ export function TeamPage() {
 
             <form onSubmit={handleAcceptSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-300 font-medium mb-1">Invitation Token</label>
+                <label className="block text-slate-300 font-medium mb-1">{t('team.token_label')}</label>
                 <input
                   type="text"
                   required
@@ -634,7 +652,7 @@ export function TeamPage() {
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 font-mono focus:outline-none focus:border-indigo-500"
                 />
                 <p className="text-[11px] text-slate-500 mt-1">
-                  Enter the secure token received via email/SMS invitation to join the team.
+                  {t('team.accept_modal_desc')}
                 </p>
               </div>
 
@@ -644,14 +662,14 @@ export function TeamPage() {
                   onClick={() => setIsAcceptModalOpen(false)}
                   className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-medium cursor-pointer"
                 >
-                  Cancel
+                  {t('action.cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={acceptSubmitting}
                   className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold disabled:opacity-50 cursor-pointer"
                 >
-                  {acceptSubmitting ? 'Redeeming...' : 'Accept & Join'}
+                  {acceptSubmitting ? t('team.joining_btn') : t('team.join_btn')}
                 </button>
               </div>
             </form>

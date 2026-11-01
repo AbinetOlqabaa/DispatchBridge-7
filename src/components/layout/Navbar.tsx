@@ -23,6 +23,8 @@ import {
   Wifi,
   WifiOff,
   RefreshCw,
+  BarChart3,
+  UserPlus,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 import { useTheme, ThemeMode } from '../../context/ThemeContext.js';
@@ -104,6 +106,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'dispatches', label: t('nav.dispatches', 'Dispatches'), icon: Truck, show: true },
     { id: 'locations', label: t('nav.locations', 'Origins & Docks'), icon: Warehouse, show: !!user && user.role !== 'RECEIVER' },
     { id: 'partners', label: t('nav.partners', 'Partners'), icon: Users, show: !!user && user.role !== 'RECEIVER' },
+    { id: 'reports', label: t('nav.reports', 'Reports & Analytics'), icon: BarChart3, show: !!user },
+    { id: 'team', label: t('nav.team', 'Team & Members'), icon: UserPlus, show: !!user && (user.role === 'BUSINESS_OWNER' || user.role === 'SUPER_ADMIN') },
     { id: 'recommendations', label: t('nav.recommendations', 'Recommendations'), icon: Sparkles, show: true },
     { id: 'audit', label: t('nav.audit', 'Audit Trail'), icon: FileText, show: !!user && (user.role === 'SUPER_ADMIN' || user.role === 'BUSINESS_OWNER') },
     { id: 'status', label: t('nav.status', 'System Status'), icon: Shield, show: true },
@@ -136,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Nav Items (xl: >= 1280px) */}
-          <div className="hidden xl:flex items-center gap-1.5 py-1 flex-1 justify-center max-w-2xl px-2">
+          <div className="hidden xl:flex items-center gap-1 py-1 flex-1 justify-center max-w-4xl px-2 overflow-x-auto scrollbar-none">
             {navItems.filter((i) => i.show).map((item) => {
               const Icon = item.icon;
               const isActive = currentTab === item.id;

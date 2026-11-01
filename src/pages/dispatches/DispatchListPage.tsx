@@ -97,14 +97,14 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
   const handleExportCsv = () => {
     exportDispatchesToCsv(filteredDispatches);
     setExportDropdownOpen(false);
-    setExportSuccessMsg(`Exported ${filteredDispatches.length} dispatches to CSV.`);
+    setExportSuccessMsg(t('export.csv_success', { count: filteredDispatches.length }));
     setTimeout(() => setExportSuccessMsg(null), 3000);
   };
 
   const handleExportPdf = () => {
     exportDispatchesToPdf(filteredDispatches, statusFilter);
     setExportDropdownOpen(false);
-    setExportSuccessMsg(`Generated official reconciliation report PDF (${filteredDispatches.length} records).`);
+    setExportSuccessMsg(t('export.pdf_success', { count: filteredDispatches.length }));
     setTimeout(() => setExportSuccessMsg(null), 3000);
   };
 
@@ -288,7 +288,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
                     <FileSpreadsheet className="w-4 h-4 text-emerald-400 shrink-0" />
                     <div>
                       <div className="font-medium">{t('action.export_csv', 'Export CSV')}</div>
-                      <div className="text-[10px] text-slate-400">Excel / Spreadsheet</div>
+                      <div className="text-[10px] text-slate-400">{t('export.csv_sub')}</div>
                     </div>
                   </button>
                   <button
@@ -298,7 +298,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
                     <FileText className="w-4 h-4 text-rose-400 shrink-0" />
                     <div>
                       <div className="font-medium">{t('action.export_pdf', 'Export PDF')}</div>
-                      <div className="text-[10px] text-slate-400">Reconciliation Report</div>
+                      <div className="text-[10px] text-slate-400">{t('export.pdf_sub')}</div>
                     </div>
                   </button>
                 </div>
@@ -317,15 +317,13 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
 
         {/* Content Table / Cards */}
         {loading ? (
-          <LoadingSpinner label="Fetching manifests..." />
+          <LoadingSpinner label={t('dispatch.loading_registry')} />
         ) : filteredDispatches.length === 0 ? (
           <div className="py-12 text-center text-slate-400 space-y-2">
             <Truck className="w-10 h-10 text-slate-600 mx-auto" />
             <div className="text-sm font-semibold text-slate-300">{t('empty.no_dispatches_match', 'No dispatches match this filter')}</div>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              {statusFilter !== 'ALL'
-                ? `No shipments found with status "${statusFilter}". Try selecting "${t('status.all')}".`
-                : 'No delivery manifests registered yet. Click "Create Dispatch" to send your first shipment.'}
+              {t('empty.no_dispatches_desc')}
             </p>
           </div>
         ) : (
