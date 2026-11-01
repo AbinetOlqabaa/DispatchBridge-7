@@ -265,7 +265,7 @@ export const CreateDispatchModal: React.FC<CreateDispatchModalProps> = ({
                 >
                   {locations.map((loc) => (
                     <option key={loc.id} value={loc.id}>
-                      {loc.label} ({loc.city})
+                      {t(loc.label)} ({loc.city})
                     </option>
                   ))}
                 </select>
@@ -284,7 +284,7 @@ export const CreateDispatchModal: React.FC<CreateDispatchModalProps> = ({
                 >
                   {partners.map((p) => (
                     <option key={p.id} value={p.id}>
-                      {p.name} ({t(`partner.type_${p.type.toLowerCase()}`, p.type)})
+                      {t(p.name)} ({t(`partner.type_${p.type.toLowerCase()}`, p.type)})
                     </option>
                   ))}
                 </select>
@@ -472,11 +472,11 @@ export const CreateDispatchModal: React.FC<CreateDispatchModalProps> = ({
                 <div className="grid grid-cols-2 gap-3 text-slate-300">
                   <div>
                     <span className="text-slate-500 font-semibold block">{t('dispatch.origin_terminal', 'Origin Terminal')}:</span>
-                    <div className="font-semibold text-white">{selectedLocation?.label || 'Main Dock'}</div>
+                    <div className="font-semibold text-white">{t(selectedLocation?.label || 'Main Dock')}</div>
                   </div>
                   <div>
                     <span className="text-slate-500 font-semibold block">{t('table.destination_partner', 'Destination Partner')}:</span>
-                    <div className="font-semibold text-white">{selectedPartner?.name}</div>
+                    <div className="font-semibold text-white">{t(selectedPartner?.name || '')}</div>
                     <div className="text-[11px] text-slate-400">{destinationAddress}</div>
                   </div>
                   <div>

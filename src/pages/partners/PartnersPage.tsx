@@ -126,7 +126,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ onCreateDispatchWith
           >
             <div>
               <div className="flex items-start justify-between gap-2 mb-2">
-                <h3 className="font-bold text-white text-base">{partner.name}</h3>
+                <h3 className="font-bold text-white text-base">{t(partner.name)}</h3>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-sky-300 border border-slate-700 uppercase">
                   {partner.type === 'RETAILER'
                     ? t('partner.type_retailer')
@@ -145,7 +145,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ onCreateDispatchWith
               <div className="space-y-2 text-xs text-slate-300 pt-2 border-t border-slate-800/80">
                 <div className="flex items-center gap-2 text-slate-400">
                   <Building className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                  <span>{t('table.contact')}: {partner.contactPerson}</span>
+                  <span>{t('table.contact')}: {t(partner.contactPerson)}</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-400">
                   <Phone className="w-3.5 h-3.5 text-slate-500 shrink-0" />

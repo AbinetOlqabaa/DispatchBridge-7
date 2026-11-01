@@ -243,7 +243,7 @@ export const AuditPage: React.FC = () => {
                     {t('audit.entity_' + log.entityType.toLowerCase(), log.entityType)} ({log.entityId})
                   </td>
                   <td className="px-3 sm:px-3.5 py-3 text-slate-300 font-sans text-xs">
-                    {log.details}
+                    {t(log.details)}
                   </td>
                 </tr>
               ))}

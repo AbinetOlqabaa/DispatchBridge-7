@@ -102,7 +102,7 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
                 <div className="space-y-1.5 text-xs text-slate-300 mb-4">
                   <div className="flex justify-between">
                     <span className="text-slate-500">{t('table.sender_supplier')}:</span>
-                    <span className="font-semibold text-slate-200">{d.senderBusinessName}</span>
+                    <span className="font-semibold text-slate-200">{t(d.senderBusinessName)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{t('dispatch.carrier_driver', 'Carrier / Driver')}:</span>
@@ -160,7 +160,7 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
               {completedReceipts.map((d) => (
                 <tr key={d.id} className="hover:bg-slate-800/40">
                   <td className="px-2.5 sm:px-3.5 py-3 font-mono font-semibold text-indigo-300 whitespace-nowrap">{d.dispatchNumber}</td>
-                  <td className="px-2.5 sm:px-3.5 py-3 text-slate-300">{d.senderBusinessName}</td>
+                  <td className="px-2.5 sm:px-3.5 py-3 text-slate-300">{t(d.senderBusinessName)}</td>
                   <td className="px-2.5 sm:px-3.5 py-3 whitespace-nowrap">
                     <StatusBadge status={d.status} size="sm" />
                   </td>

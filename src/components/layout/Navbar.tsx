@@ -515,7 +515,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
                 <div>
                   <div className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">{user.name}</div>
-                  <div className="text-xs text-slate-400">{user.businessName}</div>
+                  <div className="text-xs text-slate-400">{t(user.businessName)}</div>
                   <div className="mt-1">{getRoleBadge(user.role)}</div>
                 </div>
               </button>

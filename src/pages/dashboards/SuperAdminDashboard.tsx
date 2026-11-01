@@ -479,7 +479,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                         {t('audit.entity_' + log.entityType.toLowerCase(), log.entityType)}: {log.entityId}
                       </td>
                       <td className="px-3.5 py-2.5 text-slate-300 font-sans text-xs">
-                        {log.details}
+                        {t(log.details)}
                       </td>
                     </tr>
                   ))}
@@ -628,7 +628,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
                       {/* Business Entity */}
                       <td className="px-4 py-3 whitespace-nowrap text-slate-300">
-                        {u.businessName}
+                        {t(u.businessName)}
                       </td>
 
                       {/* Role Selector */}

@@ -317,7 +317,7 @@ export const ExecutiveAnalyticsCharts: React.FC<ExecutiveAnalyticsChartsProps> =
                 <div key={idx} className="p-3 bg-slate-900 rounded-lg border border-slate-800/80 text-xs space-y-1.5">
                   <div className="flex justify-between items-center">
                     <span className="font-mono font-bold text-sky-400">{item.dispatchNumber}</span>
-                    <span className="text-slate-400">{item.partnerName}</span>
+                    <span className="text-slate-400">{t(item.partnerName)}</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-[11px] text-slate-300">
                     <div className="bg-slate-800/60 px-2 py-1 rounded">

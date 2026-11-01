@@ -259,7 +259,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
             <h3 className="text-base font-semibold text-white">{user.name}</h3>
             <p className="text-xs text-slate-400 flex items-center justify-center sm:justify-start gap-1 mt-0.5">
               <Building className="w-3 h-3 text-slate-500" />
-              <span>{user.businessName}</span>
+              <span>{t(user.businessName)}</span>
             </p>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-wider">

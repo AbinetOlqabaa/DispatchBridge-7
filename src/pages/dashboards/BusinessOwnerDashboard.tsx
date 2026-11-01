@@ -161,7 +161,7 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
             >
               <Building2 className="w-5 h-5 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
               <h1 className="text-2xl font-bold text-white tracking-tight group-hover:text-indigo-200 transition-colors">
-                {user?.businessName}
+                {t(user?.businessName || '')}
               </h1>
               <ChevronDown className={`w-4 h-4 text-slate-400 group-hover:text-white transition-transform ${showBusinessDropdown ? 'rotate-180' : ''}`} />
             </button>
@@ -214,7 +214,7 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
                         }`}
                       >
                         <div className="truncate mr-2">
-                          <div className="font-semibold truncate">{m.businessName}</div>
+                          <div className="font-semibold truncate">{t(m.businessName)}</div>
                           <div className="text-[10px] text-slate-400">
                             ID: {m.businessId} • {t('role.' + m.role.toLowerCase(), m.role)}
                           </div>
@@ -363,8 +363,8 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
               return (
                 <div key={p.id} className="py-3 flex items-center justify-between text-xs">
                   <div>
-                    <div className="font-semibold text-white">{p.name}</div>
-                    <div className="text-slate-400 text-[11px]">{p.contactPerson} • {p.phone}</div>
+                    <div className="font-semibold text-white">{t(p.name)}</div>
+                    <div className="text-slate-400 text-[11px]">{t(p.contactPerson)} • {p.phone}</div>
                   </div>
                   <div className="text-right">
                     <span className="font-mono text-slate-300">
@@ -417,7 +417,7 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
                 <tr key={d.id} className="hover:bg-slate-800/40 transition-colors">
                   <td className="px-3 py-3 font-mono font-semibold text-indigo-300 whitespace-nowrap">{d.dispatchNumber}</td>
                   <td className="px-3 py-3 text-slate-200">
-                    <div className="font-medium">{d.partnerName}</div>
+                    <div className="font-medium">{t(d.partnerName)}</div>
                     <div className="text-[11px] text-slate-500 truncate max-w-xs">{d.destinationSnapshot.address}</div>
                   </td>
                   <td className="px-3 py-3 whitespace-nowrap">

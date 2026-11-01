@@ -494,7 +494,7 @@ export const LocationsMapView: React.FC<LocationsMapViewProps> = ({
                         ? t('map.origin_terminal', 'Origin Terminal')
                         : t('map.legend_destination', 'Delivery Destination')}
                     </span>
-                    <h4 className="font-bold text-white text-xs mt-1.5">{selectedPoint.label}</h4>
+                    <h4 className="font-bold text-white text-xs mt-1.5">{t(selectedPoint.label)}</h4>
                   </div>
                   {selectedPoint.isDefault && (
                     <span className="text-[10px] text-amber-300 font-semibold bg-amber-950 px-1.5 py-0.5 rounded border border-amber-800">
@@ -539,7 +539,7 @@ export const LocationsMapView: React.FC<LocationsMapViewProps> = ({
 
                   {selectedPoint.contactPerson && (
                     <div className="text-[10px] text-slate-400 pt-1">
-                      <span className="text-slate-500 font-semibold">{t('map.contact_label', 'Contact:')}</span> {selectedPoint.contactPerson} ({selectedPoint.phone})
+                      <span className="text-slate-500 font-semibold">{t('map.contact_label', 'Contact:')}</span> {t(selectedPoint.contactPerson)} ({selectedPoint.phone})
                     </div>
                   )}
 
@@ -583,7 +583,7 @@ export const LocationsMapView: React.FC<LocationsMapViewProps> = ({
                       ) : (
                         <MapPin className="w-3 h-3 text-emerald-400 shrink-0" />
                       )}
-                      <span className="truncate">{p.label}</span>
+                      <span className="truncate">{t(p.label)}</span>
                     </div>
                     <div className="text-[10px] text-slate-400 font-mono">
                       {p.city} • {p.latitude.toFixed(2)}°, {p.longitude.toFixed(2)}°

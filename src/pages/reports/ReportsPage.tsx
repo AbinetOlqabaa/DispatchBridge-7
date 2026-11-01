@@ -414,7 +414,7 @@ export function ReportsPage() {
                   {(reportData.partnerPerformance || []).map((partner: any, idx: number) => (
                     <tr key={idx} className="hover:bg-slate-800/30 transition">
                       <td className="py-3.5 px-4 font-semibold text-white">
-                        {partner.partnerName}
+                        {t(partner.partnerName)}
                       </td>
                       <td className="py-3.5 px-4 text-slate-300">
                         {partner.totalDispatches}

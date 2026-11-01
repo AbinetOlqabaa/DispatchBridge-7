@@ -356,11 +356,11 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
                       </div>
                     </td>
                     <td className="px-3.5 py-3.5 text-slate-300">
-                      <div className="font-medium text-slate-200">{d.senderBusinessName}</div>
+                      <div className="font-medium text-slate-200">{t(d.senderBusinessName)}</div>
                       <div className="text-[10px] text-slate-500">{t('table.by_sender', 'By {name}', { name: d.senderName })}</div>
                     </td>
                     <td className="px-3.5 py-3.5 text-slate-200">
-                      <div className="font-semibold">{d.partnerName}</div>
+                      <div className="font-semibold">{t(d.partnerName)}</div>
                       <div className="text-[10px] text-slate-400 truncate max-w-xs">{d.destinationSnapshot?.address || 'Partner Destination'}</div>
                     </td>
                     <td className="px-3.5 py-3.5 whitespace-nowrap">

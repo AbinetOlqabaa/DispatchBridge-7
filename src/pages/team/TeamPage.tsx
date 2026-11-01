@@ -216,7 +216,7 @@ export function TeamPage() {
                 {t('nav.team', 'Team & Members')}
               </h1>
               <p className="text-xs text-slate-400">
-                {user?.businessName} • {t('team.subtitle')}
+                {t(user?.businessName || '')} • {t('team.subtitle')}
               </p>
             </div>
           </div>

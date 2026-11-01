@@ -183,7 +183,7 @@ export const SenderDashboard: React.FC<SenderDashboardProps> = ({
                     </div>
                   </td>
                   <td className="px-3.5 py-3.5 text-slate-200">
-                    <div className="font-semibold">{d.partnerName}</div>
+                    <div className="font-semibold">{t(d.partnerName)}</div>
                     <div className="text-[11px] text-slate-400 truncate max-w-xs">{d.destinationSnapshot.address}</div>
                   </td>
                   <td className="px-3.5 py-3.5 whitespace-nowrap">

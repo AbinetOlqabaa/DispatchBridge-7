@@ -229,7 +229,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
               {t('manifest.supplier_title', 'Supplier Delivery Manifest')}
             </div>
             <h1 className="text-2xl font-bold font-mono text-white mt-0.5">{dispatch.dispatchNumber}</h1>
-            <p className="text-xs text-slate-400">{t('manifest.issued_by', 'Issued by {name}', { name: dispatch.senderBusinessName })}</p>
+            <p className="text-xs text-slate-400">{t('manifest.issued_by', 'Issued by {name}', { name: t(dispatch.senderBusinessName) })}</p>
           </div>
           <div className="flex sm:flex-col items-center sm:items-end justify-between gap-1">
             <StatusBadge status={dispatch.status} />
@@ -243,8 +243,8 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
           <div className="bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
             <span className="text-slate-500 font-semibold block mb-1">{t('manifest.delivering_shipper', 'Delivering Shipper')}:</span>
-            <div className="font-bold text-white text-sm">{dispatch.senderBusinessName}</div>
-            <div className="text-slate-400 text-[11px] mt-0.5">{t('table.origin_label', 'Origin')}: {dispatch.originLocationSnapshot.label}</div>
+            <div className="font-bold text-white text-sm">{t(dispatch.senderBusinessName)}</div>
+            <div className="text-slate-400 text-[11px] mt-0.5">{t('table.origin_label', 'Origin')}: {t(dispatch.originLocationSnapshot.label)}</div>
             <div className="text-slate-400 text-[11px]">
               {t('dispatch.carrier_driver', 'Driver')}: {dispatch.driverName || t('dispatch.standard_freight', 'Standard Freight')} ({dispatch.vehicleReg || 'TRK'})
             </div>
@@ -252,7 +252,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
 
           <div className="bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
             <span className="text-slate-500 font-semibold block mb-1">{t('manifest.receiving_destination', 'Receiving Destination')}:</span>
-            <div className="font-bold text-white text-sm">{dispatch.destinationSnapshot.partnerName}</div>
+            <div className="font-bold text-white text-sm">{t(dispatch.destinationSnapshot.partnerName)}</div>
             <div className="text-slate-400 text-[11px] mt-0.5 flex items-start gap-1">
               <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
               <span>{dispatch.destinationSnapshot.address}</span>
@@ -293,8 +293,8 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
             <div key={line.id} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
               <div>
                 <span className="font-mono text-[11px] text-indigo-300 font-semibold mr-2">{line.sku}</span>
-                <span className="font-semibold text-slate-200">{line.itemName}</span>
-                {line.notes && <p className="text-[11px] text-rose-300 mt-0.5">{t('table.notes', 'Note')}: {line.notes}</p>}
+                <span className="font-semibold text-slate-200">{t(line.itemName)}</span>
+                {line.notes && <p className="text-[11px] text-rose-300 mt-0.5">{t('table.notes', 'Note')}: {t(line.notes)}</p>}
               </div>
 
               <div className="flex items-center gap-4 text-right shrink-0">
@@ -353,7 +353,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
             </div>
             <div>
               <span className="text-slate-500 block text-[11px]">{t('manifest.remarks', 'Remarks:')}</span>
-              <span className="text-slate-300 italic">{dispatch.receiverSignoff.comments || t('manifest.no_remarks', 'No remarks recorded.')}</span>
+              <span className="text-slate-300 italic">{dispatch.receiverSignoff.comments ? t(dispatch.receiverSignoff.comments) : t('manifest.no_remarks', 'No remarks recorded.')}</span>
             </div>
           </div>
 
@@ -390,12 +390,12 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
             {dispatch.discrepancyCases.map((c) => (
               <div key={c.id} className="bg-slate-800/50 p-3 rounded-xl border border-slate-700 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-white">{c.itemName}</span>
+                  <span className="font-semibold text-white">{t(c.itemName || '')}</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-800">
                     {t('discrepancy.' + c.type.toLowerCase(), c.type)} (-{c.shortfallQuantity})
                   </span>
                 </div>
-                {c.notes && <p className="text-[11px] text-slate-400">{t('table.notes', 'Note')}: {c.notes}</p>}
+                {c.notes && <p className="text-[11px] text-slate-400">{t('table.notes', 'Note')}: {t(c.notes)}</p>}
                 {c.evidence && c.evidence.length > 0 && (
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
                     {c.evidence.map((ev) => (
@@ -452,7 +452,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
               {dispatch.lines.map((line, idx) => (
                 <div key={line.id} className="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs space-y-2">
                   <div className="flex justify-between font-semibold">
-                    <span className="text-white">{line.itemName}</span>
+                    <span className="text-white">{t(line.itemName)}</span>
                     <span className="text-slate-400 font-mono">{t('table.dispatched')}: {line.quantitySent} {t('unit.' + line.unit.toLowerCase(), line.unit)}</span>
                   </div>
 

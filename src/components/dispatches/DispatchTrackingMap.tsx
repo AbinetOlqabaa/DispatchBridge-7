@@ -161,7 +161,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         updatedAt: cachedRecord.currentCoordinates.updatedAt || cachedRecord.cachedAt,
         speedKmh: cachedRecord.currentCoordinates.speedKmh ?? 80,
         heading: cachedRecord.currentCoordinates.heading ?? 310,
-        checkpointName: cachedRecord.currentCoordinates.checkpointName || t('map.offline_waypoint_cache'),
+        checkpointName: t(cachedRecord.currentCoordinates.checkpointName || '') || t('map.offline_waypoint_cache'),
         source: 'CHECKPOINT' as const,
       };
     }
@@ -172,7 +172,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         updatedAt: dispatch.currentCoordinates.updatedAt || dispatch.updatedAt,
         speedKmh: dispatch.currentCoordinates.speedKmh ?? (dispatch.status === 'IN_TRANSIT' ? 84 : 0),
         heading: dispatch.currentCoordinates.heading ?? 315,
-        checkpointName: dispatch.currentCoordinates.checkpointName || t('map.active_transit_corridor'),
+        checkpointName: t(dispatch.currentCoordinates.checkpointName || '') || t('map.active_transit_corridor'),
         source: dispatch.currentCoordinates.source || 'GPS',
       };
     }
@@ -183,7 +183,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
         updatedAt: dispatch.receivedAt || dispatch.updatedAt,
         speedKmh: 0,
         heading: 0,
-        checkpointName: `${dispatch.partnerName} (${t('map.dest_terminal_pin')})`,
+        checkpointName: `${t(dispatch.partnerName)} (${t('map.dest_terminal_pin')})`,
         source: 'CHECKPOINT' as const,
       };
     }
@@ -193,7 +193,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
       updatedAt: dispatch.dispatchedAt,
       speedKmh: 0,
       heading: 0,
-      checkpointName: dispatch.originLocationSnapshot?.label || t('map.origin_dock_pin'),
+      checkpointName: t(dispatch.originLocationSnapshot?.label || '') || t('map.origin_dock_pin'),
       source: 'CHECKPOINT' as const,
     };
   }, [dispatch, originCoords, destCoords, isEffectivelyOffline, cachedRecord, t]);
@@ -797,7 +797,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
               textAnchor="middle"
               className="fill-slate-300 font-sans font-semibold text-[11px] drop-shadow"
             >
-              {dispatch.originLocationSnapshot?.label || t('map.origin_dock_pin', 'Origin Dock')}
+              {t(dispatch.originLocationSnapshot?.label || '') || t('map.origin_dock_pin', 'Origin Dock')}
             </text>
           </g>
 
@@ -810,7 +810,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
                 id: 'dest_pin',
                 latitude: destCoords.lat,
                 longitude: destCoords.lng,
-                label: dispatch.destinationSnapshot?.partnerName || t('map.dest_terminal_pin', 'Destination Terminal'),
+                label: t(dispatch.destinationSnapshot?.partnerName || '') || t('map.dest_terminal_pin', 'Destination Terminal'),
               })
             }
           >
@@ -821,7 +821,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
               textAnchor="middle"
               className="fill-emerald-300 font-sans font-semibold text-[11px] drop-shadow"
             >
-              {dispatch.partnerName}
+              {t(dispatch.partnerName)}
             </text>
           </g>
 
@@ -903,7 +903,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
                 ×
               </button>
             </div>
-            <div className="font-medium text-white">{activeWaypointTooltip.label}</div>
+            <div className="font-medium text-white">{t(activeWaypointTooltip.label || '')}</div>
             <div className="text-[11px] font-mono text-slate-300">
               {activeWaypointTooltip.latitude.toFixed(5)}° N, {Math.abs(activeWaypointTooltip.longitude).toFixed(5)}° W
             </div>

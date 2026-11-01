@@ -358,7 +358,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               {t('dispatch.dispatched_on_by', {
                 date: new Date(dispatch.dispatchedAt).toLocaleString(),
                 sender: dispatch.senderName,
-                business: dispatch.senderBusinessName,
+                business: t(dispatch.senderBusinessName),
               })}
             </p>
           </div>
@@ -378,7 +378,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               <Warehouse className="w-3.5 h-3.5 text-indigo-400" />
               <span>{t('dispatch.origin_terminal', 'Origin Loading Terminal')}</span>
             </div>
-            <div className="font-semibold text-white text-sm">{dispatch.originLocationSnapshot.label}</div>
+            <div className="font-semibold text-white text-sm">{t(dispatch.originLocationSnapshot.label)}</div>
             <div className="text-slate-400 text-[11px] mt-0.5">{dispatch.originLocationSnapshot.address}</div>
           </div>
 
@@ -387,10 +387,10 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               <Building className="w-3.5 h-3.5 text-sky-400" />
               <span>{t('dispatch.partner_dest', 'Receiving Partner Destination')}</span>
             </div>
-            <div className="font-semibold text-white text-sm">{dispatch.destinationSnapshot.partnerName}</div>
+            <div className="font-semibold text-white text-sm">{t(dispatch.destinationSnapshot.partnerName)}</div>
             <div className="text-slate-400 text-[11px] mt-0.5">{dispatch.destinationSnapshot.address}</div>
             <div className="text-slate-500 text-[10px] mt-0.5">
-              {t('table.contact')}: {dispatch.destinationSnapshot.contactPerson} • {dispatch.destinationSnapshot.phone}
+              {t('table.contact')}: {t(dispatch.destinationSnapshot.contactPerson)} • {dispatch.destinationSnapshot.phone}
             </div>
           </div>
 
@@ -433,7 +433,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               </div>
               <div>
                 <span className="text-slate-500">{t('dispatch.viewer', 'Viewer:')}</span>{' '}
-                <span className="text-indigo-300 font-medium">{dispatch.viewReceipt?.viewerName || dispatch.partnerName}</span>
+                <span className="text-indigo-300 font-medium">{t(dispatch.viewReceipt?.viewerName || dispatch.partnerName)}</span>
               </div>
             </div>
           ) : (
@@ -457,7 +457,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
         {dispatch.notes && (
           <div className="text-xs bg-slate-800/30 p-3 rounded-xl text-slate-300 border border-slate-800">
             <span className="font-semibold text-slate-400 block mb-0.5">{t('dispatch.instructions_notes', 'Instructions & Notes:')}</span>
-            <p className="whitespace-pre-line">{dispatch.notes}</p>
+            <p className="whitespace-pre-line">{t(dispatch.notes)}</p>
           </div>
         )}
       </div>
@@ -499,7 +499,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="font-bold text-white text-sm mr-2">{c.itemName}</span>
+                    <span className="font-bold text-white text-sm mr-2">{t(c.itemName || '')}</span>
                     <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-800 uppercase">
                       {t('discrepancy.' + c.type.toLowerCase(), c.type)}
                     </span>
@@ -527,19 +527,19 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
 
                 {c.notes && (
                   <div className="text-[11px] text-slate-400 bg-slate-900/80 p-2 rounded">
-                    <strong>{t('recon.receiver_note', 'Receiver Note:')}</strong> {c.notes}
+                    <strong>{t('recon.receiver_note', 'Receiver Note:')}</strong> {t(c.notes)}
                   </div>
                 )}
 
                 {c.senderResponseNotes && (
                   <div className="text-[11px] text-blue-300 bg-blue-950/40 border border-blue-900/40 p-2 rounded">
-                    <strong>{t('recon.sender_response_label', 'Sender Response:')}</strong> {c.senderResponseNotes}
+                    <strong>{t('recon.sender_response_label', 'Sender Response:')}</strong> {t(c.senderResponseNotes)}
                   </div>
                 )}
 
                 {c.resolution && (
                   <div className="text-[11px] text-emerald-300 bg-emerald-950/40 border border-emerald-900/40 p-2 rounded">
-                    <strong>{t('recon.final_resolution_label', 'Final Resolution:')}</strong> {c.resolution} (by {c.resolvedByName})
+                    <strong>{t('recon.final_resolution_label', 'Final Resolution:')}</strong> {t(c.resolution)} (by {c.resolvedByName})
                   </div>
                 )}
 
@@ -715,7 +715,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               {dispatch.lines.map((line) => (
                 <tr key={line.id} className="hover:bg-slate-800/30">
                   <td className="px-3.5 py-3 text-slate-400 whitespace-nowrap">{line.sku}</td>
-                  <td className="px-3.5 py-3 font-sans font-medium text-slate-200">{line.itemName}</td>
+                  <td className="px-3.5 py-3 font-sans font-medium text-slate-200">{t(line.itemName)}</td>
                   <td className="px-3.5 py-3 text-right text-slate-200 font-bold whitespace-nowrap">
                     {line.quantitySent} {t('unit.' + line.unit.toLowerCase(), line.unit)}
                   </td>
@@ -751,7 +751,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
                       <span className="text-slate-500">—</span>
                     )}
                   </td>
-                  <td className="px-3.5 py-3 font-sans text-slate-400 text-[11px]">{line.notes || '—'}</td>
+                  <td className="px-3.5 py-3 font-sans text-slate-400 text-[11px]">{line.notes ? t(line.notes) : '—'}</td>
                 </tr>
               ))}
             </tbody>
@@ -780,7 +780,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
             </div>
             <div>
               <span className="text-slate-500">{t('recon.receiver_comments', 'Receiver Comments:')}</span>
-              <div className="text-slate-300">{dispatch.receiverSignoff.comments || t('recon.no_remarks', 'No remarks provided.')}</div>
+              <div className="text-slate-300">{dispatch.receiverSignoff.comments ? t(dispatch.receiverSignoff.comments) : t('recon.no_remarks', 'No remarks provided.')}</div>
             </div>
 
             {dispatch.receiverSignoff.signatureSvgOrBase64 && (

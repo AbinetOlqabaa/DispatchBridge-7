@@ -181,7 +181,7 @@ export const LocationsPage: React.FC = () => {
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Warehouse className="w-4 h-4 text-sky-400" />
-                <h3 className="font-bold text-white text-sm">{loc.label}</h3>
+                <h3 className="font-bold text-white text-sm">{t(loc.label)}</h3>
               </div>
               {loc.isDefault && (
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800">
