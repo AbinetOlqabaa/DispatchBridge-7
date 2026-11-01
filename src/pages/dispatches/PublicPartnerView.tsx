@@ -246,7 +246,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
             <div className="font-bold text-white text-sm">{dispatch.senderBusinessName}</div>
             <div className="text-slate-400 text-[11px] mt-0.5">{t('table.origin_label', 'Origin')}: {dispatch.originLocationSnapshot.label}</div>
             <div className="text-slate-400 text-[11px]">
-              {t('dispatch.carrier_driver', 'Driver')}: {dispatch.driverName || 'Standard Freight'} ({dispatch.vehicleReg || 'TRK'})
+              {t('dispatch.carrier_driver', 'Driver')}: {dispatch.driverName || t('dispatch.standard_freight', 'Standard Freight')} ({dispatch.vehicleReg || 'TRK'})
             </div>
           </div>
 
@@ -392,7 +392,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-white">{c.itemName}</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-800">
-                    {c.type} (-{c.shortfallQuantity})
+                    {t('discrepancy.' + c.type.toLowerCase(), c.type)} (-{c.shortfallQuantity})
                   </span>
                 </div>
                 {c.notes && <p className="text-[11px] text-slate-400">{t('table.notes', 'Note')}: {c.notes}</p>}

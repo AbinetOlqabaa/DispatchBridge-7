@@ -263,11 +263,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
             </p>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase tracking-wider">
-                {user.role}
+                {t('role.' + user.role.toLowerCase(), user.role)}
               </span>
               <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
                 <CheckCircle2 className="w-2.5 h-2.5" />
-                <span>Verified Account</span>
+                <span>{t('auth.verified_badge', 'Verified Account')}</span>
               </span>
             </div>
 
@@ -393,7 +393,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
               }}
               className="text-xs text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer"
             >
-              {showPasswordSection ? t('common.close') : t('profile.change_password_action')}
+              {showPasswordSection ? t('action.close') : t('profile.change_password_action')}
             </button>
           </div>
 

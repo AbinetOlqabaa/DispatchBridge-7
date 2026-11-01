@@ -435,16 +435,16 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                   className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white"
                 >
                   <option value="ALL">{t('audit.all_event_types')}</option>
-                  <option value="DISPATCH_CREATED">DISPATCH_CREATED</option>
-                  <option value="DISPATCH_VIEWED">DISPATCH_VIEWED</option>
-                  <option value="RECEIPT_RECORDED">RECEIPT_RECORDED</option>
-                  <option value="RECEIPT_DISCREPANCY_RECORDED">RECEIPT_DISCREPANCY_RECORDED</option>
-                  <option value="RECONCILIATION_FINALIZED">RECONCILIATION_FINALIZED</option>
-                  <option value="USER_LOGIN">USER_LOGIN</option>
-                  <option value="USER_REGISTERED">USER_REGISTERED</option>
-                  <option value="ADMIN_USER_SUSPENDED">ADMIN_USER_SUSPENDED</option>
-                  <option value="ADMIN_USER_REACTIVATED">ADMIN_USER_REACTIVATED</option>
-                  <option value="ADMIN_USER_ROLE_CHANGED">ADMIN_USER_ROLE_CHANGED</option>
+                  <option value="DISPATCH_CREATED">{t('audit.action_dispatch_created', 'DISPATCH_CREATED')}</option>
+                  <option value="DISPATCH_VIEWED">{t('audit.action_dispatch_viewed', 'DISPATCH_VIEWED')}</option>
+                  <option value="RECEIPT_RECORDED">{t('audit.action_receipt_recorded', 'RECEIPT_RECORDED')}</option>
+                  <option value="RECEIPT_DISCREPANCY_RECORDED">{t('audit.action_receipt_discrepancy_recorded', 'RECEIPT_DISCREPANCY_RECORDED')}</option>
+                  <option value="RECONCILIATION_FINALIZED">{t('audit.action_reconciliation_finalized', 'RECONCILIATION_FINALIZED')}</option>
+                  <option value="USER_LOGIN">{t('audit.action_user_login', 'USER_LOGIN')}</option>
+                  <option value="USER_REGISTERED">{t('audit.action_user_registered', 'USER_REGISTERED')}</option>
+                  <option value="ADMIN_USER_SUSPENDED">{t('audit.action_admin_user_suspended', 'ADMIN_USER_SUSPENDED')}</option>
+                  <option value="ADMIN_USER_REACTIVATED">{t('audit.action_admin_user_reactivated', 'ADMIN_USER_REACTIVATED')}</option>
+                  <option value="ADMIN_USER_ROLE_CHANGED">{t('audit.action_admin_user_role_changed', 'ADMIN_USER_ROLE_CHANGED')}</option>
                 </select>
               </div>
             </div>
@@ -468,15 +468,15 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       </td>
                       <td className="px-3.5 py-2.5 whitespace-nowrap">
                         <span className="font-semibold text-slate-200">{log.actorName}</span>
-                        <span className="text-[10px] text-slate-500 block">{t('table.role')}: {log.actorRole}</span>
+                        <span className="text-[10px] text-slate-500 block">{t('table.role')}: {t('role.' + log.actorRole.toLowerCase(), log.actorRole)}</span>
                       </td>
                       <td className="px-3.5 py-2.5">
                         <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
-                          {log.action}
+                          {t('audit.action_' + log.action.toLowerCase(), log.action)}
                         </span>
                       </td>
                       <td className="px-3.5 py-2.5 text-indigo-300 whitespace-nowrap">
-                        {log.entityType}: {log.entityId}
+                        {t('audit.entity_' + log.entityType.toLowerCase(), log.entityType)}: {log.entityId}
                       </td>
                       <td className="px-3.5 py-2.5 text-slate-300 font-sans text-xs">
                         {log.details}

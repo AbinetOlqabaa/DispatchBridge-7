@@ -189,7 +189,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                   <label className="block text-slate-300 font-semibold mb-2">{t('rec.preferred_categories', 'Preferred Categories')}</label>
                   <div className="flex flex-wrap gap-1.5">
                     {[
-                      { id: 'FOOD_BEVERAGE', label: t('rec.cat_food') },
+                      { id: 'FOOD_BEVERAGE', label: t('rec.cat_food_bev') },
                       { id: 'COLD_CHAIN', label: t('rec.cat_cold_chain') },
                       { id: 'PACKAGING', label: t('rec.cat_packaging') },
                       { id: 'SAFETY_SECURITY', label: t('rec.cat_safety') },
@@ -243,7 +243,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                     {[
                       { id: 'STANDARD', label: t('rec.pri_standard') },
                       { id: 'EXPEDITED', label: t('rec.pri_expedited') },
-                      { id: 'SAME_DAY', label: t('rec.pri_same_day') },
+                      { id: 'SAME_DAY', label: t('rec.pri_sameday') },
                     ].map((pri) => (
                       <button
                         key={pri.id}
@@ -291,6 +291,29 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                   ? t('rec.cat_logistics')
                   : String(item.category).replace('_', ' ');
 
+              const localizedTitle = t('rec.item_' + item.id + '_name', item.name);
+              const localizedDesc = t('rec.item_' + item.id + '_desc', item.description);
+              const tempLabel =
+                preferences.temperatureControl === 'REFRIGERATED'
+                  ? t('rec.temp_refrigerated')
+                  : preferences.temperatureControl === 'AMBIENT'
+                  ? t('rec.temp_ambient')
+                  : t('rec.temp_any');
+
+              const localizedReason =
+                rec.coOccurringSkus.length > 0
+                  ? t('rec.reason_co_occurrence', primaryReason, { skus: rec.coOccurringSkus.slice(0, 2).join(', ') })
+                  : rec.browsingScore >= 0.35
+                  ? t('rec.reason_browsing', primaryReason)
+                  : t('rec.reason_default', primaryReason);
+
+              const localizedExplanation =
+                rec.coOccurringSkus.length > 0
+                  ? t('rec.explain_co_occurrence', collaborativeExplanation, { skus: rec.coOccurringSkus.slice(0, 2).join(' & ') })
+                  : rec.browsingScore >= 0.35
+                  ? t('rec.explain_browsing', collaborativeExplanation, { category: categoryLabel })
+                  : t('rec.explain_default', collaborativeExplanation, { category: categoryLabel, temp: tempLabel });
+
               return (
                 <div
                   key={item.id}
@@ -304,36 +327,36 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                       </span>
                       <div className="flex items-center gap-1.5 bg-indigo-950/80 border border-indigo-800 px-2.5 py-0.5 rounded-full text-indigo-300 text-xs font-bold">
                         <Sparkles className="w-3 h-3 text-indigo-400" />
-                        <span>{confidencePercent}% {t('rec.confidence')}</span>
+                        <span>{ t('rec.confidence', { percent: confidencePercent }) }</span>
                       </div>
                     </div>
 
                     {/* Title & SKU */}
                     <div>
-                      <h4 className="font-bold text-white text-sm leading-snug">{item.name}</h4>
+                      <h4 className="font-bold text-white text-sm leading-snug">{localizedTitle}</h4>
                       <div className="text-[11px] font-mono text-slate-400 mt-0.5">
                         {item.sku} • {t('unit.' + item.unit.toLowerCase(), item.unit)}
                       </div>
                     </div>
 
                     {/* Description */}
-                    <p className="text-xs text-slate-400 line-clamp-2">{item.description}</p>
+                    <p className="text-xs text-slate-400 line-clamp-2">{localizedDesc}</p>
 
                     {/* Rationale Callout (Collaborative Filtering Explainability) */}
                     <div className="bg-slate-950 rounded-xl p-3 border border-slate-800/80 space-y-1.5">
                       <div className="text-[11px] font-semibold text-sky-300 flex items-center gap-1">
                         <TrendingUp className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                        <span>{primaryReason}</span>
+                        <span>{localizedReason}</span>
                       </div>
                       <p className="text-[10px] text-slate-400 leading-relaxed">
-                        {collaborativeExplanation}
+                        {localizedExplanation}
                       </p>
 
                       {/* Score Breakdown Bars */}
                       <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
-                        <span>{t('rec.cf_affinity')}: {Math.round(rec.collaborativeScore * 100)}%</span>
-                        <span>{t('rec.pref_match')}: {Math.round(rec.preferenceScore * 100)}%</span>
-                        <span>{t('rec.browse_score')}: {Math.round(rec.browsingScore * 100)}%</span>
+                        <span>{t('rec.cf_affinity', { score: Math.round(rec.collaborativeScore * 100) })}</span>
+                        <span>{t('rec.pref_match', { score: Math.round(rec.preferenceScore * 100) })}</span>
+                        <span>{t('rec.browse_score', { score: Math.round(rec.browsingScore * 100) })}</span>
                       </div>
                     </div>
                   </div>
@@ -385,20 +408,20 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800">
-                    {plan.tier}
+                    {t(`rec.roadmap_${index + 1}_tier`, plan.tier)}
                   </span>
                   <span className="text-xs font-mono text-slate-500">{t('rec.step_of', { step: index + 1, total: 4 })}</span>
                 </div>
 
-                <h4 className="text-sm font-bold text-white">{plan.title}</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">{plan.description}</p>
+                <h4 className="text-sm font-bold text-white">{t(`rec.roadmap_${index + 1}_title`, plan.title)}</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">{t(`rec.roadmap_${index + 1}_desc`, plan.description)}</p>
 
                 <div className="space-y-2 text-xs pt-2 border-t border-slate-800">
                   <div className="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
                     <span className="text-[11px] font-semibold text-amber-300 block mb-0.5">
                       {t('rec.why_it_matters', 'Why It Matters:')}
                     </span>
-                    <p className="text-[11px] text-slate-400 leading-relaxed">{plan.rationale}</p>
+                    <p className="text-[11px] text-slate-400 leading-relaxed">{t(`rec.roadmap_${index + 1}_rationale`, plan.rationale)}</p>
                   </div>
 
                   <div className="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
@@ -406,7 +429,7 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                       {t('rec.production_impl', 'Production Implementation:')}
                     </span>
                     <p className="text-[11px] text-slate-400 leading-relaxed">
-                      {plan.implementationStrategy}
+                      {t(`rec.roadmap_${index + 1}_impl`, plan.implementationStrategy)}
                     </p>
                   </div>
                 </div>

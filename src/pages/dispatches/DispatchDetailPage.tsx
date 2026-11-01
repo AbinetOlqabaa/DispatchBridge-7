@@ -501,11 +501,11 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
                   <div>
                     <span className="font-bold text-white text-sm mr-2">{c.itemName}</span>
                     <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-800 uppercase">
-                      {c.type}
+                      {t('discrepancy.' + c.type.toLowerCase(), c.type)}
                     </span>
                   </div>
                   <span className="font-semibold text-xs text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-800">
-                    {t('recon.status_label', 'Status:')} {c.status}
+                    {t('recon.status_label', 'Status:')} {t('status.' + c.status.toLowerCase(), c.status)}
                   </span>
                 </div>
 
@@ -838,13 +838,13 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
                     <span className="text-white">
                       {line.sku} - {line.itemName}
                     </span>
-                    <span className="text-slate-400 font-mono">{t('table.dispatched', 'Dispatched')}: {line.quantitySent} {line.unit}</span>
+                    <span className="text-slate-400 font-mono">{t('table.dispatched', 'Dispatched')}: {line.quantitySent} {t('unit.' + line.unit.toLowerCase(), line.unit)}</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div>
                       <label className="block text-[11px] font-medium text-slate-300 mb-1">
-                        {t('table.received', 'Received Count')} ({line.unit}) *
+                        {t('table.received', 'Received Count')} ({t('unit.' + line.unit.toLowerCase(), line.unit)}) *
                       </label>
                       <input
                         type="number"

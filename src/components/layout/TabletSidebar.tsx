@@ -111,7 +111,7 @@ export const TabletSidebar: React.FC<TabletSidebarProps> = ({
   return (
     <aside
       ref={sidebarRef}
-      className="hidden md:landscape:flex flex-col w-64 shrink-0 bg-slate-900/95 border-r border-slate-800 h-screen sticky top-0 z-30 select-none shadow-xl"
+      className="hidden md:landscape:flex xl:hidden flex-col w-64 shrink-0 bg-slate-900/95 border-r border-slate-800 h-screen sticky top-0 z-30 select-none shadow-xl"
       aria-label="Tablet Landscape Navigation Sidebar"
     >
       {/* Brand Header */}
@@ -188,7 +188,7 @@ export const TabletSidebar: React.FC<TabletSidebarProps> = ({
               className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-slate-800 flex flex-col min-h-[44px] justify-center cursor-pointer"
             >
               <span className="font-semibold text-emerald-400">{t('role.business_owner', 'Business Owner')}</span>
-              <span className="text-[10px] text-slate-400">Apex Supply (Eleanor)</span>
+              <span className="text-[10px] text-slate-400">{t('role.desc_owner', 'Apex Supply (Eleanor)')}</span>
             </button>
             <button
               onClick={() => {
@@ -198,7 +198,7 @@ export const TabletSidebar: React.FC<TabletSidebarProps> = ({
               className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-slate-800 flex flex-col min-h-[44px] justify-center cursor-pointer"
             >
               <span className="font-semibold text-blue-400">{t('role.sender', 'Sender / Dispatcher')}</span>
-              <span className="text-[10px] text-slate-400">Carlos Ruiz</span>
+              <span className="text-[10px] text-slate-400">{t('role.desc_sender', 'Carlos Ruiz')}</span>
             </button>
             <button
               onClick={() => {
@@ -208,7 +208,7 @@ export const TabletSidebar: React.FC<TabletSidebarProps> = ({
               className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-slate-800 flex flex-col min-h-[44px] justify-center cursor-pointer"
             >
               <span className="font-semibold text-amber-400">{t('role.receiver', 'Receiver / Partner')}</span>
-              <span className="text-[10px] text-slate-400">Metro Retail (David Miller)</span>
+              <span className="text-[10px] text-slate-400">{t('role.desc_receiver', 'Metro Retail (David Miller)')}</span>
             </button>
             <button
               onClick={() => {
@@ -218,7 +218,7 @@ export const TabletSidebar: React.FC<TabletSidebarProps> = ({
               className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-slate-800 flex flex-col min-h-[44px] justify-center cursor-pointer border-t border-slate-800 mt-1 pt-1.5"
             >
               <span className="font-semibold text-purple-400">{t('role.super_admin', 'Super Administrator')}</span>
-              <span className="text-[10px] text-slate-400">System Operator</span>
+              <span className="text-[10px] text-slate-400">{t('role.desc_admin', 'System Operator')}</span>
             </button>
           </div>
         )}

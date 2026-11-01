@@ -232,15 +232,15 @@ export const AuditPage: React.FC = () => {
                   </td>
                   <td className="px-3 sm:px-3.5 py-3 whitespace-nowrap">
                     <span className="font-semibold text-slate-200">{log.actorName}</span>
-                    <span className="text-[10px] text-slate-500 block font-sans">{t('table.role')}: {log.actorRole}</span>
+                    <span className="text-[10px] text-slate-500 block font-sans">{t('table.role')}: {t('role.' + log.actorRole.toLowerCase(), log.actorRole)}</span>
                   </td>
                   <td className="px-3 sm:px-3.5 py-3 whitespace-nowrap">
                     <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
-                      {log.action}
+                      {t('audit.action_' + log.action.toLowerCase(), log.action)}
                     </span>
                   </td>
                   <td className="px-3 sm:px-3.5 py-3 text-indigo-300 whitespace-nowrap">
-                    {log.entityType} ({log.entityId})
+                    {t('audit.entity_' + log.entityType.toLowerCase(), log.entityType)} ({log.entityId})
                   </td>
                   <td className="px-3 sm:px-3.5 py-3 text-slate-300 font-sans text-xs">
                     {log.details}

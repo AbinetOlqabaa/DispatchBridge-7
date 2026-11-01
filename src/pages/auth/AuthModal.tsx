@@ -599,7 +599,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             {/* Simulation label badge */}
             <div className="mb-4 p-2.5 rounded-xl bg-sky-950/70 border border-sky-800/70 text-sky-300 text-xs flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
-              <span>Fayda e-ID Gateway Simulator Active (Dev Mode)</span>
+              <span>{t('auth.fayda_sim_banner', 'Fayda e-ID Gateway Simulator Active (Dev Mode)')}</span>
             </div>
 
             {regStep === 'FORM' ? (

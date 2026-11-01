@@ -343,28 +343,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="w-full text-left px-2.5 py-2 rounded-lg text-xs hover:bg-slate-800 flex flex-col gap-0.5 cursor-pointer"
                   >
                     <span className="font-semibold text-emerald-400">{t('role.business_owner', 'Business Owner')}</span>
-                    <span className="text-[11px] text-slate-400">Apex Supply Logistics (Eleanor Vance)</span>
+                    <span className="text-[11px] text-slate-400">{t('role.desc_owner', 'Apex Supply Logistics (Eleanor Vance)')}</span>
                   </button>
                   <button
                     onClick={() => quickLoginDemoRole('SENDER')}
                     className="w-full text-left px-2.5 py-2 rounded-lg text-xs hover:bg-slate-800 flex flex-col gap-0.5 cursor-pointer"
                   >
                     <span className="font-semibold text-blue-400">{t('role.sender', 'Sender / Dispatcher')}</span>
-                    <span className="text-[11px] text-slate-400">Create & dispatch items (Carlos Ruiz)</span>
+                    <span className="text-[11px] text-slate-400">{t('role.desc_sender', 'Create & dispatch items (Carlos Ruiz)')}</span>
                   </button>
                   <button
                     onClick={() => quickLoginDemoRole('RECEIVER')}
                     className="w-full text-left px-2.5 py-2 rounded-lg text-xs hover:bg-slate-800 flex flex-col gap-0.5 cursor-pointer"
                   >
                     <span className="font-semibold text-amber-400">{t('role.receiver', 'Receiver / Partner')}</span>
-                    <span className="text-[11px] text-slate-400">Metro Retail Receiving (David Miller)</span>
+                    <span className="text-[11px] text-slate-400">{t('role.desc_receiver', 'Metro Retail Receiving (David Miller)')}</span>
                   </button>
                   <button
                     onClick={() => quickLoginDemoRole('SUPER_ADMIN')}
                     className="w-full text-left px-2.5 py-2 rounded-lg text-xs hover:bg-slate-800 flex flex-col gap-0.5 cursor-pointer border-t border-slate-800 mt-1 pt-1.5"
                   >
                     <span className="font-semibold text-purple-400">{t('role.super_admin', 'Super Administrator')}</span>
-                    <span className="text-[11px] text-slate-400">System operator, audit & tenant oversight</span>
+                    <span className="text-[11px] text-slate-400">{t('role.desc_admin', 'System operator, audit & tenant oversight')}</span>
                   </button>
                 </div>
               )}
@@ -449,8 +449,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Tablet First-Class Navigation Strip (Covers Tablet Portrait & Landscape: 768px - 1279px) */}
-      <div className="hidden md:flex xl:hidden border-t border-slate-800/80 bg-slate-900/95 px-2.5 sm:px-4 py-1.5 items-center gap-1.5 overflow-x-auto scrollbar-thin w-full shadow-inner">
+      {/* Tablet Portrait First-Class Navigation Strip (Tablet Landscape uses TabletSidebar) */}
+      <div className="hidden md:flex md:landscape:hidden xl:hidden border-t border-slate-800/80 bg-slate-900/95 px-2.5 sm:px-4 py-1.5 items-center gap-1.5 overflow-x-auto scrollbar-thin w-full shadow-inner">
         {navItems.filter((i) => i.show).map((item) => {
           const Icon = item.icon;
           const isActive = currentTab === item.id;

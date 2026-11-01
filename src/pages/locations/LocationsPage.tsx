@@ -95,7 +95,7 @@ export const LocationsPage: React.FC = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner label="Loading dispatch origins & active delivery points..." />;
+  if (loading) return <LoadingSpinner label={t('msg.loading')} />;
 
   const canAdd = user && ['BUSINESS_OWNER', 'SENDER', 'SUPER_ADMIN'].includes(user.role);
 
