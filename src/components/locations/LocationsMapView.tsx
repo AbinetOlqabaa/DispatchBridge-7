@@ -428,7 +428,7 @@ export const LocationsMapView: React.FC<LocationsMapViewProps> = ({
                     textAnchor="middle"
                     className="pointer-events-none drop-shadow-md"
                   >
-                    {point.city}
+                    {t(point.city)}
                   </text>
                   <text
                     x={x}
@@ -507,9 +507,9 @@ export const LocationsMapView: React.FC<LocationsMapViewProps> = ({
                   <div className="flex items-start gap-1.5">
                     <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
                     <div>
-                      <div>{selectedPoint.address}</div>
+                      <div>{t(selectedPoint.address)}</div>
                       <div className="text-[10px] text-slate-400">
-                        {selectedPoint.city}, {selectedPoint.region} {selectedPoint.countryCode}
+                        {t(selectedPoint.city)}, {selectedPoint.region} {selectedPoint.countryCode}
                       </div>
                     </div>
                   </div>
@@ -586,7 +586,7 @@ export const LocationsMapView: React.FC<LocationsMapViewProps> = ({
                       <span className="truncate">{t(p.label)}</span>
                     </div>
                     <div className="text-[10px] text-slate-400 font-mono">
-                      {p.city} • {p.latitude.toFixed(2)}°, {p.longitude.toFixed(2)}°
+                      {t(p.city)} • {p.latitude.toFixed(2)}°, {p.longitude.toFixed(2)}°
                     </div>
                   </div>
                 </button>

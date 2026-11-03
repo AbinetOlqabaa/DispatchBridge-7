@@ -426,7 +426,7 @@ export const BusinessOwnerDashboard: React.FC<BusinessOwnerDashboardProps> = ({
                   </td>
                   <td className="px-2.5 sm:px-3 py-3 text-slate-200">
                     <div className="font-medium">{t(d.partnerName)}</div>
-                    <div className="text-[11px] text-slate-500 truncate max-w-xs">{d.destinationSnapshot.address}</div>
+                    <div className="text-[11px] text-slate-500 truncate max-w-xs">{t(d.destinationSnapshot.address)}</div>
                   </td>
                   <td className="px-2.5 sm:px-3 py-3 whitespace-nowrap">
                     <StatusBadge status={d.status} size="sm" />

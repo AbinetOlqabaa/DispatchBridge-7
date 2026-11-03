@@ -157,7 +157,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ onCreateDispatchWith
                 </div>
                 <div className="flex items-start gap-2 text-slate-400">
                   <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
-                  <span className="line-clamp-2">{partner.deliveryAddress}</span>
+                  <span className="line-clamp-2">{t(partner.deliveryAddress)}</span>
                 </div>
               </div>
             </div>

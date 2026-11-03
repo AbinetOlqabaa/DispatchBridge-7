@@ -85,7 +85,7 @@ export const SenderDashboard: React.FC<SenderDashboardProps> = ({
             <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-950 px-2.5 py-0.5 rounded-full border border-blue-800">
               {t('role.sender')}
             </span>
-            <span className="text-xs text-slate-400">{t('dashboard.dispatcher_label', { name: user?.name || '' })}</span>
+            <span className="text-xs text-slate-400">{t('dashboard.dispatcher_label', { name: t(user?.name || '') })}</span>
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">{t('nav.dispatches')}</h1>
           <p className="text-xs text-slate-400 mt-0.5">
@@ -184,7 +184,7 @@ export const SenderDashboard: React.FC<SenderDashboardProps> = ({
                   </td>
                   <td className="px-2.5 sm:px-3.5 py-3.5 text-slate-200">
                     <div className="font-semibold">{t(d.partnerName)}</div>
-                    <div className="text-[11px] text-slate-400 truncate max-w-xs">{d.destinationSnapshot.address}</div>
+                    <div className="text-[11px] text-slate-400 truncate max-w-xs">{t(d.destinationSnapshot.address)}</div>
                   </td>
                   <td className="px-2.5 sm:px-3.5 py-3.5 whitespace-nowrap">
                     <StatusBadge status={d.status} size="sm" />
@@ -210,7 +210,7 @@ export const SenderDashboard: React.FC<SenderDashboardProps> = ({
                   <td className="px-2.5 sm:px-3.5 py-3.5 text-slate-300 whitespace-nowrap">
                     <div>
                       {d.driverName
-                        ? `${d.driverName} (${d.vehicleReg || t('dispatch.truck_fallback')})`
+                        ? `${t(d.driverName)} (${d.vehicleReg || t('dispatch.truck_fallback')})`
                         : t('dispatch.carrier_unassigned', 'Carrier Unassigned')}
                     </div>
                     <div className="text-[11px] text-slate-500">

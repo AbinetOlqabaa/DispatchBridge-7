@@ -246,7 +246,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
             <div className="font-bold text-white text-sm">{t(dispatch.senderBusinessName)}</div>
             <div className="text-slate-400 text-[11px] mt-0.5">{t('table.origin_label', 'Origin')}: {t(dispatch.originLocationSnapshot.label)}</div>
             <div className="text-slate-400 text-[11px]">
-              {t('dispatch.carrier_driver', 'Driver')}: {dispatch.driverName || t('dispatch.standard_freight', 'Standard Freight')} ({dispatch.vehicleReg || 'TRK'})
+              {t('dispatch.carrier_driver', 'Driver')}: {dispatch.driverName ? t(dispatch.driverName) : t('dispatch.standard_freight', 'Standard Freight')} ({dispatch.vehicleReg || 'TRK'})
             </div>
           </div>
 
@@ -255,7 +255,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
             <div className="font-bold text-white text-sm">{t(dispatch.destinationSnapshot.partnerName)}</div>
             <div className="text-slate-400 text-[11px] mt-0.5 flex items-start gap-1">
               <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
-              <span>{dispatch.destinationSnapshot.address}</span>
+              <span>{t(dispatch.destinationSnapshot.address)}</span>
             </div>
           </div>
         </div>
@@ -344,8 +344,8 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-slate-300">
             <div>
               <span className="text-slate-500 block text-[11px]">{t('manifest.signer_info', 'Signer Name & Role:')}</span>
-              <strong className="text-white">{dispatch.receiverSignoff.signerName}</strong>
-              <div className="text-[11px] text-slate-400">{dispatch.receiverSignoff.signerRole}</div>
+              <strong className="text-white">{t(dispatch.receiverSignoff.signerName)}</strong>
+              <div className="text-[11px] text-slate-400">{t(dispatch.receiverSignoff.signerRole)}</div>
             </div>
             <div>
               <span className="text-slate-500 block text-[11px]">{t('manifest.signed_at', 'Signed At:')}</span>

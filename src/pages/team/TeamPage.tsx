@@ -357,7 +357,7 @@ export function TeamPage() {
                             {member.name.charAt(0)}
                           </div>
                           <div>
-                            <span>{member.name}</span>
+                            <span>{t(member.name)}</span>
                             {member.id === user?.id && (
                               <span className="ml-2 px-1.5 py-0.5 bg-slate-800 text-indigo-300 text-[10px] rounded border border-slate-700">
                                 {t('team.you_badge')}
@@ -466,7 +466,7 @@ export function TeamPage() {
                         </span>
                       </td>
                       <td className="py-3.5 px-4 text-slate-400">
-                        {inv.invitedByName}
+                        {t(inv.invitedByName)}
                       </td>
                       <td className="py-3.5 px-4">
                         <div className="space-y-0.5">

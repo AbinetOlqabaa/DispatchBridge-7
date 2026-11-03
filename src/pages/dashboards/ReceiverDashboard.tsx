@@ -61,9 +61,9 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
           <span className="text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-950 px-2.5 py-0.5 rounded-full border border-amber-800">
             {t('role.receiver')}
           </span>
-          <span className="text-xs text-slate-400">{t('dashboard.station_lead_label', { name: user?.name || '' })}</span>
+          <span className="text-xs text-slate-400">{t('dashboard.station_lead_label', { name: t(user?.name || '') })}</span>
         </div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">{user?.businessName}</h1>
+        <h1 className="text-2xl font-bold text-white tracking-tight">{t(user?.businessName || '')}</h1>
         <p className="text-xs text-slate-400 mt-0.5">
           {t('app.enterprise')}
         </p>
@@ -106,7 +106,7 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{t('dispatch.carrier_driver', 'Carrier / Driver')}:</span>
-                    <span>{d.driverName || t('dispatch.carrier_unassigned', 'Not specified')}</span>
+                    <span>{d.driverName ? t(d.driverName) : t('dispatch.carrier_unassigned', 'Not specified')}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{t('table.items')}:</span>
@@ -177,7 +177,7 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
                     )}
                   </td>
                   <td className="px-2.5 sm:px-3.5 py-3 text-slate-300 whitespace-nowrap">
-                    <div>{d.receiverSignoff?.signerName || t('profile.verified_identity', 'Verified')}</div>
+                    <div>{d.receiverSignoff?.signerName ? t(d.receiverSignoff.signerName) : t('profile.verified_identity', 'Verified')}</div>
                     <div className="text-[10px] text-slate-500">
                       {d.receivedAt ? new Date(d.receivedAt).toLocaleDateString() : ''}
                     </div>

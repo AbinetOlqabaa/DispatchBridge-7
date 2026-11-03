@@ -65,7 +65,7 @@ export const ProfileSummaryCard: React.FC<ProfileSummaryCardProps> = ({ onOpenPr
         {/* User Identity Details (Safe: No Raw FAN/FIN) */}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-base font-bold text-white truncate">{user.name}</h2>
+            <h2 className="text-base font-bold text-white truncate">{t(user.name)}</h2>
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase tracking-wider ${getRoleBadgeColor()}`}
             >

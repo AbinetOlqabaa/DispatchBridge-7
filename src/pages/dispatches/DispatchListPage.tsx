@@ -357,11 +357,11 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
                     </td>
                     <td className="px-3.5 py-3.5 text-slate-300">
                       <div className="font-medium text-slate-200">{t(d.senderBusinessName)}</div>
-                      <div className="text-[10px] text-slate-500">{t('table.by_sender', 'By {name}', { name: d.senderName })}</div>
+                      <div className="text-[10px] text-slate-500">{t('table.by_sender', 'By {name}', { name: t(d.senderName) })}</div>
                     </td>
                     <td className="px-3.5 py-3.5 text-slate-200">
                       <div className="font-semibold">{t(d.partnerName)}</div>
-                      <div className="text-[10px] text-slate-400 truncate max-w-xs">{d.destinationSnapshot?.address || 'Partner Destination'}</div>
+                      <div className="text-[10px] text-slate-400 truncate max-w-xs">{t(d.destinationSnapshot?.address || t('table.destination_partner'))}</div>
                     </td>
                     <td className="px-3.5 py-3.5 whitespace-nowrap">
                       <StatusBadge status={d.status} size="sm" />

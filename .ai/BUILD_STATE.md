@@ -1,6 +1,6 @@
 # Build State — Business Dispatch & Delivery Reconciliation (DispatchBridge)
 
-- **Last Updated:** 2026-11-01T16:45:00-08:00
+- **Last Updated:** 2026-11-03T14:47:00-08:00
 - **Runtime / Platform:** Node.js v22.14.0 on Linux container with Express 4 backend & Vite 8 React 19 Frontend. Configured as an installable mobile-first Progressive Web App (PWA). *Note: Native Android build tooling (Gradle / Android SDK) is not supported in this runtime environment.*
 - **Stack:**
   - Backend: Node.js, Express 4, TypeScript, HMAC SHA-256 session tokens, timing-safe one-time bootstrap tokens, Fayda e-ID verification adapter, OTP gateway adapter, in-memory domain adapter (`sandboxStore`) with full multi-tenant isolation.
@@ -24,7 +24,7 @@
 | Phase 9 | `.ai/09_RELEASE_CHECKLIST.md` | **COMPLETE** | Release checklist evaluated honestly. Verdict: **READY FOR STAGING**. |
 | Identity Update | `.ai/IDENTITY_UPDATE_EXECUTE.md` | **COMPLETE** | Fayda e-ID national ID adapter (FAN/FIN masking, simulation badge, production fail-closed), mobile-first E.164 auth, cryptographic 6-digit OTP challenges, password reset/change step-up, user profile photo upload, and `/api/admin/users` governance with suspension audit logs. |
 | Extension & Governance | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Team directory & cryptographic invitation tokens (`/api/memberships`, `TeamPage.tsx`), Executive Performance & Reconciliation Reports (`/api/reports/analytics`, `ReportsPage.tsx`), User Profile & Credentials manager (`ProfilePage.tsx`), Multi-Tenant Context Switcher. |
-| Localization & i18n | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Comprehensive end-to-end multi-language translation across all 5 national languages (English, Amharic, Afan Oromo, Tigrinya, Somali). 100% dictionary bidirectional parity (exactly 1,162 keys/language, 6,445 lines), zero missing keys, parameter placeholder consistency (80 parameterized strings), `DYNAMIC_SEED_MAP` resolution for all server-seeded business/partner/cargo/map/audit records, charts, tables, partner manifests, and external recipient native language switcher. |
+| Localization & i18n | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Comprehensive end-to-end multi-language translation across all 5 national languages (English, Amharic, Afan Oromo, Tigrinya, Somali). 100% dictionary bidirectional parity (exactly 1,185 keys/language, 6,559 lines), zero missing keys, parameter placeholder consistency, complete `DYNAMIC_SEED_MAP` resolution for all server-seeded business/partner/cargo/map/waypoint/notification/audit/address/city/actor records, charts, tables, partner manifests, and external recipient native language switcher. |
 
 ---
 
@@ -184,12 +184,15 @@ $ npm test
   - `src/pages/dashboards/BusinessOwnerDashboard.tsx`: Upgraded recent dispatches table to `min-w-[700px] sm:min-w-[740px] lg:min-w-full` with >=40px touch target button (`px-3 py-2 min-h-[40px]`).
   - `src/pages/dashboards/ReceiverDashboard.tsx`: Upgraded detail slip button to >=40px touch target (`px-3 py-2 min-h-[40px]`).
   - `src/pages/dispatches/DispatchListPage.tsx` & `src/pages/dispatches/DispatchDetailPage.tsx`: Previously bounded to `min-w-[720px] sm:min-w-[760px] lg:min-w-full` and `min-w-[680px] sm:min-w-[720px] lg:min-w-full`.
-- **Localization & Multi-Language Translation System Parity (`src/i18n/translations.ts` & `test/runTests.ts`)**:
-  - 100% dictionary bidirectional parity across all 5 national languages (English, Amharic, Afaan Oromoo, Tigrinya, Somali) with exactly 1,162 unique keys in each language and zero missing keys.
+- **Localization & Multi-Language Translation System Parity (`src/i18n/translations.ts`, `src/context/LanguageContext.tsx` & `test/runTests.ts`)**:
+  - 100% dictionary bidirectional parity across all 5 national languages (English, Amharic, Afaan Oromoo, Tigrinya, Somali) with **1,185 unique keys** in each language and zero missing keys.
+  - Added 23 new `seed.addr_*`, `seed.city_*`, and `seed.person_*` keys across all 5 languages and mapped all exact strings from `src/server/adapters/sandboxStore.ts` (including notifications, route waypoints, audit log details, addresses, cities, and dispatcher/driver/partner names) in `DYNAMIC_SEED_MAP`.
+  - Wrapped dynamic fields (`senderName`, `destinationSnapshot.address`, `originLocationSnapshot.address`, `driverName`, `signerName`, `signerRole`, `openedByName`, `resolvedByName`, `loc.addressLines`, `loc.city`, `partner.deliveryAddress`, `log.actorName`, `member.name`, `user.name`) with `t(...)` across `DispatchListPage.tsx`, `BusinessOwnerDashboard.tsx`, `SenderDashboard.tsx`, `ReceiverDashboard.tsx`, `DispatchDetailPage.tsx`, `PublicPartnerView.tsx`, `LocationsPage.tsx`, `LocationsMapView.tsx`, `PartnersPage.tsx`, `AuditPage.tsx`, `TeamPage.tsx`, `SuperAdminDashboard.tsx`, and `ProfileSummaryCard.tsx`.
 - **Automated Acceptance & Quality Gate Verification**:
-  - `npm test`: **45/45 tests passed with 0 failures** (`tsx test/runTests.ts`) including unit, security, tenant isolation, workflow integration, Fayda e-ID, and tablet structural contracts.
+  - `npm test`: **45/45 tests passed with 0 failures** (`tsx test/runTests.ts`) including unit, security, tenant isolation, workflow integration, Fayda e-ID, tablet structural contracts, and 5-language dictionary parity (1,185 keys/language).
   - `npm run lint`: **0 errors** (`tsc --noEmit`).
   - `compile_applet`: **SUCCESS**.
+  - Verified in headless Chromium via `playwright-cli` across `390x844`, `768x1024`, `820x1180`, `1024x768`, `1180x820`, and `1440x900` with `scrollWidth === innerWidth` (`overflow: false`) and 100% localized table/page rendering.
 
 ---
 

@@ -1637,7 +1637,7 @@ async function runTestSuite() {
 
   await test('Localization & Internationalization', 'Dictionary Parity Across All 5 Languages (Zero Missing Keys & Bidirectional Parity)', () => {
     const enKeys = Object.keys(translations.en);
-    assertEqual(enKeys.length, 1162, `English dictionary contains exact expected count of 1,162 translation keys`);
+    assertEqual(enKeys.length, 1185, `English dictionary contains exact expected count of 1,185 translation keys`);
 
     const targetLanguages: SupportedLanguage[] = ['am', 'om', 'ti', 'so'];
     for (const lang of targetLanguages) {

@@ -357,7 +357,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
             <p className="text-xs text-slate-400">
               {t('dispatch.dispatched_on_by', {
                 date: new Date(dispatch.dispatchedAt).toLocaleString(),
-                sender: dispatch.senderName,
+                sender: t(dispatch.senderName),
                 business: t(dispatch.senderBusinessName),
               })}
             </p>
@@ -379,7 +379,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               <span>{t('dispatch.origin_terminal', 'Origin Loading Terminal')}</span>
             </div>
             <div className="font-semibold text-white text-sm">{t(dispatch.originLocationSnapshot.label)}</div>
-            <div className="text-slate-400 text-[11px] mt-0.5">{dispatch.originLocationSnapshot.address}</div>
+            <div className="text-slate-400 text-[11px] mt-0.5">{t(dispatch.originLocationSnapshot.address)}</div>
           </div>
 
           <div className="bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
@@ -388,7 +388,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               <span>{t('dispatch.partner_dest', 'Receiving Partner Destination')}</span>
             </div>
             <div className="font-semibold text-white text-sm">{t(dispatch.destinationSnapshot.partnerName)}</div>
-            <div className="text-slate-400 text-[11px] mt-0.5">{dispatch.destinationSnapshot.address}</div>
+            <div className="text-slate-400 text-[11px] mt-0.5">{t(dispatch.destinationSnapshot.address)}</div>
             <div className="text-slate-500 text-[10px] mt-0.5">
               {t('table.contact')}: {t(dispatch.destinationSnapshot.contactPerson)} • {dispatch.destinationSnapshot.phone}
             </div>
@@ -399,7 +399,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
               <Truck className="w-3.5 h-3.5 text-blue-400" />
               <span>{t('dispatch.carrier_driver', 'Carrier & Driver')}</span>
             </div>
-            <div className="font-semibold text-white text-sm">{dispatch.driverName || t('dispatch.standard_freight', 'Standard Freight')}</div>
+            <div className="font-semibold text-white text-sm">{dispatch.driverName ? t(dispatch.driverName) : t('dispatch.standard_freight', 'Standard Freight')}</div>
             <div className="text-slate-400 text-[11px] mt-0.5">
               {dispatch.vehicleReg ? `${t('dispatch.truck_plate')}: ${dispatch.vehicleReg}` : ''} {dispatch.driverPhone ? `• ${dispatch.driverPhone}` : ''}
             </div>
@@ -521,7 +521,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
                     <span className="text-rose-400 font-bold">{c.shortfallQuantity}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500">{t('recon.flagged_by', 'Flagged By:')}</span> {c.openedByName}
+                    <span className="text-slate-500">{t('recon.flagged_by', 'Flagged By:')}</span> {t(c.openedByName)}
                   </div>
                 </div>
 
@@ -539,7 +539,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
 
                 {c.resolution && (
                   <div className="text-[11px] text-emerald-300 bg-emerald-950/40 border border-emerald-900/40 p-2 rounded">
-                    <strong>{t('recon.final_resolution_label', 'Final Resolution:')}</strong> {t(c.resolution)} (by {c.resolvedByName})
+                    <strong>{t('recon.final_resolution_label', 'Final Resolution:')}</strong> {t(c.resolution)} ({t(c.resolvedByName || '')})
                   </div>
                 )}
 
@@ -769,8 +769,8 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs pt-2">
             <div>
               <span className="text-slate-500">{t('recon.signed_by', 'Signed By:')}</span>
-              <div className="font-semibold text-slate-200">{dispatch.receiverSignoff.signerName}</div>
-              <div className="text-[11px] text-slate-400">{dispatch.receiverSignoff.signerRole}</div>
+              <div className="font-semibold text-slate-200">{t(dispatch.receiverSignoff.signerName)}</div>
+              <div className="text-[11px] text-slate-400">{t(dispatch.receiverSignoff.signerRole)}</div>
             </div>
             <div>
               <span className="text-slate-500">{t('recon.verification_timestamp', 'Verification Timestamp:')}</span>
@@ -836,7 +836,7 @@ export const DispatchDetailPage: React.FC<DispatchDetailPageProps> = ({
                 >
                   <div className="flex items-center justify-between font-semibold">
                     <span className="text-white">
-                      {line.sku} - {line.itemName}
+                      {line.sku} - {t(line.itemName)}
                     </span>
                     <span className="text-slate-400 font-mono">{t('table.dispatched', 'Dispatched')}: {line.quantitySent} {t('unit.' + line.unit.toLowerCase(), line.unit)}</span>
                   </div>

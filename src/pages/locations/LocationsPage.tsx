@@ -194,9 +194,9 @@ export const LocationsPage: React.FC = () => {
               <div className="flex items-start gap-2 text-slate-400">
                 <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-slate-200">{loc.addressLines}</div>
+                  <div className="text-slate-200">{t(loc.addressLines)}</div>
                   <div className="text-slate-400 text-[11px]">
-                    {loc.city}, {loc.region} {loc.countryCode}
+                    {t(loc.city)}, {loc.region} {loc.countryCode}
                   </div>
                 </div>
               </div>

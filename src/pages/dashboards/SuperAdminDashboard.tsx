@@ -467,7 +467,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                         {new Date(log.timestamp).toLocaleString()}
                       </td>
                       <td className="px-3.5 py-2.5 whitespace-nowrap">
-                        <span className="font-semibold text-slate-200">{log.actorName}</span>
+                        <span className="font-semibold text-slate-200">{t(log.actorName)}</span>
                         <span className="text-[10px] text-slate-500 block">{t('table.role')}: {t('role.' + log.actorRole.toLowerCase(), log.actorRole)}</span>
                       </td>
                       <td className="px-3.5 py-2.5">
@@ -598,7 +598,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                             </div>
                           )}
                           <div>
-                            <div className="font-semibold text-white">{u.name}</div>
+                            <div className="font-semibold text-white">{t(u.name)}</div>
                             <div className="text-[10px] text-slate-500 font-mono">{u.id}</div>
                           </div>
                         </div>
@@ -709,7 +709,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             </div>
 
             <p className="text-xs text-slate-300 mb-2 leading-relaxed">
-              <span className="font-semibold text-white">{suspendTarget.name}</span> (<code className="text-slate-400">{suspendTarget.id}</code>)
+              <span className="font-semibold text-white">{t(suspendTarget.name)}</span> (<code className="text-slate-400">{suspendTarget.id}</code>)
             </p>
             <p className="text-[11px] text-amber-400/90 mb-4 bg-amber-950/40 p-2.5 rounded-xl border border-amber-900/40">
               {t('admin.suspend_modal_desc')}

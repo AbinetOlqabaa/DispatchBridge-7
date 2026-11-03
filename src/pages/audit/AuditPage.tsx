@@ -162,7 +162,7 @@ export const AuditPage: React.FC = () => {
                 <option value="ALL">{t('audit.all_actors', 'All Actors')}</option>
                 {uniqueActors.map((act) => (
                   <option key={act} value={act}>
-                    {act}
+                    {t(act)}
                   </option>
                 ))}
               </select>
@@ -231,7 +231,7 @@ export const AuditPage: React.FC = () => {
                     {new Date(log.timestamp).toLocaleString()}
                   </td>
                   <td className="px-2.5 sm:px-3.5 py-3 whitespace-nowrap">
-                    <span className="font-semibold text-slate-200">{log.actorName}</span>
+                    <span className="font-semibold text-slate-200">{t(log.actorName)}</span>
                     <span className="text-[10px] text-slate-500 block font-sans">{t('table.role')}: {t('role.' + log.actorRole.toLowerCase(), log.actorRole)}</span>
                   </td>
                   <td className="px-2.5 sm:px-3.5 py-3 whitespace-nowrap">
