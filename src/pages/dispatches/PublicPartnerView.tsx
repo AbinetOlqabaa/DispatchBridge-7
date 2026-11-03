@@ -77,7 +77,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
         }))
       );
     } catch (err: any) {
-      setError(err.message || 'Delivery manifest not found or link has expired.');
+      setError(err.message || t('manifest.load_error_msg', 'Delivery manifest not found or link has expired.'));
     } finally {
       setLoading(false);
     }
@@ -142,9 +142,9 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
 
       setDispatch(updated);
       setIsVerifying(false);
-      setSubmitSuccess('Official delivery receipt verified! Shipper has been notified, signature locked, and audit entry recorded.');
+      setSubmitSuccess(t('manifest.submit_success_msg', 'Official delivery receipt verified! Shipper has been notified, signature locked, and audit entry recorded.'));
     } catch (err: any) {
-      setSubmitError(err.message || 'Failed to submit receipt confirmation.');
+      setSubmitError(err.message || t('manifest.submit_error_msg', 'Failed to submit receipt confirmation.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -366,7 +366,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                 <div className="mt-1 bg-slate-950 p-2 rounded-xl border border-slate-800 inline-block">
                   <img
                     src={dispatch.receiverSignoff.signatureSvgOrBase64}
-                    alt="Receiver Signature"
+                    alt={t('dispatch.receiver_signature_alt', 'Receiver Signature')}
                     className="h-14 w-auto max-w-xs object-contain"
                   />
                 </div>
@@ -517,7 +517,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                           updated[idx].notes = e.target.value;
                           setLineReceipts(updated);
                         }}
-                        placeholder="e.g. 2 boxes crushed"
+                        placeholder={t('dispatch.placeholder_discrepancy_reason', 'e.g. 2 boxes crushed')}
                         className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
                       />
                     </div>
@@ -545,7 +545,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                   required
                   value={signerName}
                   onChange={(e) => setSignerName(e.target.value)}
-                  placeholder="e.g. David Miller"
+                  placeholder={t('dispatch.placeholder_full_name', 'e.g. David Miller')}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
                 />
               </div>
@@ -556,7 +556,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                   required
                   value={signerRole}
                   onChange={(e) => setSignerRole(e.target.value)}
-                  placeholder="e.g. Receiving Dock Lead"
+                  placeholder={t('dispatch.placeholder_role_title', 'e.g. Receiving Dock Lead')}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
                 />
               </div>
@@ -568,7 +568,7 @@ export const PublicPartnerView: React.FC<PublicPartnerViewProps> = ({ shareToken
                 rows={2}
                 value={comments}
                 onChange={(e) => setComments(e.target.value)}
-                placeholder="Optional comments regarding vehicle cleanliness, pallet condition..."
+                placeholder={t('dispatch.placeholder_signoff_remarks', 'Optional comments regarding vehicle cleanliness, pallet condition...')}
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white"
               />
             </div>

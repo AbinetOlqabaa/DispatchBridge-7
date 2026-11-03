@@ -65,13 +65,13 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
     // Validate type
     const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!validTypes.includes(file.type)) {
-      setPhotoError('Invalid format. Please select a JPEG, PNG, or WebP image.');
+      setPhotoError(t('profile.err_invalid_format', 'Invalid format. Please select a JPEG, PNG, or WebP image.'));
       return;
     }
 
     // Validate size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      setPhotoError('Profile photo size exceeds 2MB limit. Please select a smaller image.');
+      setPhotoError(t('profile.err_size_limit', 'Profile photo size exceeds 2MB limit. Please select a smaller image.'));
       return;
     }
 
@@ -82,13 +82,13 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
         const base64Url = reader.result as string;
         await updateProfile({ avatarUrl: base64Url });
       } catch (err: any) {
-        setPhotoError(err.message || 'Failed to upload profile photo.');
+        setPhotoError(err.message || t('profile.err_upload_failed', 'Failed to upload profile photo.'));
       } finally {
         setPhotoLoading(false);
       }
     };
     reader.onerror = () => {
-      setPhotoError('Failed to read image file.');
+      setPhotoError(t('profile.err_read_failed', 'Failed to read image file.'));
       setPhotoLoading(false);
     };
     reader.readAsDataURL(file);
@@ -100,7 +100,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
     try {
       await removeProfilePhoto();
     } catch (err: any) {
-      setPhotoError(err.message || 'Failed to remove profile photo.');
+      setPhotoError(err.message || t('profile.err_remove_failed', 'Failed to remove profile photo.'));
     } finally {
       setPhotoLoading(false);
     }
@@ -116,7 +116,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
       setNameSuccess(true);
       setTimeout(() => setNameSuccess(false), 3000);
     } catch (err: any) {
-      setPhotoError(err.message || 'Failed to update name.');
+      setPhotoError(err.message || t('profile.err_name_failed', 'Failed to update name.'));
     } finally {
       setIsUpdatingName(false);
     }
@@ -128,15 +128,15 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
     setPasswordSuccess(null);
 
     if (!currentPassword) {
-      setPasswordError('Please enter your current password first.');
+      setPasswordError(t('profile.err_curr_pass_req', 'Please enter your current password first.'));
       return;
     }
     if (newPassword.length < 8) {
-      setPasswordError('New password must be at least 8 characters long.');
+      setPasswordError(t('profile.err_new_pass_length', 'New password must be at least 8 characters long.'));
       return;
     }
     if (newPassword !== confirmPassword) {
-      setPasswordError('New passwords do not match.');
+      setPasswordError(t('profile.err_pass_mismatch', 'New passwords do not match.'));
       return;
     }
 
@@ -149,7 +149,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
         setOtpCode(challenge.simulatedCode);
       }
     } catch (err: any) {
-      setPasswordError(err.message || 'Failed to request step-up verification code.');
+      setPasswordError(err.message || t('profile.err_otp_request_failed', 'Failed to request step-up verification code.'));
     } finally {
       setIsRequestingOtp(false);
     }
@@ -159,7 +159,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
   const handleSubmitPasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otpChallengeId || !otpCode.trim()) {
-      setPasswordError('Please provide the 6-digit verification code.');
+      setPasswordError(t('profile.err_otp_code_req', 'Please provide the 6-digit verification code.'));
       return;
     }
 
@@ -172,7 +172,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
         otpChallengeId,
         otpCode.trim()
       );
-      setPasswordSuccess(res.message || 'Password successfully updated.');
+      setPasswordSuccess(res.message || t('profile.msg_pass_updated', 'Password successfully updated.'));
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
@@ -180,7 +180,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
       setOtpCode('');
       setSimulatedCode(null);
     } catch (err: any) {
-      setPasswordError(err.message || 'Failed to update password.');
+      setPasswordError(err.message || t('profile.err_pass_update_failed', 'Failed to update password.'));
     } finally {
       setIsChangingPassword(false);
     }

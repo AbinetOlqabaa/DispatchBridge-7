@@ -372,7 +372,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                     required
                     value={bootstrapEmail}
                     onChange={(e) => setBootstrapEmail(e.target.value)}
-                    placeholder="admin@domain.com"
+                    placeholder={t('admin.placeholder_email', 'admin@domain.com')}
                     className="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white"
                   />
                   <input
@@ -450,7 +450,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-slate-800/80 scrollbar-thin">
-              <table className="w-full text-left text-xs min-w-[760px]">
+              <table className="w-full text-left text-xs min-w-[680px] sm:min-w-[720px] lg:min-w-full">
                 <thead className="text-[11px] uppercase tracking-wider text-slate-400 bg-slate-950/40 border-b border-slate-800">
                   <tr>
                     <th className="px-3.5 py-3 font-semibold whitespace-nowrap">{t('system.timestamp')}</th>
@@ -520,7 +520,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
               <div className="flex items-center gap-2">
                 <select
-                  aria-label="Filter users by role"
+                  aria-label={t('admin.filter_by_role', 'Filter users by role')}
                   value={userRoleFilter}
                   onChange={(e) => {
                     setUserRoleFilter(e.target.value as UserRole | '');
@@ -535,7 +535,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                 </select>
 
                 <select
-                  aria-label="Filter users by account status"
+                  aria-label={t('admin.filter_by_status', 'Filter users by account status')}
                   value={userStatusFilter}
                   onChange={(e) => {
                     setUserStatusFilter(e.target.value as 'ACTIVE' | 'SUSPENDED' | '');
@@ -550,7 +550,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                 <button
                   onClick={loadUsers}
                   className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer transition shrink-0"
-                  title="Apply Filter"
+                  title={t('admin.apply_filter', 'Apply Filter')}
                 >
                   <RefreshCw className={`w-4 h-4 ${usersLoading ? 'animate-spin' : ''}`} />
                 </button>
@@ -560,16 +560,16 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
           {/* User Accounts Table */}
           <div className="overflow-x-auto rounded-xl border border-slate-800/80 scrollbar-thin">
-            <table className="w-full text-left text-xs min-w-[860px] lg:min-w-full">
+            <table className="w-full text-left text-xs min-w-[700px] sm:min-w-[740px] lg:min-w-full">
               <thead className="text-[11px] uppercase tracking-wider text-slate-400 bg-slate-950/60 border-b border-slate-800">
                 <tr>
-                  <th className="px-4 py-3 font-semibold">{t('admin.col_user', 'User')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('admin.col_phone', 'Verified Phone')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('admin.col_fayda', 'Fayda e-ID (Masked)')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('admin.col_business', 'Business Entity')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('admin.col_role', 'Assigned Role')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('table.status', 'Status')}</th>
-                  <th className="px-4 py-3 font-semibold text-right">{t('table.actions', 'Actions')}</th>
+                  <th className="px-2.5 sm:px-4 py-3 font-semibold">{t('admin.col_user', 'User')}</th>
+                  <th className="px-2.5 sm:px-4 py-3 font-semibold">{t('admin.col_phone', 'Verified Phone')}</th>
+                  <th className="px-2.5 sm:px-4 py-3 font-semibold">{t('admin.col_fayda', 'Fayda e-ID (Masked)')}</th>
+                  <th className="px-2.5 sm:px-4 py-3 font-semibold">{t('admin.col_business', 'Business Entity')}</th>
+                  <th className="px-2.5 sm:px-4 py-3 font-semibold">{t('admin.col_role', 'Assigned Role')}</th>
+                  <th className="px-2.5 sm:px-4 py-3 font-semibold">{t('table.status', 'Status')}</th>
+                  <th className="px-2.5 sm:px-4 py-3 font-semibold text-right">{t('table.actions', 'Actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60">
@@ -584,7 +584,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                   return (
                     <tr key={u.id} className="hover:bg-slate-800/40 transition">
                       {/* User Info with Avatar */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2.5">
                           {u.avatarUrl ? (
                             <img
@@ -605,7 +605,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       </td>
 
                       {/* Phone */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-3 whitespace-nowrap">
                         <span className="font-mono text-slate-300">
                           {u.maskedPhone || u.phoneNumber}
                         </span>
@@ -615,7 +615,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       </td>
 
                       {/* Fayda National ID */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-3 whitespace-nowrap">
                         <div className="space-y-0.5">
                           <div className="font-mono text-[11px] text-sky-400">
                             FAN: {u.maskedFan || '•••• •••• •••• 4444'}
@@ -627,12 +627,12 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       </td>
 
                       {/* Business Entity */}
-                      <td className="px-4 py-3 whitespace-nowrap text-slate-300">
+                      <td className="px-3 sm:px-4 py-3 whitespace-nowrap text-slate-300">
                         {t(u.businessName)}
                       </td>
 
                       {/* Role Selector */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-3 whitespace-nowrap">
                         <select
                           value={u.role}
                           onChange={(e) => handleRoleChange(u, e.target.value as UserRole)}
@@ -646,7 +646,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       </td>
 
                       {/* Status */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-3 whitespace-nowrap">
                         {u.status === 'ACTIVE' ? (
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                             {t('admin.status_active')}
@@ -662,7 +662,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       </td>
 
                       {/* Actions */}
-                      <td className="px-4 py-3 whitespace-nowrap text-right">
+                      <td className="px-3 sm:px-4 py-3 whitespace-nowrap text-right">
                         {u.status === 'ACTIVE' ? (
                           <button
                             onClick={() => {

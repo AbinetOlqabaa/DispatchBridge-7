@@ -81,7 +81,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
       const data = await api.getDispatches(filter);
       setDispatches(data);
     } catch (err: any) {
-      setError(err?.message || 'Unable to load shipments.');
+      setError(err?.message || t('msg.error'));
     } finally {
       setLoading(false);
     }
@@ -152,7 +152,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
               <button
                 onClick={() => setIsBulkUploadOpen(true)}
                 className="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-4 py-2.5 min-h-[44px] rounded-xl shadow-sm transition-all cursor-pointer"
-                title="Bulk upload dispatches via CSV format"
+                title={t('dispatch.bulk_upload_tooltip', 'Bulk upload dispatches via CSV format')}
               >
                 <Upload className="w-4 h-4 text-sky-400" />
                 <span>{t('action.bulk_upload_csv', 'Bulk Upload CSV')}</span>
@@ -272,7 +272,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
               <button
                 onClick={() => setExportDropdownOpen(!exportDropdownOpen)}
                 className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium px-3.5 py-2.5 rounded-xl cursor-pointer transition-colors shadow-sm min-h-[44px]"
-                title="Export filtered dispatches"
+                title={t('dispatch.export_tooltip', 'Export filtered dispatches')}
               >
                 <Download className="w-4 h-4 text-indigo-400" />
                 <span>{t('action.export', 'Export')}</span>
@@ -328,7 +328,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
           </div>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-slate-800/80 scrollbar-thin">
-            <table className="w-full text-left text-xs min-w-[860px]">
+            <table className="w-full text-left text-xs min-w-[720px] sm:min-w-[760px] lg:min-w-full">
               <thead className="text-[11px] uppercase tracking-wider text-slate-400 bg-slate-950/40 border-b border-slate-800">
                 <tr>
                   <th className="px-3.5 py-3 font-semibold whitespace-nowrap">{t('table.dispatch_number')}</th>
@@ -401,7 +401,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
                         <button
                           onClick={() => handleCopyLink(d.shareToken, d.id)}
                           className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer flex items-center justify-center border border-transparent hover:border-slate-700"
-                          title="Copy delivery tracking link"
+                          title={t('dispatch.copy_tracking_tooltip', 'Copy delivery tracking link')}
                         >
                           {copiedId === d.id ? (
                             <CheckCircle className="w-4 h-4 text-emerald-400" />
@@ -412,7 +412,7 @@ export const DispatchListPage: React.FC<DispatchListPageProps> = ({
                         <button
                           onClick={() => onOpenPublicLink(d.shareToken)}
                           className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-indigo-950/80 hover:bg-indigo-900 text-indigo-300 border border-indigo-800/60 cursor-pointer flex items-center justify-center"
-                          title="Simulate partner viewing delivery list"
+                          title={t('dispatch.simulate_partner_tooltip', 'Simulate partner viewing delivery list')}
                         >
                           <ExternalLink className="w-4 h-4" />
                         </button>

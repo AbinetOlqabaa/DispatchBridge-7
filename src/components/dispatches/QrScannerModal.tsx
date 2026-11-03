@@ -352,7 +352,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
                   type="text"
                   value={checkpointLocation}
                   onChange={(e) => setCheckpointLocation(e.target.value)}
-                  placeholder="e.g., Chicago North Dock Bay 4"
+                  placeholder={t('scanner.placeholder_checkpoint', 'e.g., Chicago North Dock Bay 4')}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
                 />
               </div>
@@ -365,7 +365,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
                   type="text"
                   value={driverNotes}
                   onChange={(e) => setDriverNotes(e.target.value)}
-                  placeholder="e.g., Cargo verified intact on trailer 4921."
+                  placeholder={t('scanner.placeholder_notes', 'e.g., Cargo verified intact on trailer 4921.')}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
                 />
               </div>

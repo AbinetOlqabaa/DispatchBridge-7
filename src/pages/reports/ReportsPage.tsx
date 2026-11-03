@@ -36,7 +36,7 @@ export function ReportsPage() {
       const data = await api.getAnalyticsReport();
       setReportData(data);
     } catch (err: any) {
-      setError(err.message || 'Failed to generate analytics report.');
+      setError(err.message || t('msg.error'));
     } finally {
       setLoading(false);
     }
@@ -167,7 +167,14 @@ export function ReportsPage() {
   const handleExportCSV = () => {
     if (!reportData) return;
     try {
-      const headers = ['Partner Name', 'Total Dispatches', 'Successful', 'Discrepancies', 'Success Rate %', 'Total Volume'];
+      const headers = [
+        t('table.partner_name'),
+        t('table.dispatched'),
+        t('table.intact'),
+        t('table.shortfall'),
+        t('table.success_rate'),
+        t('table.volume_handled'),
+      ];
       const rows = (reportData.partnerPerformance || []).map((p: any) => [
         `"${p.partnerName}"`,
         p.totalDispatches,
@@ -313,7 +320,7 @@ export function ReportsPage() {
                 {reportData.summary.totalLostVolume.toLocaleString()} <span className="text-xs font-normal text-slate-400">{t('unit.units')}</span>
               </p>
               <p className="text-[11px] text-slate-500 mt-0.5">
-                {reportData.summary.discrepancyDispatches} {t('status.discrepancy_review', 'incidents')}
+                {reportData.summary.discrepancyDispatches} {t('metric.dispatches_incidents', 'incidents')}
               </p>
             </div>
 
@@ -391,10 +398,10 @@ export function ReportsPage() {
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
-                <h2 className="text-sm font-bold text-white">{t('metric.registered_partners', 'Partner Performance Scorecard')}</h2>
+                <h2 className="text-sm font-bold text-white">{t('reports.partner_scorecard_title', 'Partner Performance Scorecard')}</h2>
               </div>
               <span className="text-[11px] text-slate-400">
-                {t('metric.fulfilled_to_partner', 'Sorted by delivery fulfillment volume')}
+                {t('reports.sorted_by_volume', 'Sorted by delivery fulfillment volume')}
               </span>
             </div>
 
@@ -406,8 +413,8 @@ export function ReportsPage() {
                     <th className="py-3 px-4 font-semibold">{t('table.dispatched', 'Total Dispatches')}</th>
                     <th className="py-3 px-4 font-semibold">{t('table.intact', 'Completed Clean')}</th>
                     <th className="py-3 px-4 font-semibold">{t('table.shortfall', 'Discrepancies')}</th>
-                    <th className="py-3 px-4 font-semibold">{t('metric.reconciliation_rate', 'Success Rate')}</th>
-                    <th className="py-3 px-4 font-semibold text-right">{t('table.items', 'Volume Handled')}</th>
+                    <th className="py-3 px-4 font-semibold">{t('table.success_rate', 'Success Rate')}</th>
+                    <th className="py-3 px-4 font-semibold text-right">{t('table.volume_handled', 'Volume Handled')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">

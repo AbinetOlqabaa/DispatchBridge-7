@@ -51,9 +51,9 @@ export function ProfilePage() {
   if (!user) {
     return (
       <div className="p-8 text-center bg-slate-900 border border-slate-800 rounded-2xl max-w-lg mx-auto my-12">
-        <h2 className="text-base font-bold text-white">Sign In Required</h2>
+        <h2 className="text-base font-bold text-white">{t('auth.signin_required', 'Sign In Required')}</h2>
         <p className="text-xs text-slate-400 mt-2">
-          Please sign in to view and manage your profile settings.
+          {t('auth.signin_prompt_desc', 'Please sign in to view and manage your profile settings.')}
         </p>
       </div>
     );
@@ -129,16 +129,16 @@ export function ProfilePage() {
           </div>
           <div>
             <h1 className="text-xl font-bold text-white tracking-tight">
-              {t('nav.profile', 'Profile & Security')}
+              {t('profile.title', 'Profile & Security')}
             </h1>
             <p className="text-xs text-slate-400">
-              Account identity, multi-business memberships, and security credentials
+              {t('profile.subtitle', 'Account identity, multi-business memberships, and security credentials')}
             </p>
           </div>
         </div>
 
         <span className="px-3 py-1 bg-indigo-900/30 text-indigo-300 border border-indigo-800/40 rounded-full text-xs font-semibold">
-          {user.role.replace('_', ' ')}
+          {t('role.' + user.role.toLowerCase(), user.role.replace('_', ' '))}
         </span>
       </div>
 
@@ -147,10 +147,10 @@ export function ProfilePage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Building2 className="w-4 h-4 text-indigo-400" />
-            <h2 className="text-sm font-bold text-white">Active Business Context</h2>
+            <h2 className="text-sm font-bold text-white">{t('action.switch_entity', 'Active Business Context')}</h2>
           </div>
           <span className="text-[11px] text-slate-400">
-            {user.memberships?.length || 1} business membership(s)
+            {t('biz.entities_count', { count: user.memberships?.length || 1 })}
           </span>
         </div>
 
@@ -201,10 +201,10 @@ export function ProfilePage() {
             <div className="p-3.5 rounded-xl border border-indigo-500/40 bg-indigo-950/40 text-white flex items-center justify-between">
               <div>
                 <p className="font-semibold text-xs text-white">{user.businessName}</p>
-                <p className="text-[11px] text-indigo-300">Default Sandbox Business</p>
+                <p className="text-[11px] text-indigo-300">{t('profile.default_sandbox_biz', 'Default Sandbox Business')}</p>
               </div>
               <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-lg border border-emerald-800/40">
-                Active
+                {t('status.active', 'Active')}
               </span>
             </div>
           )}
@@ -216,7 +216,7 @@ export function ProfilePage() {
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
             <User className="w-4 h-4 text-indigo-400" />
-            <h2 className="text-sm font-bold text-white">Contact & Identity</h2>
+            <h2 className="text-sm font-bold text-white">{t('profile.identity_info', 'Contact & Identity')}</h2>
           </div>
 
           {profileError && (
@@ -229,13 +229,13 @@ export function ProfilePage() {
           {profileSuccess && (
             <div className="p-3 bg-emerald-900/20 border border-emerald-800/40 text-emerald-300 rounded-xl text-xs flex items-center gap-2">
               <CheckCircle className="w-4 h-4 shrink-0 text-emerald-400" />
-              <span>Profile updated successfully!</span>
+              <span>{t('profile.name_updated', 'Profile updated successfully!')}</span>
             </div>
           )}
 
           <form onSubmit={handleProfileSubmit} className="space-y-3.5 text-xs">
             <div>
-              <label className="block text-slate-400 font-medium mb-1">Full Name</label>
+              <label className="block text-slate-400 font-medium mb-1">{t('auth.full_name', 'Full Name')}</label>
               <input
                 type="text"
                 required
@@ -246,7 +246,7 @@ export function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-slate-400 font-medium mb-1">Email Address</label>
+              <label className="block text-slate-400 font-medium mb-1">{t('auth.email_address', 'Email Address')}</label>
               <div className="relative">
                 <input
                   type="email"
@@ -255,13 +255,13 @@ export function ProfilePage() {
                   className="w-full bg-slate-950/50 border border-slate-800/60 rounded-xl px-3 py-2 text-slate-400 cursor-not-allowed opacity-80"
                 />
                 <span className="absolute right-2.5 top-2.5 text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded">
-                  Primary ID
+                  {t('profile.primary_id')}
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-400 font-medium mb-1">Phone Number (E.164)</label>
+              <label className="block text-slate-400 font-medium mb-1">{t('auth.mobile_phone', 'Phone Number (E.164)')}</label>
               <div className="flex gap-2">
                 <input
                   type="tel"
@@ -272,7 +272,7 @@ export function ProfilePage() {
                 {user.phoneVerified ? (
                   <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-900/30 text-emerald-300 border border-emerald-800/40 rounded-xl text-[11px] font-semibold shrink-0">
                     <CheckCircle className="w-3.5 h-3.5" />
-                    Verified
+                    {t('auth.verified_badge', 'Verified')}
                   </span>
                 ) : (
                   <button
@@ -280,7 +280,7 @@ export function ProfilePage() {
                     onClick={() => setIsPhoneModalOpen(true)}
                     className="px-3 py-1.5 bg-amber-600/30 text-amber-300 hover:bg-amber-600/40 border border-amber-600/40 rounded-xl text-[11px] font-semibold shrink-0 transition cursor-pointer"
                   >
-                    Verify SMS
+                    {t('auth.verify_phone_btn', 'Verify SMS')}
                   </button>
                 )}
               </div>
@@ -293,7 +293,7 @@ export function ProfilePage() {
                 className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl disabled:opacity-50 flex items-center justify-center gap-2 transition cursor-pointer"
               >
                 {profileSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : null}
-                Save Contact Information
+                {t('action.save_contact', 'Save Contact Information')}
               </button>
             </div>
           </form>
@@ -303,7 +303,7 @@ export function ProfilePage() {
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
             <Lock className="w-4 h-4 text-indigo-400" />
-            <h2 className="text-sm font-bold text-white">Security & Password</h2>
+            <h2 className="text-sm font-bold text-white">{t('profile.security_password', 'Security & Password')}</h2>
           </div>
 
           {passwordError && (
@@ -316,26 +316,26 @@ export function ProfilePage() {
           {passwordSuccess && (
             <div className="p-3 bg-emerald-900/20 border border-emerald-800/40 text-emerald-300 rounded-xl text-xs flex items-center gap-2">
               <CheckCircle className="w-4 h-4 shrink-0 text-emerald-400" />
-              <span>Password updated successfully!</span>
+              <span>{t('profile.msg_pass_updated', 'Password updated successfully!')}</span>
             </div>
           )}
 
           <form onSubmit={handlePasswordSubmit} className="space-y-3.5 text-xs">
             <div>
-              <label className="block text-slate-400 font-medium mb-1">Current Password *</label>
+              <label className="block text-slate-400 font-medium mb-1">{t('auth.current_password', 'Current Password')} *</label>
               <div className="relative">
                 <input
                   type={showCurrentPass ? 'text' : 'password'}
                   required
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Enter current password"
+                  placeholder={t('profile.placeholder_curr_pass', 'Enter current password')}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 pr-9 text-slate-100 focus:outline-none focus:border-indigo-500 transition"
                 />
                 <button
                   type="button"
                   onClick={() => setShowCurrentPass(!showCurrentPass)}
-                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white"
+                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white cursor-pointer"
                 >
                   {showCurrentPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -343,7 +343,7 @@ export function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-slate-400 font-medium mb-1">New Password * (Min 8 chars)</label>
+              <label className="block text-slate-400 font-medium mb-1">{t('profile.new_pass_label', 'New Password * (Min 8 chars)')}</label>
               <div className="relative">
                 <input
                   type={showNewPass ? 'text' : 'password'}
@@ -351,13 +351,13 @@ export function ProfilePage() {
                   minLength={8}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="At least 8 characters"
+                  placeholder={t('profile.placeholder_new_pass', 'At least 8 characters')}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 pr-9 text-slate-100 focus:outline-none focus:border-indigo-500 transition"
                 />
                 <button
                   type="button"
                   onClick={() => setShowNewPass(!showNewPass)}
-                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white"
+                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white cursor-pointer"
                 >
                   {showNewPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -365,13 +365,13 @@ export function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-slate-400 font-medium mb-1">Confirm New Password *</label>
+              <label className="block text-slate-400 font-medium mb-1">{t('profile.confirm_pass_label', 'Confirm New Password *')}</label>
               <input
                 type="password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter new password"
+                placeholder={t('profile.placeholder_confirm_pass', 'Re-enter new password')}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-indigo-500 transition"
               />
             </div>
@@ -383,7 +383,7 @@ export function ProfilePage() {
                 className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold border border-slate-700 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2 transition cursor-pointer"
               >
                 {passwordSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : null}
-                Update Password
+                {t('profile.change_password_action', 'Update Password')}
               </button>
             </div>
           </form>
@@ -395,20 +395,20 @@ export function ProfilePage() {
         <div className="flex items-center gap-2">
           <Shield className="w-4 h-4 text-emerald-400" />
           <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-            Active Session Security Primitives
+            {t('profile.active_security_title', 'Active Session Security Primitives')}
           </h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl">
-            <span className="text-slate-400 text-[11px] block">Token Strategy</span>
-            <span className="font-semibold text-emerald-400 mt-0.5 block">HMAC SHA-256 Signed</span>
+            <span className="text-slate-400 text-[11px] block">{t('profile.token_strategy', 'Token Strategy')}</span>
+            <span className="font-semibold text-emerald-400 mt-0.5 block">{t('profile.token_hmac', 'HMAC SHA-256 Signed')}</span>
           </div>
           <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl">
-            <span className="text-slate-400 text-[11px] block">Tenant Isolation</span>
-            <span className="font-semibold text-indigo-400 mt-0.5 block">Strict Scoped Enclave</span>
+            <span className="text-slate-400 text-[11px] block">{t('profile.tenant_isolation', 'Tenant Isolation')}</span>
+            <span className="font-semibold text-indigo-400 mt-0.5 block">{t('profile.strict_scoped_enclave', 'Strict Scoped Enclave')}</span>
           </div>
           <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl">
-            <span className="text-slate-400 text-[11px] block">Correlation Header</span>
+            <span className="text-slate-400 text-[11px] block">{t('profile.correlation_header', 'Correlation Header')}</span>
             <span className="font-semibold text-slate-200 mt-0.5 block font-mono text-[11px]">X-Correlation-ID</span>
           </div>
         </div>

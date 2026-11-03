@@ -493,7 +493,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
                   ? 'bg-amber-950 text-amber-300 border border-amber-800'
                   : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'
               }`}
-              title="Toggle simulated low-signal/offline transit mode"
+              title={t('map.toggle_offline_title', 'Toggle simulated low-signal/offline transit mode')}
             >
               {isSimulatedOffline ? <WifiOff className="w-3 h-3 text-amber-400" /> : <Wifi className="w-3 h-3 text-emerald-400" />}
               <span>{isSimulatedOffline ? t('map.simulating_offline_btn', 'Simulating Offline') : t('map.online_conn_btn', 'Online Connection')}</span>
@@ -517,7 +517,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
           <button
             onClick={handlePrecacheRoute}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold cursor-pointer transition-colors"
-            title="Pre-cache map tiles, waypoints and vector paths for offline transit"
+            title={t('map.precache_title', 'Pre-cache map tiles, waypoints and vector paths for offline transit')}
           >
             <Database className="w-3.5 h-3.5 text-emerald-400" />
             <span>{t('map.precache')}</span>
@@ -529,7 +529,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
               onClick={handleSimulateGpsPing}
               disabled={isSimulatingPing}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-950/70 hover:bg-sky-900 text-sky-300 border border-sky-800/60 text-xs font-semibold cursor-pointer transition-colors"
-              title="Record next live GPS telemetry waypoint"
+              title={t('map.record_telemetry_title', 'Record next live GPS telemetry waypoint')}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSimulatingPing ? 'animate-spin' : ''}`} />
               <span>{isSimulatingPing ? t('map.pinging') : t('map.simulate_ping')}</span>
@@ -540,7 +540,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
           <button
             onClick={handleCopyCoordinates}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold cursor-pointer transition-colors"
-            title="Copy latitude and longitude coordinates"
+            title={t('map.copy_coords_title', 'Copy latitude and longitude coordinates')}
           >
             {copiedCoords ? (
               <>
@@ -561,7 +561,7 @@ export const DispatchTrackingMap: React.FC<DispatchTrackingMapProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-semibold cursor-pointer transition-colors"
-            title="View exact geo-coordinates on Google Maps"
+            title={t('map.view_gmaps_title', 'View exact geo-coordinates on Google Maps')}
           >
             <ExternalLink className="w-3.5 h-3.5 text-indigo-400" />
             <span>{t('map.open_in_maps')}</span>

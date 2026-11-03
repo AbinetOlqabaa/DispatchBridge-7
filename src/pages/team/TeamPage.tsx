@@ -63,7 +63,7 @@ export function TeamPage() {
       setMembers(res.members);
       setInvitations(res.invitations);
     } catch (err: any) {
-      setError(err.message || 'Failed to load team data.');
+      setError(err.message || t('team.err_load_failed'));
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ export function TeamPage() {
     e.preventDefault();
     setInviteError(null);
     if (!inviteEmail.trim()) {
-      setInviteError('Please enter a valid email address.');
+      setInviteError(t('team.err_email_required'));
       return;
     }
 
@@ -95,7 +95,7 @@ export function TeamPage() {
       setInvitePhone('');
       await loadData();
     } catch (err: any) {
-      setInviteError(err.message || 'Failed to issue invitation.');
+      setInviteError(err.message || t('team.err_invite_failed'));
     } finally {
       setInviteSubmitting(false);
     }
@@ -338,20 +338,20 @@ export function TeamPage() {
         ) : (
           <div className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto scrollbar-thin">
-              <table className="w-full text-left border-collapse text-xs min-w-[700px]">
+              <table className="w-full text-left border-collapse text-xs min-w-full sm:min-w-[620px]">
                 <thead>
                   <tr className="bg-slate-950/70 border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
-                    <th className="py-3 px-4 font-semibold">{t('table.member', 'Member')}</th>
-                    <th className="py-3 px-4 font-semibold">{t('auth.assigned_role', 'Assigned Role')}</th>
-                    <th className="py-3 px-4 font-semibold">{t('table.contact', 'Contact Details')}</th>
-                    <th className="py-3 px-4 font-semibold">{t('table.status', 'Status')}</th>
-                    <th className="py-3 px-4 font-semibold text-right">{t('table.actions', 'Actions')}</th>
+                    <th className="py-3 px-3 sm:px-4 font-semibold">{t('table.member', 'Member')}</th>
+                    <th className="py-3 px-3 sm:px-4 font-semibold">{t('auth.assigned_role', 'Assigned Role')}</th>
+                    <th className="py-3 px-3 sm:px-4 font-semibold">{t('table.contact', 'Contact Details')}</th>
+                    <th className="py-3 px-3 sm:px-4 font-semibold">{t('table.status', 'Status')}</th>
+                    <th className="py-3 px-3 sm:px-4 font-semibold text-right">{t('table.actions', 'Actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
                   {filteredMembers.map((member) => (
                     <tr key={member.id} className="hover:bg-slate-800/30 transition">
-                      <td className="py-3.5 px-4">
+                      <td className="py-3.5 px-3 sm:px-4">
                         <div className="font-semibold text-white flex items-center gap-2">
                           <div className="w-7 h-7 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-300 font-bold text-xs uppercase">
                             {member.name.charAt(0)}
@@ -366,12 +366,12 @@ export function TeamPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="py-3.5 px-4 whitespace-nowrap">
+                      <td className="py-3.5 px-3 sm:px-4 whitespace-nowrap">
                         <span className={`inline-flex items-center whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-medium border ${getRoleBadge(member.membershipRole)}`}>
                           {getLocalizedRole(member.membershipRole)}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-slate-400">
+                      <td className="py-3.5 px-3 sm:px-4 text-slate-400">
                         <div className="space-y-0.5">
                           <div className="flex items-center gap-1.5 text-slate-300">
                             <Mail className="w-3 h-3 text-slate-500" />
@@ -385,13 +385,13 @@ export function TeamPage() {
                           )}
                         </div>
                       </td>
-                      <td className="py-3.5 px-4">
+                      <td className="py-3.5 px-3 sm:px-4">
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-emerald-900/30 text-emerald-300 border border-emerald-800/40">
                           <CheckCircle className="w-3 h-3 text-emerald-400" />
                           {t('status.active')}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-right">
+                      <td className="py-3.5 px-3 sm:px-4 text-right">
                         {canManage && member.id !== user?.id && member.membershipRole !== 'SUPER_ADMIN' ? (
                           <div className="flex items-center justify-end gap-2">
                             <select
@@ -564,7 +564,7 @@ export function TeamPage() {
                 <input
                   type="email"
                   required
-                  placeholder="colleague@yourcompany.com"
+                  placeholder={t('team.placeholder_email', 'colleague@yourcompany.com')}
                   value={inviteEmail}
                   onChange={(e) => setInviteEmail(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-indigo-500"
@@ -646,7 +646,7 @@ export function TeamPage() {
                 <input
                   type="text"
                   required
-                  placeholder="inv_tok_..."
+                  placeholder={t('team.placeholder_token', 'inv_tok_...')}
                   value={acceptToken}
                   onChange={(e) => setAcceptToken(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 font-mono focus:outline-none focus:border-indigo-500"

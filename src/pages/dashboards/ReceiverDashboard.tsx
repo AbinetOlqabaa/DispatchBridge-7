@@ -185,7 +185,7 @@ export const ReceiverDashboard: React.FC<ReceiverDashboardProps> = ({ onSelectDi
                   <td className="px-2.5 sm:px-3.5 py-3 text-right whitespace-nowrap pr-3 sm:pr-4">
                     <button
                       onClick={() => onSelectDispatch(d.id)}
-                      className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs cursor-pointer"
+                      className="px-3 py-2 min-h-[40px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium cursor-pointer inline-flex items-center justify-center"
                     >
                       {t('action.inspect', 'View Slip')}
                     </button>

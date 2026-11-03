@@ -208,8 +208,8 @@ export const LocationsPage: React.FC = () => {
 
       {/* Add Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 text-slate-100 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
+          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 text-slate-100 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto scrollbar-thin">
             <h3 className="text-base font-bold text-white">{t('locations.add_modal_title', 'Add Dispatch Origin Terminal')}</h3>
 
             {errorMessage && (
@@ -227,7 +227,7 @@ export const LocationsPage: React.FC = () => {
                   required
                   value={label}
                   onChange={(e) => setLabel(e.target.value)}
-                  placeholder="e.g. West Coast Distribution Hub - Bay 3"
+                  placeholder={t('loc.placeholder_name', 'e.g. West Coast Distribution Hub - Bay 3')}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white"
                 />
               </div>
@@ -239,7 +239,7 @@ export const LocationsPage: React.FC = () => {
                   required
                   value={addressLines}
                   onChange={(e) => setAddressLines(e.target.value)}
-                  placeholder="e.g. 500 Industrial Parkway, Dock 14"
+                  placeholder={t('loc.placeholder_address', 'e.g. 500 Industrial Parkway, Dock 14')}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white"
                 />
               </div>
@@ -252,7 +252,7 @@ export const LocationsPage: React.FC = () => {
                     required
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    placeholder="Seattle"
+                    placeholder={t('loc.placeholder_city', 'Seattle')}
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white"
                   />
                 </div>

@@ -139,7 +139,7 @@ export const AuditPage: React.FC = () => {
                 value={actionFilter}
                 onChange={(e) => setActionFilter(e.target.value)}
                 className="w-full md:w-auto bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
-                title="Filter by event action type"
+                title={t('audit.title_filter_action', 'Filter by event action type')}
               >
                 <option value="ALL">{t('audit.all_event_types', 'All Event Types')}</option>
                 <option value="DISPATCH_CREATED">{t('action.create_dispatch', 'Dispatch Created')}</option>
@@ -157,7 +157,7 @@ export const AuditPage: React.FC = () => {
                 value={actorFilter}
                 onChange={(e) => setActorFilter(e.target.value)}
                 className="w-full md:w-auto bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500"
-                title="Filter by actor"
+                title={t('audit.title_filter_actor', 'Filter by actor')}
               >
                 <option value="ALL">{t('audit.all_actors', 'All Actors')}</option>
                 {uniqueActors.map((act) => (
@@ -182,7 +182,7 @@ export const AuditPage: React.FC = () => {
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   className="bg-slate-800 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
-                  title="Start Date"
+                  title={t('audit.title_start_date', 'Start Date')}
                 />
                 <span className="text-slate-500 text-xs">{t('audit.to', 'to')}</span>
                 <input
@@ -190,7 +190,7 @@ export const AuditPage: React.FC = () => {
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   className="bg-slate-800 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-white focus:outline-none focus:border-indigo-500"
-                  title="End Date"
+                  title={t('audit.title_end_date', 'End Date')}
                 />
               </div>
 
@@ -214,35 +214,35 @@ export const AuditPage: React.FC = () => {
         </div>
 
         <div className="overflow-x-auto rounded-xl border border-slate-800/80 scrollbar-thin">
-          <table className="w-full text-left text-xs min-w-[820px] lg:min-w-full">
+          <table className="w-full text-left text-xs min-w-[720px] sm:min-w-[760px] lg:min-w-full">
             <thead className="text-[11px] uppercase tracking-wider text-slate-400 bg-slate-950/40 border-b border-slate-800">
               <tr>
-                <th className="px-3 sm:px-3.5 py-3 font-semibold whitespace-nowrap">{t('system.timestamp', 'Event Timestamp')}</th>
-                <th className="px-3 sm:px-3.5 py-3 font-semibold whitespace-nowrap">{t('system.actor', 'Actor & Role')}</th>
-                <th className="px-3 sm:px-3.5 py-3 font-semibold whitespace-nowrap">{t('system.event_action', 'Action')}</th>
-                <th className="px-3 sm:px-3.5 py-3 font-semibold whitespace-nowrap min-w-[120px]">{t('audit.entity_col', 'Entity')}</th>
-                <th className="px-3 sm:px-3.5 py-3 font-semibold min-w-[220px]">{t('system.details', 'Audit Record Summary')}</th>
+                <th className="px-2.5 sm:px-3.5 py-3 font-semibold whitespace-nowrap">{t('system.timestamp', 'Event Timestamp')}</th>
+                <th className="px-2.5 sm:px-3.5 py-3 font-semibold whitespace-nowrap">{t('system.actor', 'Actor & Role')}</th>
+                <th className="px-2.5 sm:px-3.5 py-3 font-semibold whitespace-nowrap">{t('system.event_action', 'Action')}</th>
+                <th className="px-2.5 sm:px-3.5 py-3 font-semibold whitespace-nowrap min-w-[110px]">{t('audit.entity_col', 'Entity')}</th>
+                <th className="px-2.5 sm:px-3.5 py-3 font-semibold min-w-[200px]">{t('system.details', 'Audit Record Summary')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono text-[11px]">
               {filteredLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-slate-800/30">
-                  <td className="px-3 sm:px-3.5 py-3 text-slate-400 whitespace-nowrap">
+                  <td className="px-2.5 sm:px-3.5 py-3 text-slate-400 whitespace-nowrap">
                     {new Date(log.timestamp).toLocaleString()}
                   </td>
-                  <td className="px-3 sm:px-3.5 py-3 whitespace-nowrap">
+                  <td className="px-2.5 sm:px-3.5 py-3 whitespace-nowrap">
                     <span className="font-semibold text-slate-200">{log.actorName}</span>
                     <span className="text-[10px] text-slate-500 block font-sans">{t('table.role')}: {t('role.' + log.actorRole.toLowerCase(), log.actorRole)}</span>
                   </td>
-                  <td className="px-3 sm:px-3.5 py-3 whitespace-nowrap">
+                  <td className="px-2.5 sm:px-3.5 py-3 whitespace-nowrap">
                     <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
                       {t('audit.action_' + log.action.toLowerCase(), log.action)}
                     </span>
                   </td>
-                  <td className="px-3 sm:px-3.5 py-3 text-indigo-300 whitespace-nowrap">
+                  <td className="px-2.5 sm:px-3.5 py-3 text-indigo-300 whitespace-nowrap">
                     {t('audit.entity_' + log.entityType.toLowerCase(), log.entityType)} ({log.entityId})
                   </td>
-                  <td className="px-3 sm:px-3.5 py-3 text-slate-300 font-sans text-xs">
+                  <td className="px-2.5 sm:px-3.5 py-3 text-slate-300 font-sans text-xs">
                     {t(log.details)}
                   </td>
                 </tr>
