@@ -11,6 +11,8 @@ import {
   X,
   Volume2,
   VolumeX,
+  Vibrate,
+  VibrateOff,
 } from 'lucide-react';
 import {
   BARCODE_CATALOG,
@@ -18,6 +20,7 @@ import {
   parseIntakeBarcode,
 } from '../../utils/barcodeParser.js';
 import { useTranslation } from '../../context/LanguageContext.js';
+import { hapticFeedback } from '../../utils/haptics.js';
 
 interface BarcodeIntakeScannerProps {
   onItemsScanned: (
@@ -60,6 +63,7 @@ export const BarcodeIntakeScanner: React.FC<BarcodeIntakeScannerProps> = ({
   const [manualInput, setManualInput] = useState('');
   const [qtyMultiplier, setQtyMultiplier] = useState<number>(1);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [vibrateEnabled, setVibrateEnabled] = useState<boolean>(() => hapticFeedback.isEnabled());
   const [lastFeedback, setLastFeedback] = useState<{
     type: 'success' | 'error' | 'info';
     message: string;
@@ -71,6 +75,7 @@ export const BarcodeIntakeScanner: React.FC<BarcodeIntakeScannerProps> = ({
     (rawCode: string, format: string = 'BARCODE') => {
       const parsed = parseIntakeBarcode(rawCode, format);
       if (!parsed.ok || parsed.items.length === 0) {
+        hapticFeedback.errorAlert({ enabled: vibrateEnabled });
         setLastFeedback({
           type: 'error',
           message: parsed.error || t('intake_scanner.err_invalid_code', 'Unrecognized barcode or QR format.'),
@@ -95,6 +100,7 @@ export const BarcodeIntakeScanner: React.FC<BarcodeIntakeScannerProps> = ({
       if (soundEnabled) {
         playScannerBeep();
       }
+      hapticFeedback.barcodeScanned({ enabled: vibrateEnabled });
 
       const skusText = scaledItems.map((i) => `${i.sku} (+${i.quantitySent})`).join(', ');
       const actionLabel =
@@ -114,7 +120,7 @@ export const BarcodeIntakeScanner: React.FC<BarcodeIntakeScannerProps> = ({
         ...prev.slice(0, 5),
       ]);
     },
-    [onItemsScanned, qtyMultiplier, soundEnabled, t]
+    [onItemsScanned, qtyMultiplier, soundEnabled, vibrateEnabled, t]
   );
 
   // Initialize device camera & native BarcodeDetector API when mounted
@@ -320,6 +326,21 @@ export const BarcodeIntakeScanner: React.FC<BarcodeIntakeScannerProps> = ({
             title={soundEnabled ? 'Mute scanner beep' : 'Enable scanner beep'}
           >
             {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-sky-400" /> : <VolumeX className="w-3.5 h-3.5 text-slate-500" />}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              const next = !vibrateEnabled;
+              setVibrateEnabled(next);
+              hapticFeedback.setEnabled(next);
+              if (next) hapticFeedback.barcodeScanned({ enabled: true });
+            }}
+            className="p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+            aria-label="Toggle haptic vibration"
+            title={vibrateEnabled ? 'Disable haptic vibration' : 'Enable haptic vibration'}
+          >
+            {vibrateEnabled ? <Vibrate className="w-3.5 h-3.5 text-indigo-400" /> : <VibrateOff className="w-3.5 h-3.5 text-slate-500" />}
           </button>
 
           {onClose && (

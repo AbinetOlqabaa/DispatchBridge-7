@@ -1,11 +1,11 @@
 # Build State — Business Dispatch & Delivery Reconciliation (DispatchBridge)
 
-- **Last Updated:** 2026-11-05T04:26:00-08:00
+- **Last Updated:** 2026-11-05T06:45:00-08:00
 - **Runtime / Platform:** Node.js v22.14.0 on Linux container with Express 4 backend & Vite 8 React 19 Frontend. Configured as an installable mobile-first Progressive Web App (PWA). *Note: Native Android build tooling (Gradle / Android SDK) is not supported in this runtime environment.*
 - **Stack:**
   - Backend: Node.js, Express 4, TypeScript, HMAC SHA-256 session tokens, timing-safe one-time bootstrap tokens, Fayda e-ID verification adapter, OTP gateway adapter, in-memory domain adapter (`sandboxStore`) with full multi-tenant isolation.
-  - Frontend: React 19, Tailwind CSS v4, Lucide React, Recharts, jsPDF, IndexedDB local-first persistence (`dispatchbridge_local_first_db`), Context API (`AuthContext`, `LanguageContext`, `ThemeContext`), clean component and page architecture.
-  - Test Suite: Pure-domain unit runner (`tsx --test src/utils/barcodeParser.test.ts src/utils/offlineSync.test.ts` — **10/10 passing**) & Node.js acceptance/integration runner (`npm test` -> `tsx test/runTests.ts` — **47/47 automated tests passing with 0 failures**).
+  - Frontend: React 19, Tailwind CSS v4, Lucide React, Recharts, jsPDF, Web Vibration API (`hapticFeedback`), BarcodeDetector camera scanner, IndexedDB local-first persistence (`dispatchbridge_local_first_db`), Context API (`AuthContext`, `LanguageContext`, `ThemeContext`), clean component and page architecture.
+  - Test Suite: Pure-domain unit runner (`tsx --test src/utils/haptics.test.ts src/utils/barcodeParser.test.ts src/utils/offlineSync.test.ts` — **12/12 passing**) & Node.js acceptance/integration runner (`npm test` -> `tsx test/runTests.ts` — **48/48 automated tests passing with 0 failures**).
 
 ---
 
@@ -20,11 +20,13 @@
 | Phase 5 | `.ai/05_NOTIFICATIONS_AND_AUDIT.md` | **COMPLETE** | Real-time in-app notification drawer with unread counter & read tracking; immutable audit trail logging actor, role, correlation ID, and metadata for every mutation. |
 | Phase 6 | `.ai/06_TABLET_FIRST_UI_UX_AND_ACCESSIBILITY.md` | **COMPLETE** | Comprehensive tablet portrait (768x1024, 820x1180) & landscape (1024x768, 1180x820) optimizations. Landscape orientation mounts dedicated `TabletSidebar` with full navigation, language, theme, and profile controls. Portrait orientation mounts top `Navbar` with horizontal scrolling navigation strip and visual right fade indicator. Metric cards balanced into 3-column grid (`lg:grid-cols-3`) on tablet landscape and desktop. Tables bounded with responsive cell padding and high-contrast scrollbars. Minimum 44x44px touch targets across all interactive controls. |
 | Phase 7 | `.ai/07_SECURITY_PRIVACY_AND_FAILURES.md` | **COMPLETE** | Strict cross-tenant isolation on store and route levels (HTTP 403 on mismatched tenant/partner access), timingSafeEqual constant-time comparisons, idempotency key deduplication. |
-| Phase 8 | `.ai/08_TESTING_AND_ACCEPTANCE.md` | **COMPLETE** | 10 pure-domain unit tests + 47 automated unit, security, integration, identity, barcode intake, IndexedDB local-first sync, tablet structure, and localization acceptance tests passing with 0 failures. `tsc --noEmit` passing with 0 type errors. |
+| Phase 8 | `.ai/08_TESTING_AND_ACCEPTANCE.md` | **COMPLETE** | 12 pure-domain unit tests + 48 automated unit, security, integration, identity, barcode intake, IndexedDB local-first sync, haptics, tablet structure, and localization acceptance tests passing with 0 failures. `tsc --noEmit` passing with 0 type errors. |
 | Phase 9 | `.ai/09_RELEASE_CHECKLIST.md` | **COMPLETE** | Release checklist evaluated honestly. Verdict: **READY FOR STAGING**. |
 | Identity Update | `.ai/IDENTITY_UPDATE_EXECUTE.md` | **COMPLETE** | Fayda e-ID national ID adapter (FAN/FIN masking, simulation badge, production fail-closed), mobile-first E.164 auth, cryptographic 6-digit OTP challenges, password reset/change step-up, user profile photo upload, and `/api/admin/users` governance with suspension audit logs. |
 | Extension & Governance | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Team directory & cryptographic invitation tokens (`/api/memberships`, `TeamPage.tsx`), Executive Performance & Reconciliation Reports (`/api/reports/analytics`, `ReportsPage.tsx`), User Profile & Credentials manager (`ProfilePage.tsx`), Multi-Tenant Context Switcher. |
-| Localization & i18n | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Comprehensive end-to-end multi-language translation across all 5 national languages (English, Amharic, Afan Oromo, Tigrinya, Somali). 100% dictionary bidirectional parity (**1,228 keys/language**), zero missing keys, parameter placeholder consistency, complete `DYNAMIC_SEED_MAP` resolution for all server-seeded business/partner/cargo/map/waypoint/notification/audit/address/city/actor records, charts, tables, partner manifests, and external recipient native language switcher. |
+| Localization & i18n | `.ai/00_MASTER_PLAN.md` | **COMPLETE** | Comprehensive end-to-end multi-language translation across all 5 national languages (English, Amharic, Afan Oromo, Tigrinya, Somali). 100% dictionary bidirectional parity (**1,228 keys/language** = 6,140 keys total), zero missing keys, parameter placeholder consistency, complete `DYNAMIC_SEED_MAP` resolution for all server-seeded business/partner/cargo/map/waypoint/notification/audit/address/city/actor records, charts, tables, partner manifests, and external recipient native language switcher. |
+| Haptics & Vibration | Task 8 | **COMPLETE** | Web Vibration API (`src/utils/haptics.ts`) tactile feedback engine with distinctive vibration patterns for barcode scanning (`[35]`), dispatch creation (`[50, 40, 80]`), offline sync success (`[40, 60, 40]`), error alerts (`[70, 50, 70]`), and user preference toggles. |
+| Documentation | Task 8 | **COMPLETE** | Detailed end-to-end system documentation written in `docs/DISPATCHSYNC_DOCUMENTATION.md` and linked in `README.md`. |
 
 ---
 
@@ -207,12 +209,18 @@ $ npm test
   - Updated `.gitignore` to exclude `.aistudio/`, `.playwright-cli/`, `bun.lock`, and `*.tsbuildinfo`.
   - Resolved npm `ERESOLVE` peer dependency conflict (`esbuild@^0.28.0` aligned with `vite@^8.3.0`), moved `tsx` to runtime `dependencies`, set package metadata (`dispatchbridge@1.0.0`), and generated a deterministic `package-lock.json` verified via `npm ci --dry-run`.
   - Declared `"camera"` permission in `metadata.json` (`requestFramePermissions: ["camera"]`) while preserving `name`, `description`, and `MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API`.
+- **Web Vibration API & Haptic Feedback Engine (`src/utils/haptics.ts`, `src/utils/haptics.test.ts`)**:
+  - Implemented `HapticsService` utilizing `navigator.vibrate` with safe fallback for non-browser runtimes and persistent toggle in `localStorage` (`dispatchbridge_haptics_enabled`).
+  - Tactile vibration patterns: `barcodeScanned` (`[35]`), `dispatchCreated` (`[50, 40, 80]`), `syncSuccess` (`[40, 60, 40]`), `errorAlert` (`[70, 50, 70]`), and `cancel` (`0`).
+  - Integrated into `BarcodeIntakeScanner.tsx`, `QrScannerModal.tsx`, `CreateDispatchModal.tsx`, `CreateDispatchForm.tsx`, and `offlineSync.ts`.
+- **System Documentation (`docs/DISPATCHSYNC_DOCUMENTATION.md`)**:
+  - Authored comprehensive documentation detailing system architecture, prerequisites, configuration, user roles, dispatch & reconciliation flows, advanced features (haptics, barcode intake, IndexedDB, localization, Fayda e-ID), and developer guides.
 - **Automated & Live Browser Verification**:
-  - `npx --yes tsx --test src/utils/barcodeParser.test.ts src/utils/offlineSync.test.ts`: **10/10 passed** (0 failed).
-  - `npm test` (`tsx test/runTests.ts`): **47/47 passed** (0 failed), including **1,228 keys/language** across all 5 national languages (`en`, `am`, `om`, `ti`, `so`) with 100% bidirectional parity.
+  - `npx --yes tsx --test src/utils/haptics.test.ts src/utils/barcodeParser.test.ts src/utils/offlineSync.test.ts`: **12/12 passed** (0 failed).
+  - `npm test` (`tsx test/runTests.ts`): **48/48 passed** (0 failed), including all 10 verification layers.
   - `npm run lint` (`tsc --noEmit`): **0 errors**.
   - `compile_applet`: **SUCCESS**.
-  - Headless Chromium E2E & visual verification across Desktop (`1440x900`), Tablet Portrait (`768x1024`), Tablet Landscape (`1024x768`), and Mobile (`390x844`) verified zero console/page errors, zero horizontal overflow, >=44px touch targets, live barcode intake into Create Dispatch, offline IndexedDB transit update projection, and automatic FIFO sync on reconnect.
+  - Headless Chromium E2E & visual verification across Desktop (`1440x900`), Tablet Portrait (`768x1024`), Tablet Landscape (`1024x768`), and Mobile (`390x844`) verified zero console/page errors, zero horizontal overflow, >=44px touch targets, live barcode intake into Create Dispatch, offline IndexedDB transit update projection, tactile vibration feedback patterns, and automatic FIFO sync on reconnect.
 
 ---
 

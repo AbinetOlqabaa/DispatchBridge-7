@@ -23,6 +23,7 @@ import { useTranslation } from '../../context/LanguageContext.js';
 import { BarcodeIntakeScanner } from '../../components/dispatches/BarcodeIntakeScanner.js';
 import { mergeScannedItemsIntoDispatchLines, ParsedIntakeItem } from '../../utils/barcodeParser.js';
 import { useOfflineSync } from '../../utils/offlineSync.js';
+import { hapticFeedback } from '../../utils/haptics.js';
 
 interface CreateDispatchModalProps {
   isOpen: boolean;
@@ -244,9 +245,11 @@ export const CreateDispatchModal: React.FC<CreateDispatchModalProps> = ({
       };
 
       const created = await api.createDispatch(payload);
+      hapticFeedback.dispatchCreated();
       onSuccess(created.id);
       onClose();
     } catch (err: any) {
+      hapticFeedback.errorAlert();
       setErrorMessage(err.message || 'Failed to dispatch manifest.');
       setStep('input');
     } finally {

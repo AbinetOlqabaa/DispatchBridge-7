@@ -17,6 +17,7 @@ import { Dispatch, DispatchStatus } from '../../types/dispatch.js';
 import { api } from '../../services/api.js';
 import { useTranslation } from '../../context/LanguageContext.js';
 import { useOfflineSync } from '../../utils/offlineSync.js';
+import { hapticFeedback } from '../../utils/haptics.js';
 
 interface QrScannerModalProps {
   dispatch: Dispatch;
@@ -95,6 +96,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
     if (!scannedItems.includes(code)) {
       setScannedItems((prev) => [...prev, code]);
     }
+    hapticFeedback.barcodeScanned();
     setScanMessage({
       text: `Scanned & verified: ${code} ${itemName ? `(${itemName})` : ''}`,
       type: 'success',
@@ -109,6 +111,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
     if (!scannedItems.includes(trimmed)) {
       setScannedItems((prev) => [...prev, trimmed]);
     }
+    hapticFeedback.barcodeScanned();
     setScanMessage({
       text: `Barcode verified: ${trimmed}`,
       type: 'success',
@@ -133,6 +136,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
         actorName: dispatch.driverName || 'Courier Driver',
       });
 
+      hapticFeedback.dispatchCreated();
       setScanMessage({
         text: !isOnline
           ? t(
@@ -148,6 +152,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
         onClose();
       }, 650);
     } catch (err: any) {
+      hapticFeedback.errorAlert();
       setScanMessage({
         text: err.message || 'Failed to record transit scan.',
         type: 'error',
